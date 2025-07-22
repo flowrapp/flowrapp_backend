@@ -8,41 +8,34 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>boot</artifactId>
+    <artifactId>application</artifactId>
 
     <name>${project.groupId}-${project.artifactId}</name>
-    <description>Boot Module.</description>
+    <description>Application Module.</description>
 
     <dependencies>
         <dependency>
             <groupId>io.github.flowrapp</groupId>
             <artifactId>domain</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.github.flowrapp</groupId>
-            <artifactId>application</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.flowrapp</groupId>
-            <artifactId>intput-rest-examaple</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.flowrapp</groupId>
-            <artifactId>output-adapters</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.flowrapp</groupId>
-            <artifactId>jpa-main-postgres</artifactId>
-        </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.instancio</groupId>
+            <artifactId>instancio-junit</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

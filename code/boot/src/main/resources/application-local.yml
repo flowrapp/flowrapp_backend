@@ -1,0 +1,9 @@
+
+
+
+spring:
+  datasource:
+      main-postgres:
+        url: jdbc:postgresql://localhost:32010/flowra
+        username: ${MAIN_POSTGRES_USERNAME}
+        password: ${MAIN_POSTGRES_PASSWORD}
