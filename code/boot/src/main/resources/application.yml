@@ -1,0 +1,6 @@
+
+
+server:
+  servlet:
+    context-path: /flowrapp
+  port: 8080
