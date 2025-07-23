@@ -1,5 +1,7 @@
 package io.github.flowrapp.usecase;
 
+import io.github.flowrapp.exception.FunctionalError;
+import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.UserRequest;
 import io.github.flowrapp.port.input.UserRequestUseCase;
@@ -20,7 +22,7 @@ public class UserRequestUseCaseImpl implements UserRequestUseCase {
     log.debug("Getting request for: {}", userRequest);
 
     return this.userRepositoryOutput.findUserByName(userRequest.name())
-        .get(); // TODO change for exception
+        .orElseThrow(() -> new FunctionalException(FunctionalError.USER_NOT_FOUND));
   }
 
 }

@@ -1,3 +1,7 @@
+logging:
+  level:
+    io.github.flowrapp: WARN
+
 spring:
   docker:
     compose:

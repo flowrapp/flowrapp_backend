@@ -1,3 +1,7 @@
+logging:
+  level:
+    io.github.flowrapp: DEBUG
+
 spring:
   docker:
     compose:

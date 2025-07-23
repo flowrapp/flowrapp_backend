@@ -18,6 +18,15 @@
       <groupId>io.github.flowrapp</groupId>
       <artifactId>domain</artifactId>
     </dependency>
+    <!-- Let's be flexible with spring boot dependencies on application for practical reasons -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.projectlombok</groupId>

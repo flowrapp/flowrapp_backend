@@ -1,3 +1,8 @@
+logging:
+  level:
+    io.github.flowrapp: DEBUG
+    org.springframework.web: DEBUG
+
 spring:
   jpa:
     hibernate:
