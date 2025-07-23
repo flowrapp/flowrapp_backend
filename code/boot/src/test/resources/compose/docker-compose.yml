@@ -1,0 +1,18 @@
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres_server
+    ports:
+      - "32010:5432"
+    environment:
+      POSTGRES_DB: flowrapp
+      POSTGRES_USER: ${MAIN_POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${MAIN_POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - main_postgres_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
+
+volumes:
+  main_postgres_data:

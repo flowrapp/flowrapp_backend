@@ -1,11 +1,8 @@
 
 
 spring:
-  docker:
-    compose:
-      enabled: false
   datasource:
     main-postgres:
-      jdbcUrl: jdbc:postgresql://${MAIN_POSTGRES_URL}/flowra
+      url: jdbc:postgresql://localhost:32010/flowra
       username: ${MAIN_POSTGRES_USERNAME}
       password: ${MAIN_POSTGRES_PASSWORD}
