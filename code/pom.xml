@@ -169,8 +169,16 @@
             <attach>false</attach>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>com.dkanejs.maven.plugins</groupId>
+          <artifactId>docker-compose-maven-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -189,6 +197,19 @@
               <version>${lombok.version}</version>
             </path>
           </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.dkanejs.maven.plugins</groupId>
+        <artifactId>docker-compose-maven-plugin</artifactId>
+        <version>4.0.0</version>
+        <inherited>false</inherited>
+        <configuration>
+          <envFile>${project.basedir}/boot/src/test/resources/compose/.env</envFile>
+          <composeFile>${project.basedir}/boot/src/test/resources/compose/docker-compose.yml</composeFile>
+          <detachedMode>true</detachedMode>
+          <removeVolumes>false</removeVolumes>
+          <skip>false</skip>
         </configuration>
       </plugin>
     </plugins>

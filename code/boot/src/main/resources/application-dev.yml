@@ -3,9 +3,6 @@ logging:
     io.github.flowrapp: DEBUG
 
 spring:
-  docker:
-    compose:
-      enabled: false
   datasource:
     main-postgres:
       jdbcUrl: jdbc:postgresql://ep-summer-heart-a9c3ig3a-pooler.gwc.azure.neon.tech/flowrapp

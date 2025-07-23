@@ -3,11 +3,8 @@ logging:
     io.github.flowrapp: WARN
 
 spring:
-  docker:
-    compose:
-      enabled: false
   datasource:
     main-postgres:
-      jdbcUrl: jdbc:postgresql://${MAIN_POSTGRES_URL}/flowra
+      jdbcUrl: jdbc:postgresql://${MAIN_POSTGRES_URL}/flowrapp
       username: ${MAIN_POSTGRES_USERNAME}
       password: ${MAIN_POSTGRES_PASSWORD}

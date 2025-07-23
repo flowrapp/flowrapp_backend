@@ -11,6 +11,7 @@ spring:
   docker:
     compose:
       file: code/boot/src/test/resources/compose/docker-compose.yml
+      enabled: false
 
 server:
   servlet:

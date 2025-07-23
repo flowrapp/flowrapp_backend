@@ -7,5 +7,5 @@ spring:
   datasource:
     main-postgres:
       jdbcUrl: jdbc:postgresql://localhost:32010/flowrapp
-      username: ${MAIN_POSTGRES_USERNAME}
-      password: ${MAIN_POSTGRES_PASSWORD}
+      username: ${MAIN_POSTGRES_USERNAME:postgres}
+      password: ${MAIN_POSTGRES_PASSWORD:postgres}
