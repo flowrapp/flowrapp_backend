@@ -16,8 +16,8 @@
 
   <modules>
     <module>output-adapters</module>
-    <module>input-rest-examaple</module>
     <module>jpa-main-postgres</module>
+    <module>input-rest</module>
   </modules>
 
 </project>

@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum FunctionalError {
-
   USER_NOT_FOUND(1000, 404, "user not found"),
   ;
 

@@ -4,29 +4,31 @@
 
   <parent>
     <groupId>io.github.flowrapp</groupId>
-    <artifactId>flowrapp-backend</artifactId>
+    <artifactId>infrastructure</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>application</artifactId>
+  <artifactId>input-rest</artifactId>
+  <packaging>pom</packaging>
 
   <name>${project.groupId}-${project.artifactId}</name>
-  <description>Application Module.</description>
+  <description>Rest Module.</description>
+
+  <modules>
+    <module>user-rest</module>
+    <module>rest-config</module>
+    <module>rest-security</module>
+  </modules>
 
   <dependencies>
     <dependency>
       <groupId>io.github.flowrapp</groupId>
       <artifactId>domain</artifactId>
     </dependency>
-    <!-- Let's be flexible with spring boot dependencies on application for practical reasons (use @Transactional) -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-    </dependency>
 
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
       <groupId>org.mapstruct</groupId>
