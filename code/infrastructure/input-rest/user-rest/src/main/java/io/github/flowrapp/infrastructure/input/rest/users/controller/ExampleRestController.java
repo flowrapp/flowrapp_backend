@@ -7,6 +7,7 @@ import io.github.flowrapp.port.input.UserRequestUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ public class ExampleRestController {
 
   private final UserRequestUseCase userRequestUseCase;
 
-  @GetMapping
+  @PostMapping
   public UserResponseDTO getUser(@RequestBody UserRequestDTO userRequestDTO) {
     val result = userRequestUseCase.findUser(
         exampleMapper.infra2domain(userRequestDTO));
