@@ -5,6 +5,7 @@ import io.github.flowrapp.infrastructure.input.rest.example.dto.UserResponseDTO;
 import io.github.flowrapp.infrastructure.input.rest.example.mapper.ExampleMapper;
 import io.github.flowrapp.port.input.UserRequestUseCase;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ExampleRestController {
 
-    private final ExampleMapper exampleMapper;
+  private final ExampleMapper exampleMapper;
 
-    private final UserRequestUseCase userRequestUseCase;
+  private final UserRequestUseCase userRequestUseCase;
 
-    public UserResponseDTO getUser(@RequestBody UserRequestDTO userRequestDTO) {
-        final var result = this.userRequestUseCase.findUser(
-                exampleMapper.infra2domain(userRequestDTO));
+  public UserResponseDTO getUser(@RequestBody UserRequestDTO userRequestDTO) {
+    val result = userRequestUseCase.findUser(
+        exampleMapper.infra2domain(userRequestDTO));
 
-        return exampleMapper.domain2infra(result);
-    }
+    return exampleMapper.domain2infra(result);
+  }
 
 }

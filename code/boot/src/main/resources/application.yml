@@ -1,8 +1,7 @@
-
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
   datasource:
     main-postgres:
       driverClassName: org.postgresql.Driver

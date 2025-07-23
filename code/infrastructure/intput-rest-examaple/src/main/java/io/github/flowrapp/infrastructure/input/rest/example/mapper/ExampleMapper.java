@@ -10,8 +10,8 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ExampleMapper {
 
-    UserRequest infra2domain(UserRequestDTO userRequestDTO);
+  UserRequest infra2domain(UserRequestDTO userRequestDTO);
 
-    UserResponseDTO domain2infra(User result);
+  UserResponseDTO domain2infra(User result);
 
 }

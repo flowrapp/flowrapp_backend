@@ -13,11 +13,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserRequestUseCaseImpl implements UserRequestUseCase {
 
-    private final UserRepositoryOutput userRepositoryOutput;
+  private final UserRepositoryOutput userRepositoryOutput;
 
-    @Override
-    public User findUser(UserRequest userRequest) {
-        return this.userRepositoryOutput.findUserByName(userRequest.name()).get(); // TODO change for exception
-    }
+  @Override
+  public User findUser(UserRequest userRequest) {
+    log.debug("Getting request for: {}", userRequest);
+
+    return this.userRepositoryOutput.findUserByName(userRequest.name())
+        .get(); // TODO change for exception
+  }
 
 }

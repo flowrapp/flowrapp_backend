@@ -1,6 +1,7 @@
-
-
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
   datasource:
     main-postgres:
       jdbcUrl: jdbc:postgresql://localhost:32010/flowrapp

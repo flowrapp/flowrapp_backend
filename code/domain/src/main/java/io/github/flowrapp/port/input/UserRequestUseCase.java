@@ -5,6 +5,6 @@ import io.github.flowrapp.model.UserRequest;
 
 public interface UserRequestUseCase {
 
-    User findUser(UserRequest userRequest);
+  User findUser(UserRequest userRequest);
 
 }
