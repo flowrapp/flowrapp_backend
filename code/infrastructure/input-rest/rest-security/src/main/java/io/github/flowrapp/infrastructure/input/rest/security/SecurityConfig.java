@@ -23,8 +23,9 @@ public class SecurityConfig {
         // No Session pls
         .sessionManagement(it -> it.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/actuator/**").permitAll() // Allow Actuator endpoints
-            .anyRequest().permitAll())                     // Allow all requests (for now)
+            .requestMatchers("/actuator/**").permitAll()    // Allow Actuator endpoints
+            .requestMatchers("/v3/api-docs/**").permitAll() // Allow OpenAPI docs
+            .anyRequest().permitAll())                        // Allow all requests (for now)
         .build();
   }
 

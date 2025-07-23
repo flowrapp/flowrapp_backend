@@ -3,6 +3,7 @@ package io.github.flowrapp.infrastructure.input.rest.config;
 import static java.util.Objects.requireNonNullElse;
 
 import io.github.flowrapp.exception.FunctionalException;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -21,7 +22,7 @@ public class GlobalControllerAdvice {
 
   @ExceptionHandler(FunctionalException.class)
   public ProblemDetail handleFunctionalException(final FunctionalException functionalEx) {
-    log.debug("Received functional exception with code: {}", functionalEx.getCode());
+    log.error("Received functional exception", functionalEx);
 
     return ProblemDetail.forStatusAndDetail(
         requireNonNullElse(HttpStatus.resolve(functionalEx.getStatus()), HttpStatus.I_AM_A_TEAPOT),
@@ -33,6 +34,7 @@ public class GlobalControllerAdvice {
    */
   @ExceptionHandler(Exception.class)
   public ProblemDetail handleGenericException(final Exception ex) {
+    log.error("Unhandled exception", ex);
     return ProblemDetail.forStatusAndDetail(
         HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong");
   }
