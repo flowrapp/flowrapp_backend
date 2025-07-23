@@ -2,9 +2,23 @@
 
 ## Getting Started
 
-### Dependencies
+### Development Environment
 
 This project uses Docker Compose for managing local dependencies. Make sure you have Docker and Docker Compose installed on your system.
+
+This project uses [asdf](https://asdf-vm.com/) for managing tool versions. The required tool versions are specified in the `.tool-versions` file located in the `code` directory.
+
+#### Installing asdf
+
+1. Install asdf following the [official documentation](https://asdf-vm.com/guide/getting-started.html) for your operating system.
+
+2. Install the required plugins:
+   ```bash
+   asdf plugin add ivm-maven
+   asdf plugin add ivm-java
+   ```
+
+If you're not using asdf, make sure to manually install these versions of Maven and Java.
 
 ### Installation
 
@@ -24,6 +38,16 @@ This project uses Docker Compose for managing local dependencies. Make sure you 
    nano boot/src/test/resources/compose/.env
    ```
 
+4. Navigate to /code and install the required versions of Maven and Java:
+   ```bash
+    asdf install
+    ```
+
+5. Set your IDE to use the versions specified in `.tool-versions` or use:
+   ```bash
+   asdf local
+   ```
+
 ### Execution
 
 ```bash
@@ -37,6 +61,15 @@ mvn spring-boot:run
 ### Configuration
 
 The Docker environment configuration is managed through the `.env` file located at `boot/src/test/resources/compose/.env`. This file contains environment variables that configure the Docker services. Make sure you've properly configured this file before starting the services with `mvn docker-compose:up`.
+
+### API Documentation
+
+This project uses Swagger/OpenAPI for API documentation. Once the application is running, you can access:
+
+- Swagger UI: http://localhost:8080/flowrapp/swagger-ui.html
+- API Documentation: http://localhost:8080/flowrapp/api-docs
+
+The Swagger UI provides an interactive interface to explore and test the REST APIs, while the API Documentation endpoint provides the raw OpenAPI specification.
 
 ## Hexagonal Structures
 
@@ -65,4 +98,3 @@ flowchart LR
     boot --> infrastructure 
     infrastructure --> application --> domain
 ```
-
