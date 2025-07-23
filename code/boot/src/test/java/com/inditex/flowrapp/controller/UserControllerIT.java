@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.RequestEntity.post;
 
 import com.inditex.flowrapp.DatabaseData;
+import com.inditex.flowrapp.config.InitDatabase;
 
 import io.github.flowrapp.Application;
 import io.github.flowrapp.infrastructure.input.rest.users.dto.UserRequestDTO;
@@ -21,6 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Application.class)
 @ActiveProfiles("test")
+@InitDatabase
 public class UserControllerIT {
 
   @Autowired

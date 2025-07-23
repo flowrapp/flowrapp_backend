@@ -5,6 +5,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: flowrapp_management
   datasource:
     main-postgres:
       driverClassName: org.postgresql.Driver

@@ -208,7 +208,7 @@
           <envFile>${project.basedir}/boot/src/test/resources/compose/.env</envFile>
           <composeFile>${project.basedir}/boot/src/test/resources/compose/docker-compose.yml</composeFile>
           <detachedMode>true</detachedMode>
-          <removeVolumes>false</removeVolumes>
+          <removeVolumes>true</removeVolumes>
           <skip>false</skip>
         </configuration>
       </plugin>

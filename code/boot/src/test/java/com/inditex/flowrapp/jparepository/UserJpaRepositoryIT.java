@@ -3,6 +3,7 @@ package com.inditex.flowrapp.jparepository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.inditex.flowrapp.DatabaseData;
+import com.inditex.flowrapp.config.InitDatabase;
 
 import io.github.flowrapp.Application;
 import io.github.flowrapp.infrastructure.jpa.main.postgres.config.PostgresDatasourceConfig;
@@ -19,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @ContextConfiguration(classes = {Application.class, PostgresDatasourceConfig.class})
+@InitDatabase
 class UserJpaRepositoryIT {
 
   @Autowired
