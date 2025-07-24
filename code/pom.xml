@@ -33,7 +33,7 @@
     <!-- SonarCloud -->
     <sonar.organization>flowrapp</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.exclusions>**/*Config.java,**/Application.java</sonar.exclusions>
+    <sonar.exclusions>**/*Config.java,**/Application.java,**/*Exception.java</sonar.exclusions>
 
     <java.version>21</java.version>
 

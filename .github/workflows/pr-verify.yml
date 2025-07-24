@@ -22,4 +22,4 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build and Test
-        run: cd code && mvn -B verify -Dtest=!**/*IT.java
+        run: cd code && mvn -B verify -Dtest=!**/*IT.java -Dsurefire.failIfNoSpecifiedTests=false
