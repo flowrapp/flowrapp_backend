@@ -1,0 +1,24 @@
+name: GitLeaks Secret Detection
+# This workflow checks for secrets and credentials accidentally committed to the repository
+# It runs on all pull request events (opened, synchronize, reopened)
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  gitleaks:
+    name: GitLeaks Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: GitLeaks
+        uses: zricethezav/gitleaks-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: true   # Upload scan results as artifact
+          GITLEAKS_ENABLE_SUMMARY: true           # Show summary in job output
