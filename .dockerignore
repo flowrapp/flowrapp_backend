@@ -3,7 +3,7 @@
 .env
 .env.*
 README.md
-**/target/
+code/boot/target/
 **/.classpath
 **/.project
 **/.settings/

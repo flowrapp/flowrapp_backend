@@ -4,21 +4,21 @@ WORKDIR /app
 # Set Maven to skip SSL certificate validation
 ENV MAVEN_OPTS="-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true"
 # Copy pom.xml files for dependency resolution
-COPY pom.xml .
-COPY boot/pom.xml ./boot/
-COPY domain/pom.xml ./domain/
-COPY application/pom.xml ./application/
-COPY infrastructure/pom.xml ./infrastructure/
-COPY infrastructure/input-rest/pom.xml ./infrastructure/input-rest/
-COPY infrastructure/input-rest/rest-config/pom.xml ./infrastructure/input-rest/rest-config/
-COPY infrastructure/input-rest/rest-security/pom.xml ./infrastructure/input-rest/rest-security/
-COPY infrastructure/input-rest/user-rest/pom.xml ./infrastructure/input-rest/user-rest/
-COPY infrastructure/output-adapters/pom.xml ./infrastructure/output-adapters/
-COPY infrastructure/jpa-neon-azure/pom.xml ./infrastructure/jpa-neon-azure/
+COPY code/pom.xml .
+COPY code/boot/pom.xml ./boot/
+COPY code/domain/pom.xml ./domain/
+COPY code/application/pom.xml ./application/
+COPY code/infrastructure/pom.xml ./infrastructure/
+COPY code/infrastructure/input-rest/pom.xml ./infrastructure/input-rest/
+COPY code/infrastructure/input-rest/rest-config/pom.xml ./infrastructure/input-rest/rest-config/
+COPY code/infrastructure/input-rest/rest-security/pom.xml ./infrastructure/input-rest/rest-security/
+COPY code/infrastructure/input-rest/user-rest/pom.xml ./infrastructure/input-rest/user-rest/
+COPY code/infrastructure/output-adapters/pom.xml ./infrastructure/output-adapters/
+COPY code/infrastructure/jpa-neon-azure/pom.xml ./infrastructure/jpa-neon-azure/
 # Download dependencies only (this layer can be cached)
 RUN mvn dependency:go-offline -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true
 # Copy source files and build
-COPY . .
+COPY code .
 RUN mvn clean package -DskipTests -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true
 
 # Runtime stage
