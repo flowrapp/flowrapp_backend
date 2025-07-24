@@ -2,7 +2,7 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import java.util.Optional;
 
-import io.github.flowrapp.infrastructure.jpa.main.postgres.repository.UserJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.neonazure.repository.UserJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.AdapterMapper;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.output.UserRepositoryOutput;

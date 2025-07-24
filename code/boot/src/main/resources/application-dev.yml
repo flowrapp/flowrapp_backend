@@ -4,8 +4,7 @@ logging:
 
 spring:
   datasource:
-    main-postgres:
+    neon-azure:
       jdbcUrl: jdbc:postgresql://ep-summer-heart-a9c3ig3a-pooler.gwc.azure.neon.tech/flowrapp
-      username: ${MAIN_POSTGRES_USERNAME}
-      password: ${MAIN_POSTGRES_PASSWORD}
-
+      username: ${NEON_AZURE_USERNAME}
+      password: ${NEON_AZURE_PASSWORD}

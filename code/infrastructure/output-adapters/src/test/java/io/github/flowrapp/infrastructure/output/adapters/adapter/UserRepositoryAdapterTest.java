@@ -5,8 +5,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import io.github.flowrapp.infrastructure.jpa.main.postgres.entity.UserEntity;
-import io.github.flowrapp.infrastructure.jpa.main.postgres.repository.UserJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.neonazure.entity.UserEntity;
+import io.github.flowrapp.infrastructure.jpa.neonazure.repository.UserJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.AdapterMapper;
 import io.github.flowrapp.model.User;
 import org.instancio.junit.InstancioExtension;

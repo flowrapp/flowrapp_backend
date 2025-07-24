@@ -6,9 +6,9 @@ import com.inditex.flowrapp.DatabaseData;
 import com.inditex.flowrapp.config.InitDatabase;
 
 import io.github.flowrapp.Application;
-import io.github.flowrapp.infrastructure.jpa.main.postgres.config.PostgresDatasourceConfig;
-import io.github.flowrapp.infrastructure.jpa.main.postgres.entity.UserEntity;
-import io.github.flowrapp.infrastructure.jpa.main.postgres.repository.UserJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.neonazure.config.NeonAzureDatasourceConfig;
+import io.github.flowrapp.infrastructure.jpa.neonazure.entity.UserEntity;
+import io.github.flowrapp.infrastructure.jpa.neonazure.repository.UserJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -19,7 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
-@ContextConfiguration(classes = {Application.class, PostgresDatasourceConfig.class})
+@ContextConfiguration(classes = {Application.class, NeonAzureDatasourceConfig.class})
 @InitDatabase
 class UserJpaRepositoryIT {
 

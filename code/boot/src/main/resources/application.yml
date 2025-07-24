@@ -14,7 +14,7 @@ spring:
       hibernate:
         default_schema: ${SCHEMA:flowrapp_management}
   datasource:
-    main-postgres:
+    neon-azure:
       driverClassName: org.postgresql.Driver
   docker:
     compose:

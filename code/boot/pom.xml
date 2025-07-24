@@ -41,7 +41,7 @@
     </dependency>
     <dependency>
       <groupId>io.github.flowrapp</groupId>
-      <artifactId>jpa-main-postgres</artifactId>
+      <artifactId>jpa-neon-azure</artifactId>
     </dependency>
 
     <!-- External dependencies -->

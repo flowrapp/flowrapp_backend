@@ -1,6 +1,6 @@
 spring:
   datasource:
-    main-postgres:
+    neon-azure:
       jdbcUrl: jdbc:postgresql://localhost:32010/flowrapp
-      username: ${MAIN_POSTGRES_USERNAME:postgres}
-      password: ${MAIN_POSTGRES_PASSWORD:postgres}
+      username: ${NEON_AZURE_USERNAME:postgres}
+      password: ${NEON_AZURE_PASSWORD:postgres}

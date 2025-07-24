@@ -4,7 +4,7 @@ logging:
 
 spring:
   datasource:
-    main-postgres:
-      jdbcUrl: jdbc:postgresql://${MAIN_POSTGRES_URL}/${MAIN_POSTGRES_DB_NAME}
-      username: ${MAIN_POSTGRES_USERNAME}
-      password: ${MAIN_POSTGRES_PASSWORD}
+    neon-azure:
+      jdbcUrl: jdbc:postgresql://${NEON_AZURE_URL}/${NEON_AZURE_DB_NAME}
+      username: ${NEON_AZURE_USERNAME}
+      password: ${NEON_AZURE_PASSWORD}

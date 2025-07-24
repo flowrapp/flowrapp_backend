@@ -14,7 +14,7 @@ COPY infrastructure/input-rest/rest-config/pom.xml ./infrastructure/input-rest/r
 COPY infrastructure/input-rest/rest-security/pom.xml ./infrastructure/input-rest/rest-security/
 COPY infrastructure/input-rest/user-rest/pom.xml ./infrastructure/input-rest/user-rest/
 COPY infrastructure/output-adapters/pom.xml ./infrastructure/output-adapters/
-COPY infrastructure/jpa-main-postgres/pom.xml ./infrastructure/jpa-main-postgres/
+COPY infrastructure/jpa-neon-azure/pom.xml ./infrastructure/jpa-neon-azure/
 # Download dependencies only (this layer can be cached)
 RUN mvn dependency:go-offline -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true
 # Copy source files and build

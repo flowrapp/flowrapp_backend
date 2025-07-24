@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.jpa.main.postgres.entity;
+package io.github.flowrapp.infrastructure.jpa.neonazure.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
