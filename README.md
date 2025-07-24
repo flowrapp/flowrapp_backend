@@ -25,7 +25,7 @@ If you're not using asdf, make sure to manually install these versions of Maven 
 1. Clone the repository:
    ```bash
    git clone https://github.com/flowraapp/flowrapp_backend.git
-   cd wsc-peopleidentity
+   cd flowrapp_backend
    ```
 
 2. **Important**: When cloning the repository for the first time, you need to create your environment configuration file:
