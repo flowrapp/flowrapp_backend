@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: flowrapp
+
   mvc:
     problemdetails:
       enabled: true
@@ -9,7 +12,7 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-        default_schema: flowrapp_management
+        default_schema: ${SCHEMA:flowrapp_management}
   datasource:
     main-postgres:
       driverClassName: org.postgresql.Driver
@@ -28,6 +31,12 @@ springdoc:
     tagsSorter: alpha
     disable-swagger-default-url: true
   packages-to-scan: io.github.flowrapp.infrastructure.input.rest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [ "health", "prometheus" ]
 
 server:
   servlet:
