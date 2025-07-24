@@ -5,6 +5,12 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+# Define permissions needed for the workflow
+permissions:
+  contents: read
+  security-events: write
+  pull-requests: write
+
 jobs:
   gitleaks:
     name: GitLeaks Scan
