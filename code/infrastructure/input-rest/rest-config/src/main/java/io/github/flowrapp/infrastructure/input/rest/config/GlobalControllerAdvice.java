@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * Global controller advice for handling exceptions across all controllers. This class can be extended to add custom exception handling
  * logic.
- * <p>
  * Note: should not be in application, but in infrastructure module. For practical purposes it is placed here.
  */
 @Slf4j
@@ -30,7 +29,7 @@ public class GlobalControllerAdvice {
   }
 
   /**
-   * Generic exception handler for all other exceptions
+   * Generic exception handler for all other exceptions.
    */
   @ExceptionHandler(Exception.class)
   public ProblemDetail handleGenericException(final Exception ex) {
