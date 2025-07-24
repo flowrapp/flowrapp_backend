@@ -23,13 +23,13 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Application.class)
 @ActiveProfiles("test")
 @InitDatabase
-public class UserControllerIT {
+class UserControllerIT {
 
   @Autowired
   private TestRestTemplate testRestTemplate;
 
   @Test
-  public void testGetUser_returnsUser_whenExists() {
+  void testGetUser_returnsUser_whenExists() {
     // GIVEN
     val user = new UserRequestDTO(DatabaseData.USER_USERNAME);
 

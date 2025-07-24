@@ -2,8 +2,8 @@ package com.inditex.flowrapp;
 
 public class DatabaseData {
 
-  public static String USER_USERNAME = "divios";
+  public static final String USER_USERNAME = "divios";
 
-  public static String USER_DNI = "21242";
+  public static final String USER_DNI = "21242";
 
 }
