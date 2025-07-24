@@ -1,0 +1,1 @@
+DROP SCHEMA flowrapp_management CASCADE;

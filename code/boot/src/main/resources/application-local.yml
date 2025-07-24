@@ -1,0 +1,13 @@
+logging:
+  level:
+    io.github.flowrapp: DEBUG
+    org.springframework.web: DEBUG
+
+spring:
+  datasource:
+    neon-azure:
+      jdbcUrl: jdbc:postgresql://localhost:32010/flowrapp
+      username: ${NEON_AZURE_USERNAME:postgres}
+      password: ${NEON_AZURE_PASSWORD:postgres}
+  jpa:
+    show-sql: true

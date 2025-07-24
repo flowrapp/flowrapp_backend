@@ -1,0 +1,10 @@
+logging:
+  level:
+    io.github.flowrapp: WARN
+
+spring:
+  datasource:
+    neon-azure:
+      jdbcUrl: jdbc:postgresql://${NEON_AZURE_URL}/${NEON_AZURE_DB_NAME}
+      username: ${NEON_AZURE_USERNAME}
+      password: ${NEON_AZURE_PASSWORD}

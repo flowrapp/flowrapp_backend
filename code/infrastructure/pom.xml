@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.github.flowrapp</groupId>
+    <artifactId>flowrapp-backend</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>infrastructure</artifactId>
+  <packaging>pom</packaging>
+
+  <name>${project.groupId}-${project.artifactId}</name>
+  <description>Infra Module.</description>
+
+  <modules>
+    <module>output-adapters</module>
+    <module>jpa-neon-azure</module>
+    <module>input-rest</module>
+  </modules>
+
+</project>

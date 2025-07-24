@@ -1,0 +1,16 @@
+.git/
+.gitignore
+.env
+.env.*
+README.md
+code/boot/target/
+**/.classpath
+**/.project
+**/.settings/
+**/test/
+.DS_Store
+*.md
+.idea/
+*.iml
+mvnw
+mvnw.cmd
