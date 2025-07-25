@@ -27,4 +27,27 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <apiPackage>${project.groupId}.apirest.users.api</apiPackage>
+              <modelPackage>${project.groupId}.apirest.users.model</modelPackage>
+
+              <inputSpec>https://raw.githubusercontent.com/karlkyck/api-gateway-openapi/master/openapi.yaml</inputSpec>
+              <output>${project.build.directory}/generated-sources/openapi</output>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
