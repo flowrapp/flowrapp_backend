@@ -5,6 +5,7 @@ import io.github.flowrapp.infrastructure.apirest.users.model.GetUser200ResponseD
 import io.github.flowrapp.infrastructure.apirest.users.model.GetUserRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.users.mapper.ExampleMapper;
 import io.github.flowrapp.port.input.UserRequestUseCase;
+
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
