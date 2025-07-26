@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.RequestEntity.post;
 
 import io.github.flowrapp.Application;
+import io.github.flowrapp.infrastructure.apirest.users.model.GetUser200ResponseDTO;
 import io.github.flowrapp.infrastructure.input.rest.users.dto.UserRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.users.dto.UserResponseDTO;
 
@@ -34,15 +35,15 @@ class UserControllerIT {
     val user = new UserRequestDTO(DatabaseData.USER_USERNAME);
 
     // WHEN
-    val response = testRestTemplate.exchange(post("/users")
+    val response = testRestTemplate.exchange(post("/api/v1/users")
         .contentType(MediaType.APPLICATION_JSON)
-        .body(user), UserResponseDTO.class);
+        .body(user), GetUser200ResponseDTO.class);
 
     assertThat(response)
         .returns(HttpStatus.OK, ResponseEntity::getStatusCode)
         .extracting(ResponseEntity::getBody)
-        .returns(DatabaseData.USER_USERNAME, UserResponseDTO::name)
-        .returns(DatabaseData.USER_DNI, UserResponseDTO::dni);
+        .returns(DatabaseData.USER_USERNAME, GetUser200ResponseDTO::getName)
+        .returns(DatabaseData.USER_DNI, GetUser200ResponseDTO::getDni);
   }
 
 }
