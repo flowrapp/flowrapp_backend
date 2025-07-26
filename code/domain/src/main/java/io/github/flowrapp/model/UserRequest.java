@@ -4,7 +4,6 @@ import lombok.Builder;
 
 @Builder(toBuilder = true)
 public record UserRequest(
-    String name
-) {
+    String name) {
 
 }

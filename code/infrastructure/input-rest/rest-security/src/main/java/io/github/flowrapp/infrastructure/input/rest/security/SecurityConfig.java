@@ -16,16 +16,16 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     return httpSecurity
         .formLogin(AbstractHttpConfigurer::disable) // No Form Login
-        .logout(AbstractHttpConfigurer::disable)    // No Logout
-        .csrf(AbstractHttpConfigurer::disable)      // No CSRF
-        .cors(AbstractHttpConfigurer::disable)      // No CORS
+        .logout(AbstractHttpConfigurer::disable) // No Logout
+        .csrf(AbstractHttpConfigurer::disable) // No CSRF
+        .cors(AbstractHttpConfigurer::disable) // No CORS
         .httpBasic(AbstractHttpConfigurer::disable) // Disable HTTP Basic Authentication (for now)
         // No Session pls
         .sessionManagement(it -> it.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/actuator/**").permitAll()    // Allow Actuator endpoints
+            .requestMatchers("/actuator/**").permitAll() // Allow Actuator endpoints
             .requestMatchers("/v3/api-docs/**").permitAll() // Allow OpenAPI docs
-            .anyRequest().permitAll())                        // Allow all requests (for now)
+            .anyRequest().permitAll()) // Allow all requests (for now)
         .build();
   }
 
