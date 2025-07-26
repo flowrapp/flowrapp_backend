@@ -42,6 +42,7 @@
     <org.mapstruct.version>1.6.3</org.mapstruct.version>
     <jspecify.version>1.0.0</jspecify.version>
     <swagger.version>2.8.9</swagger.version>
+    <openapiSwaggerJackson.version>0.2.6</openapiSwaggerJackson.version>
 
     <!-- Plugin versions -->
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
@@ -49,6 +50,7 @@
     <maven.failsafe.plugin.version>3.2.5</maven.failsafe.plugin.version>
     <spotless.version>2.43.0</spotless.version>
     <jacoco.plugin.version>0.8.13</jacoco.plugin.version>
+    <openapiGenerator.version>7.14.0</openapiGenerator.version>
   </properties>
 
   <dependencyManagement>
@@ -122,6 +124,11 @@
         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         <version>${swagger.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.openapitools</groupId>
+        <artifactId>jackson-databind-nullable</artifactId>
+        <version>${openapiSwaggerJackson.version}</version> <!-- Check for latest version -->
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -194,6 +201,22 @@
           <artifactId>docker-compose-maven-plugin</artifactId>
           <configuration>
             <skip>true</skip>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.openapitools</groupId>
+          <artifactId>openapi-generator-maven-plugin</artifactId>
+          <version>${openapiGenerator.version}</version>
+          <configuration>
+            <generatorName>spring</generatorName>
+            <modelNameSuffix>DTO</modelNameSuffix>
+            <configOptions>
+              <interfaceOnly>true</interfaceOnly>
+              <library>spring-boot</library>
+              <useTags>true</useTags>
+              <useJakartaEe>true</useJakartaEe>
+              <useSpringBoot3>true</useSpringBoot3>
+            </configOptions>
           </configuration>
         </plugin>
       </plugins>
