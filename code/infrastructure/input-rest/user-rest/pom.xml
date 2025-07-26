@@ -38,10 +38,10 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <apiPackage>${project.groupId}.apirest.users.api</apiPackage>
-              <modelPackage>${project.groupId}.apirest.users.model</modelPackage>
+              <apiPackage>${project.groupId}.infrastructure.apirest.users.api</apiPackage>
+              <modelPackage>${project.groupId}.infrastructure.apirest.users.model</modelPackage>
 
-              <inputSpec>https://raw.githubusercontent.com/karlkyck/api-gateway-openapi/master/openapi.yaml</inputSpec>
+              <inputSpec>https://raw.githubusercontent.com/flowrapp/openapi-specs/refs/heads/feature/structure_and_example/apis/user-example-api/rest/open-api-rest.yml</inputSpec>
               <output>${project.build.directory}/generated-sources/openapi</output>
             </configuration>
           </execution>
