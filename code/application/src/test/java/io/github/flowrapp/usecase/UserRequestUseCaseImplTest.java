@@ -10,6 +10,7 @@ import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.UserRequest;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
+
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.extension.ExtendWith;

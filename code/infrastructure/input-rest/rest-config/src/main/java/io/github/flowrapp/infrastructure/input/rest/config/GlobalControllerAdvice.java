@@ -3,7 +3,7 @@ package io.github.flowrapp.infrastructure.input.rest.config;
 import static java.util.Objects.requireNonNullElse;
 
 import io.github.flowrapp.exception.FunctionalException;
-import io.swagger.v3.oas.annotations.Hidden;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * Global controller advice for handling exceptions across all controllers. This class can be extended to add custom exception handling
- * logic.
- * Note: should not be in application, but in infrastructure module. For practical purposes it is placed here.
+ * logic. Note: should not be in application, but in infrastructure module. For practical purposes it is placed here.
  */
 @Slf4j
 @RestControllerAdvice

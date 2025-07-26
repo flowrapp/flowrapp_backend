@@ -11,6 +11,7 @@ import io.github.flowrapp.infrastructure.input.rest.users.dto.UserResponseDTO;
 import io.github.flowrapp.infrastructure.input.rest.users.mapper.ExampleMapper;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.input.UserRequestUseCase;
+
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.extension.ExtendWith;

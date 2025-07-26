@@ -3,12 +3,12 @@ package com.inditex.flowrapp.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.RequestEntity.post;
 
-import com.inditex.flowrapp.DatabaseData;
-import com.inditex.flowrapp.config.InitDatabase;
-
 import io.github.flowrapp.Application;
 import io.github.flowrapp.infrastructure.input.rest.users.dto.UserRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.users.dto.UserResponseDTO;
+
+import com.inditex.flowrapp.DatabaseData;
+import com.inditex.flowrapp.config.InitDatabase;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

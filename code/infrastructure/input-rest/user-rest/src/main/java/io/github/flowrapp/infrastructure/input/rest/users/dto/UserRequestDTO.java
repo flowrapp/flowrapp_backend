@@ -7,8 +7,6 @@ import lombok.Builder;
 @Builder(toBuilder = true)
 @Schema(description = "Request object for user operations")
 public record UserRequestDTO(
-    @Schema(description = "Name of the user", example = "John Doe", requiredMode = RequiredMode.REQUIRED)
-    String name
-) {
+    @Schema(description = "Name of the user", example = "John Doe", requiredMode = RequiredMode.REQUIRED) String name) {
 
 }
