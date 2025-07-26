@@ -1,15 +1,14 @@
-package com.inditex.flowrapp.controller;
+package io.github.flowrapp.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.RequestEntity.post;
 
 import io.github.flowrapp.Application;
+import io.github.flowrapp.DatabaseData;
+import io.github.flowrapp.config.InitDatabase;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetUser200ResponseDTO;
-import io.github.flowrapp.infrastructure.input.rest.users.dto.UserRequestDTO;
-import io.github.flowrapp.infrastructure.input.rest.users.dto.UserResponseDTO;
+import io.github.flowrapp.infrastructure.apirest.users.model.GetUserRequestDTO;
 
-import com.inditex.flowrapp.DatabaseData;
-import com.inditex.flowrapp.config.InitDatabase;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ class UserControllerIT {
   @Test
   void testGetUser_returnsUser_whenExists() {
     // GIVEN
-    val user = new UserRequestDTO(DatabaseData.USER_USERNAME);
+    val user = new GetUserRequestDTO(DatabaseData.USER_USERNAME);
 
     // WHEN
     val response = testRestTemplate.exchange(post("/api/v1/users")
