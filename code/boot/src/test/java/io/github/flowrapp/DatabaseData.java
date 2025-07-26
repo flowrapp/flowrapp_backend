@@ -1,4 +1,4 @@
-package com.inditex.flowrapp;
+package io.github.flowrapp;
 
 public class DatabaseData {
 

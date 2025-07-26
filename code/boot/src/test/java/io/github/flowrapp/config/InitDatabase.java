@@ -1,4 +1,4 @@
-package com.inditex.flowrapp.config;
+package io.github.flowrapp.config;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
