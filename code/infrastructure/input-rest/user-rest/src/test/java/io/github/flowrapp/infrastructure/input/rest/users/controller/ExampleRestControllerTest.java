@@ -40,9 +40,9 @@ class ExampleRestControllerTest {
   @InstancioSource
   void getUser_returnsUser_whenFound(GetUserRequestDTO userRequestDTO, User user) {
     // GIVEN
-    when(userRequestUseCase.findUser(argThat(argument ->
-        Objects.equals(argument.name(), userRequestDTO.getName()))))
-        .thenReturn(user);
+    when(userRequestUseCase.findUser(
+        argThat(argument -> Objects.equals(argument.name(), userRequestDTO.getName()))))
+            .thenReturn(user);
 
     // WHEN
     var userResponse = exampleRestController.getUser(userRequestDTO);
