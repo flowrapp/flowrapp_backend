@@ -41,8 +41,12 @@
               <apiPackage>${project.groupId}.infrastructure.apirest.users.api</apiPackage>
               <modelPackage>${project.groupId}.infrastructure.apirest.users.model</modelPackage>
 
-              <inputSpec>https://raw.githubusercontent.com/flowrapp/openapi-specs/refs/heads/feature/structure_and_example/apis/user-example-api/rest/open-api-rest.yml</inputSpec>
+              <inputSpec>https://raw.githubusercontent.com/flowrapp/openapi-specs/refs/heads/feature/first_iteration_spec/api/main-api/rest/open-api-rest.yml</inputSpec>
               <output>${project.build.directory}/generated-sources/openapi</output>
+
+              <globalProperties>
+                <apis>Users</apis>
+              </globalProperties>
             </configuration>
           </execution>
         </executions>
