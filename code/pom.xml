@@ -45,7 +45,7 @@
     <openapiSwaggerJackson.version>0.2.6</openapiSwaggerJackson.version>
 
     <!-- Plugin versions -->
-    <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+    <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     <docker.compose.plugin.version>4.0.0</docker.compose.plugin.version>
     <maven.failsafe.plugin.version>3.2.5</maven.failsafe.plugin.version>
     <spotless.version>2.43.0</spotless.version>
