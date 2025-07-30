@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.5.3</version>
+    <version>3.5.4</version>
   </parent>
 
   <groupId>io.github.flowrapp</groupId>
@@ -38,14 +38,14 @@
     <java.version>21</java.version>
 
     <!-- Dependencies versions -->
-    <instancio.version>5.4.1</instancio.version>
+    <instancio.version>5.5.0</instancio.version>
     <org.mapstruct.version>1.6.3</org.mapstruct.version>
     <jspecify.version>1.0.0</jspecify.version>
     <swagger.version>2.8.9</swagger.version>
     <openapiSwaggerJackson.version>0.2.6</openapiSwaggerJackson.version>
 
     <!-- Plugin versions -->
-    <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+    <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     <docker.compose.plugin.version>4.0.0</docker.compose.plugin.version>
     <maven.failsafe.plugin.version>3.5.3</maven.failsafe.plugin.version>
     <spotless.version>2.43.0</spotless.version>
