@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * logic. Note: should not be in application, but in infrastructure module. For practical purposes it is placed here.
  */
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "io.github.flowrapp.infrastructure.input.rest")
 public class GlobalControllerAdvice {
 
   @ExceptionHandler(FunctionalException.class)
   public ProblemDetail handleFunctionalException(final FunctionalException functionalEx) {
-    log.error("Received functional exception", functionalEx);
+    log.error("Received functional exception: {}", functionalEx.getMessage());
 
     return ProblemDetail.forStatusAndDetail(
         requireNonNullElse(HttpStatus.resolve(functionalEx.getStatus()), HttpStatus.I_AM_A_TEAPOT),
