@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,12 +17,11 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Setter
 @Entity
-@Table(name = "business")
-public class Business {
+@Table(name = "users", schema = "flowrapp_management")
+public class UserEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "business_id_gen")
-  @SequenceGenerator(name = "business_id_gen", sequenceName = "business_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Integer id;
 
@@ -32,14 +30,23 @@ public class Business {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "altitude")
-  private Double altitude;
+  @Size(max = 320)
+  @NotNull
+  @Column(name = "mail", nullable = false, length = 320)
+  private String mail;
 
-  @Column(name = "latitude")
-  private Double latitude;
+  @Size(max = 15)
+  @Column(name = "phone", length = 15)
+  private String phone;
 
-  @Column(name = "area")
-  private Double area;
+  @NotNull
+  @Column(name = "password_hash", nullable = false, length = Integer.MAX_VALUE)
+  private String passwordHash;
+
+  @NotNull
+  @ColumnDefault("true")
+  @Column(name = "enabled", nullable = false)
+  private Boolean enabled;
 
   @NotNull
   @ColumnDefault("now()")

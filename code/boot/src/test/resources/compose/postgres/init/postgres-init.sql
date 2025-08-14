@@ -76,3 +76,6 @@ CREATE INDEX IF NOT EXISTS idx_users_roles_business_id ON flowrapp_management.us
 
 INSERT INTO flowrapp_management.mockusers (dni, name)
 VALUES ('21242', 'divios');
+
+INSERT INTO flowrapp_management.users (name, mail, phone, password_hash)
+VALUES ('test', 'test@test.com', '123456789', '$2a$10$e0N1z5Zb7f8Q3j1h4k5u6O9Y');

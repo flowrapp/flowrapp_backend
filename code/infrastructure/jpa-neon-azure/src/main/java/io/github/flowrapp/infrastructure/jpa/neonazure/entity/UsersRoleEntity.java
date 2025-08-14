@@ -21,7 +21,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter
 @Entity
 @Table(name = "users_roles", schema = "flowrapp_management")
-public class UsersRole {
+public class UsersRoleEntity {
 
   @SequenceGenerator(name = "users_roles_id_gen", sequenceName = "users_id_seq1", allocationSize = 1)
   @EmbeddedId
@@ -30,12 +30,12 @@ public class UsersRole {
   @MapsId("userId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+  private UserEntity user;
 
   @MapsId("businessId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "business_id", nullable = false)
-  private Business business;
+  private BusinessEntity business;
 
   @Size(max = 50)
   @NotNull
@@ -44,7 +44,7 @@ public class UsersRole {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "invited_by")
-  private User invitedBy;
+  private UserEntity invitedBy;
 
   @NotNull
   @ColumnDefault("now()")

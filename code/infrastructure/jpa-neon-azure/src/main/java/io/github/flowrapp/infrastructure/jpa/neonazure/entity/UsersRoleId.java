@@ -36,7 +36,8 @@ public class UsersRoleId implements Serializable {
       return false;
     }
     UsersRoleId entity = (UsersRoleId) o;
-    return Objects.equals(this.businessId, entity.businessId) &&
+    return Objects.equals(this.businessId, entity.businessId)
+        &&
         Objects.equals(this.userId, entity.userId);
   }
 
