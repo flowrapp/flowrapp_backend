@@ -17,7 +17,7 @@ import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "mockusers")
 @Getter
 @Setter
 @NoArgsConstructor

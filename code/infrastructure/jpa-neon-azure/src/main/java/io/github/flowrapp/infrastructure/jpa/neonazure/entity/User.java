@@ -1,0 +1,58 @@
+package io.github.flowrapp.infrastructure.jpa.neonazure.entity;
+
+import java.time.OffsetDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "users", schema = "flowrapp_management")
+public class User {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_gen")
+  @SequenceGenerator(name = "users_id_gen", sequenceName = "users_id_seq1", allocationSize = 1)
+  @Column(name = "id", nullable = false)
+  private Integer id;
+
+  @Size(max = 255)
+  @NotNull
+  @Column(name = "name", nullable = false)
+  private String name;
+
+  @Size(max = 320)
+  @NotNull
+  @Column(name = "mail", nullable = false, length = 320)
+  private String mail;
+
+  @Size(max = 15)
+  @Column(name = "phone", length = 15)
+  private String phone;
+
+  @NotNull
+  @Column(name = "password_hash", nullable = false, length = Integer.MAX_VALUE)
+  private String passwordHash;
+
+  @NotNull
+  @ColumnDefault("true")
+  @Column(name = "enabled", nullable = false)
+  private Boolean enabled;
+
+  @NotNull
+  @ColumnDefault("now()")
+  @Column(name = "created_at", nullable = false)
+  private OffsetDateTime createdAt;
+
+}
