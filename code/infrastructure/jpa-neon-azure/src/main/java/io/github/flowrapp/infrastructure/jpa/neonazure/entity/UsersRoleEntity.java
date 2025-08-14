@@ -25,7 +25,7 @@ public class UsersRoleEntity {
 
   @SequenceGenerator(name = "users_roles_id_gen", sequenceName = "users_id_seq1", allocationSize = 1)
   @EmbeddedId
-  private UsersRoleId id;
+  private UsersRoleIdEntity id;
 
   @MapsId("userId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
