@@ -6,8 +6,8 @@ import io.github.flowrapp.Application;
 import io.github.flowrapp.DatabaseData;
 import io.github.flowrapp.config.InitDatabase;
 import io.github.flowrapp.infrastructure.jpa.neonazure.config.NeonAzureDatasourceConfig;
-import io.github.flowrapp.infrastructure.jpa.neonazure.entity.UserEntity;
-import io.github.flowrapp.infrastructure.jpa.neonazure.repository.UserJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.neonazure.entity.MockUserEntity;
+import io.github.flowrapp.infrastructure.jpa.neonazure.repository.MockUserJpaRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +21,24 @@ import org.springframework.test.context.ContextConfiguration;
 @ActiveProfiles("test")
 @ContextConfiguration(classes = {Application.class, NeonAzureDatasourceConfig.class})
 @InitDatabase
-class UserJpaRepositoryIT {
+class MockUserJpaRepositoryIT {
 
   @Autowired
-  private UserJpaRepository userJpaRepository;
+  private MockUserJpaRepository mockUserJpaRepository;
 
   @Test
   void testFindUserByName() {
     // GIVEN
 
     // WHEN
-    var user = userJpaRepository.findByName(DatabaseData.USER_USERNAME);
+    var user = mockUserJpaRepository.findByName(DatabaseData.USER_USERNAME);
 
     // THEN
     assertThat(user)
         .isPresent()
         .get()
-        .returns(DatabaseData.USER_DNI, UserEntity::getDni)
-        .returns(DatabaseData.USER_USERNAME, UserEntity::getName);
+        .returns(DatabaseData.USER_DNI, MockUserEntity::getDni)
+        .returns(DatabaseData.USER_USERNAME, MockUserEntity::getName);
   }
 
 }

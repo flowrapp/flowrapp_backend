@@ -5,8 +5,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import io.github.flowrapp.infrastructure.jpa.neonazure.entity.UserEntity;
-import io.github.flowrapp.infrastructure.jpa.neonazure.repository.UserJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.neonazure.entity.MockUserEntity;
+import io.github.flowrapp.infrastructure.jpa.neonazure.repository.MockUserJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.AdapterMapper;
 import io.github.flowrapp.model.User;
 
@@ -27,17 +27,17 @@ class UserRepositoryAdapterTest {
   private AdapterMapper adapterMapper = Mappers.getMapper(AdapterMapper.class);
 
   @Mock
-  private UserJpaRepository userJpaRepository;
+  private MockUserJpaRepository mockUserJpaRepository;
 
   @InjectMocks
   private UserRepositoryAdapter userRepositoryAdapter;
 
   @ParameterizedTest
   @InstancioSource
-  void findUserByName_returnsUser_whenFound(String name, UserEntity userEntity) {
+  void findUserByName_returnsUser_whenFound(String name, MockUserEntity mockUserEntity) {
     // GIVEN
-    when(userJpaRepository.findByName(name))
-        .thenReturn(Optional.of(userEntity));
+    when(mockUserJpaRepository.findByName(name))
+        .thenReturn(Optional.of(mockUserEntity));
 
     // WHEN
     Optional<User> result = userRepositoryAdapter.findUserByName(name);
@@ -47,7 +47,7 @@ class UserRepositoryAdapterTest {
         .isNotNull()
         .isPresent()
         .get()
-        .returns(userEntity.getName(), User::name)
-        .returns(userEntity.getDni(), User::dni);
+        .returns(mockUserEntity.getName(), User::name)
+        .returns(mockUserEntity.getDni(), User::dni);
   }
 }
