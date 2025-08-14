@@ -15,9 +15,8 @@
   <description>Rest Module.</description>
 
   <modules>
-    <module>user-rest</module>
     <module>rest-config</module>
-    <module>rest-security</module>
+    <module>rest-main-api</module>
   </modules>
 
   <dependencies>
@@ -29,6 +28,10 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
     <dependency>
       <groupId>org.mapstruct</groupId>

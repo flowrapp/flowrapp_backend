@@ -88,12 +88,7 @@
       </dependency>
       <dependency>
         <groupId>io.github.flowrapp</groupId>
-        <artifactId>rest-security</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.github.flowrapp</groupId>
-        <artifactId>user-rest</artifactId>
+        <artifactId>rest-main-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

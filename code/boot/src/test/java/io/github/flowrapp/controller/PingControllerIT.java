@@ -1,16 +1,12 @@
 package io.github.flowrapp.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.RequestEntity.post;
+import static org.springframework.http.RequestEntity.get;
 
 import io.github.flowrapp.Application;
-import io.github.flowrapp.DatabaseData;
-import io.github.flowrapp.config.InitDatabase;
-import io.github.flowrapp.infrastructure.apirest.users.model.GetUser200ResponseDTO;
-import io.github.flowrapp.infrastructure.apirest.users.model.GetUserRequestDTO;
+import io.github.flowrapp.infrastructure.apirest.users.model.Ping200ResponseDTO;
 
 import lombok.val;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,15 +15,11 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Application.class)
 @ActiveProfiles("test")
-@InitDatabase
-@WithUserDetails(DatabaseData.USER_USERNAME)
-@Disabled
-class UserControllerIT {
+class PingControllerIT {
 
   @Autowired
   private TestRestTemplate testRestTemplate;
@@ -35,18 +27,21 @@ class UserControllerIT {
   @Test
   void testGetUser_returnsUser_whenExists() {
     // GIVEN
-    val user = new GetUserRequestDTO(DatabaseData.USER_USERNAME);
 
     // WHEN
-    val response = testRestTemplate.exchange(post("/api/v1/users")
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(user), GetUser200ResponseDTO.class);
+    val response = testRestTemplate.exchange(get("/api/v1/ping")
+        .accept(MediaType.APPLICATION_JSON)
+        .build(), Ping200ResponseDTO.class);
 
+    // THEN
     assertThat(response)
         .returns(HttpStatus.OK, ResponseEntity::getStatusCode)
         .extracting(ResponseEntity::getBody)
-        .returns(DatabaseData.USER_USERNAME, GetUser200ResponseDTO::getName)
-        .returns(DatabaseData.USER_DNI, GetUser200ResponseDTO::getDni);
+        .satisfies(dto -> {
+          assertThat(dto).isNotNull();
+          assertThat(dto.getStatus()).isNotBlank();
+          assertThat(dto.getTimestamp()).isNotNull();
+        });
   }
 
 }
