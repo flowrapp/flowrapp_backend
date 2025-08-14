@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableJpaRepositories(
     entityManagerFactoryRef = "neonAzureEntityManagerFactory",
+    transactionManagerRef = "neonAzureTransactionManager",
     basePackages = {"io.github.flowrapp.infrastructure.jpa.neonazure"})
 public class NeonAzureDatasourceConfig {
 

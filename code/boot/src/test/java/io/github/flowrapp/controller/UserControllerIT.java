@@ -25,7 +25,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Application.class)
 @ActiveProfiles("test")
 @InitDatabase
-@WithUserDetails(DatabaseData.USER_USERNAME)
+@WithUserDetails(DatabaseData.MOCK_USER_USERNAME)
 @Disabled
 class UserControllerIT {
 
@@ -35,7 +35,7 @@ class UserControllerIT {
   @Test
   void testGetUser_returnsUser_whenExists() {
     // GIVEN
-    val user = new GetUserRequestDTO(DatabaseData.USER_USERNAME);
+    val user = new GetUserRequestDTO(DatabaseData.MOCK_USER_USERNAME);
 
     // WHEN
     val response = testRestTemplate.exchange(post("/api/v1/users")
@@ -45,8 +45,8 @@ class UserControllerIT {
     assertThat(response)
         .returns(HttpStatus.OK, ResponseEntity::getStatusCode)
         .extracting(ResponseEntity::getBody)
-        .returns(DatabaseData.USER_USERNAME, GetUser200ResponseDTO::getName)
-        .returns(DatabaseData.USER_DNI, GetUser200ResponseDTO::getDni);
+        .returns(DatabaseData.MOCK_USER_USERNAME, GetUser200ResponseDTO::getName)
+        .returns(DatabaseData.MOCK_USER_DNI, GetUser200ResponseDTO::getDni);
   }
 
 }
