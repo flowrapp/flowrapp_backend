@@ -40,7 +40,7 @@ public class BusinessBdDatasourceConfig {
       @Qualifier("businessBdDatasource") DataSource dataSource) {
     return builder
         .dataSource(dataSource)
-        .packages("io.github.flowrapp.infrastructure.jpa.businessBd.entity")
+        .packages("io.github.flowrapp.infrastructure.jpa.businessbd.entity")
         .persistenceUnit("businessBdPU")
         .build();
   }
