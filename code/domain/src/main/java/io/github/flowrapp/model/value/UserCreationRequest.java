@@ -6,6 +6,5 @@ import lombok.Builder;
 public record UserCreationRequest(
     String username,
     String mail,
-    BusinessCreationRequest business
-) {
+    BusinessCreationRequest business) {
 }

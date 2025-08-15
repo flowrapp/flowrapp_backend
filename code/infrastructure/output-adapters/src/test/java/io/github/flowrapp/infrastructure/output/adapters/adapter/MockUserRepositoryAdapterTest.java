@@ -21,7 +21,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
-class UserJpaRepositoryAdapterTest {
+class MockUserRepositoryAdapterTest {
 
   @Spy
   private AdapterMapper adapterMapper = Mappers.getMapper(AdapterMapper.class);

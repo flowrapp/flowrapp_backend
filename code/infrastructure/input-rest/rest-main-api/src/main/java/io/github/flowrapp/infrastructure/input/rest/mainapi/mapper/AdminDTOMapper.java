@@ -5,9 +5,10 @@ import java.util.List;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequestBusinessInnerDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequestBusinessInnerLocationDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequestDTO;
+import io.github.flowrapp.model.Location;
 import io.github.flowrapp.model.value.BusinessCreationRequest;
-import io.github.flowrapp.model.value.Location;
 import io.github.flowrapp.model.value.UserCreationRequest;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

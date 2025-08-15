@@ -1,8 +1,8 @@
 package io.github.flowrapp.usecase;
 
+import static io.github.flowrapp.model.config.Constants.ADMIN_USER_MAIL;
+
 import java.time.OffsetDateTime;
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 import io.github.flowrapp.exception.FunctionalError;
@@ -18,10 +18,12 @@ import io.github.flowrapp.port.input.AdminUseCase;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -34,16 +36,22 @@ public class AdminUseCaseImpl implements AdminUseCase {
 
   private final InvitationRepositoryOutput invitationRepositoryOutput;
 
+  @Transactional
   @Override
   public void createUser(UserCreationRequest userCreationRequest) {
     log.debug("Creating user: {}", userCreationRequest);
 
-    if (userRepositoryOutput.existsByEmail(userCreationRequest.mail()))
-        throw new FunctionalException(FunctionalError.USERNAME_ALREADY_EXISTS);
+    val adminUser = userRepositoryOutput.findUserByEmail(ADMIN_USER_MAIL)
+        .orElseThrow(() -> new FunctionalException(FunctionalError.ADMIN_USER_NOT_FOUND));
+
+    if (userRepositoryOutput.existsByEmail(userCreationRequest.mail())) {
+      throw new FunctionalException(FunctionalError.USERNAME_ALREADY_EXISTS);
+    }
 
     val newUser = this.createNewUser(userCreationRequest);
+    val newBusiness = this.createNewBusiness(userCreationRequest.business(), newUser);
 
-    val invitation = createInvitation(newUser);
+    val invitation = createInvitation(newUser, newBusiness, adminUser);
     // TODO: send email to user with activation link
 
     log.debug("User created successfully: {}", newUser);
@@ -59,31 +67,31 @@ public class AdminUseCaseImpl implements AdminUseCase {
         .passwordHash("")
         .enabled(false)
         .createdAt(OffsetDateTime.now())
-        .ownerBusinesses(List.of(
-            this.createNewBusiness(userCreationRequest.business())))
         .build();
 
     return userRepositoryOutput.save(user);
   }
 
-  private Business createNewBusiness(BusinessCreationRequest businessCreationRequest) {
+  private Business createNewBusiness(BusinessCreationRequest businessCreationRequest, User user) {
     log.debug("Creating new business with request: {}", businessCreationRequest);
 
-    return Business.builder()
+    val newUser = Business.builder()
         .name(businessCreationRequest.name())
         .location(businessCreationRequest.location())
         .createdAt(OffsetDateTime.now())
-        .members(Collections.emptyList())
+        .owner(user)
         .build();
+
+    return businessRepositoryOutput.save(newUser);
   }
 
-  private Invitation createInvitation(User user) {
+  private Invitation createInvitation(User user, Business newBusiness, User adminUser) {
     log.debug("Creating invitation for user: {}", user);
 
     var invitation = Invitation.builder()
         .invited(user)
-        .business(user.ownerBusinesses().getFirst()) // The user only has one business at this point
-        .invitedBy(user) // TODO: change for admin
+        .business(newBusiness)
+        .invitedBy(adminUser)
         .token(UUID.randomUUID())
         .role(UserRole.ADMIN)
         .createdAt(OffsetDateTime.now())

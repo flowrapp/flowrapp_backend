@@ -15,5 +15,6 @@ public interface UserRepositoryOutput {
 
   boolean existsByEmail(@NonNull String email);
 
-  @NonNull User save(@NonNull User user);
+  @NonNull
+  User save(@NonNull User user);
 }

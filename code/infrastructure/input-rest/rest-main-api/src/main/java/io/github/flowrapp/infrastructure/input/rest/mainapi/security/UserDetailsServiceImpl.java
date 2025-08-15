@@ -1,9 +1,5 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.security;
 
-import static java.util.Collections.emptyList;
-
-import java.util.List;
-
 import io.github.flowrapp.port.input.UserAuthenticationUseCase;
 
 import lombok.RequiredArgsConstructor;
@@ -45,11 +41,12 @@ public class UserDetailsServiceImpl extends AbstractUserDetailsAuthenticationPro
   }
 
   private UserDetails mapToUser(io.github.flowrapp.model.User user) {
-    return User.withUsername(user.name())
+    return User.withUsername(user.mail())
         .password(user.passwordHash())
         .disabled(!user.enabled())
         .authorities(user.name().equalsIgnoreCase("admin")
-            ? new SimpleGrantedAuthority("ADMIN") : new SimpleGrantedAuthority("USER"))
+            ? new SimpleGrantedAuthority("ADMIN")
+            : new SimpleGrantedAuthority("USER"))
         .build();
   }
 

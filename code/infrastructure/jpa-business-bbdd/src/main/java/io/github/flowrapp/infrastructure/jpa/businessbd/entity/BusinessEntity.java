@@ -34,8 +34,8 @@ public class BusinessEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "altitude")
-  private Double altitude;
+  @Column(name = "longitude")
+  private Double longitude;
 
   @Column(name = "latitude")
   private Double latitude;
@@ -50,7 +50,7 @@ public class BusinessEntity {
 
   @ManyToOne
   @JoinColumn(name = "owner_id", nullable = false)
-  private UserEntity userEntity;
+  private UserEntity owner;
 
   @Override
   public final boolean equals(Object o) {

@@ -57,7 +57,7 @@ public class UserEntity {
   @Column(name = "created_at", nullable = false)
   private OffsetDateTime createdAt;
 
-  @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<BusinessEntity> ownerBusiness = new LinkedHashSet<>();
+  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<BusinessEntity> ownedBusinesses = new LinkedHashSet<>();
 
 }

@@ -1,4 +1,4 @@
-package io.github.flowrapp.model.value;
+package io.github.flowrapp.model;
 
 import lombok.Builder;
 
@@ -6,6 +6,5 @@ import lombok.Builder;
 public record Location(
     double latitude,
     double longitude,
-    double area
-) {
+    double area) {
 }

@@ -1,7 +1,6 @@
 package io.github.flowrapp.model;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
 import lombok.Builder;
 import lombok.With;
@@ -16,6 +15,5 @@ public record User(
     String phone,
     String passwordHash,
     boolean enabled,
-    OffsetDateTime createdAt,
-    List<Business> ownerBusinesses) {
+    OffsetDateTime createdAt) {
 }

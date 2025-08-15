@@ -4,10 +4,10 @@ import java.util.Optional;
 
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
+import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.value.LoginRequest;
 import io.github.flowrapp.model.value.RefreshRequest;
 import io.github.flowrapp.model.value.TokensResponse;
-import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.input.UserAuthenticationUseCase;
 import io.github.flowrapp.port.output.UserAuthenticationServiceOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;

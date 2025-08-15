@@ -4,12 +4,16 @@ import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity;
 import io.github.flowrapp.model.User;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, componentModel = ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
+    componentModel = ComponentModel.SPRING,
+    uses = {BusinessEntityMapper.class})
 public interface UserEntityMapper {
 
+  @Mapping(target = "ownedBusinesses", ignore = true)
   UserEntity domain2Infra(User user);
 
   User infra2domain(UserEntity userEntity);
