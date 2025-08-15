@@ -5,8 +5,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import io.github.flowrapp.infrastructure.jpa.neonazure.entity.MockUserEntity;
-import io.github.flowrapp.infrastructure.jpa.neonazure.repository.MockUserJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.businessbd.entity.MockUserEntity;
+import io.github.flowrapp.infrastructure.jpa.businessbd.repository.MockUserJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.AdapterMapper;
 import io.github.flowrapp.model.MockUser;
 

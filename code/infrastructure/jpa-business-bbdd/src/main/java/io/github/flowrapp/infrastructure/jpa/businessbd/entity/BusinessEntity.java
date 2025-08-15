@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.jpa.neonazure.entity;
+package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
 import java.time.OffsetDateTime;
 
@@ -17,8 +17,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Setter
 @Entity
-@Table(name = "users", schema = "flowrapp_management")
-public class UserEntity {
+@Table(name = "business")
+public class BusinessEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,23 +30,14 @@ public class UserEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @Size(max = 320)
-  @NotNull
-  @Column(name = "mail", nullable = false, length = 320)
-  private String mail;
+  @Column(name = "altitude")
+  private Double altitude;
 
-  @Size(max = 15)
-  @Column(name = "phone", length = 15)
-  private String phone;
+  @Column(name = "latitude")
+  private Double latitude;
 
-  @NotNull
-  @Column(name = "password_hash", nullable = false, length = Integer.MAX_VALUE)
-  private String passwordHash;
-
-  @NotNull
-  @ColumnDefault("true")
-  @Column(name = "enabled", nullable = false)
-  private Boolean enabled;
+  @Column(name = "area")
+  private Double area;
 
   @NotNull
   @ColumnDefault("now()")

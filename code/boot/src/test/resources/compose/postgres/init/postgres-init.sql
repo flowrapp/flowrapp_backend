@@ -59,6 +59,57 @@ CREATE TABLE if not exists flowrapp_management.users_roles
     FOREIGN KEY (invited_by) REFERENCES flowrapp_management.users (id)
 );
 
+CREATE TABLE if not exists flowrapp_management.invitations
+(
+    id          integer GENERATED ALWAYS AS IDENTITY,
+    mail        varchar(320) NOT NULL,
+    invited_by  integer,
+    business_id integer      NOT NULL,
+    role        varchar(50)  NOT NULL,
+    created_at  timestamptz  NOT NULL DEFAULT NOW(),
+    expires_at  timestamptz  NOT NULL DEFAULT NOW() + INTERVAL '7 days',
+    status      varchar(20)  NOT NULL DEFAULT 'PENDING',
+    PRIMARY KEY (id),
+    FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id),
+    FOREIGN KEY (invited_by) REFERENCES flowrapp_management.users (id)
+);
+
+CREATE TABLE if not exists flowrapp_management.worklogs
+(
+    id          integer GENERATED ALWAYS AS IDENTITY,
+    user_id     integer     NOT NULL,
+    business_id integer     NOT NULL,
+    clocked_in  timestamptz NOT NULL,
+    clocked_out timestamptz NOT NULL,
+    created_at  timestamptz NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
+    FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id)
+);
+
+CREATE TABLE if not exists flowrapp_management.reports
+(
+    id          integer GENERATED ALWAYS AS IDENTITY,
+    user_id     integer          NOT NULL,
+    business_id integer          NOT NULL,
+    clock_day   DATE             NOT NULL,
+    hours       double precision NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
+    FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id)
+);
+
+CREATE TABLE if not exists flowrapp_management.push_tokens
+(
+    id          integer GENERATED ALWAYS AS IDENTITY,
+    user_id     integer     NOT NULL,
+    token       varchar(255) NOT NULL,
+    device_id   varchar(255) NOT NULL,
+    platform    varchar(50)  NOT NULL,
+    created_at  timestamptz NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id)
+);
 
 -- INDEXES
 
@@ -79,3 +130,18 @@ VALUES ('21242', 'divios');
 
 INSERT INTO flowrapp_management.users (name, mail, phone, password_hash)
 VALUES ('test', 'test@test.com', '123456789', '$2a$10$8w.xERKkZZhKuCMU6K/0x.OmaEYBVqPBfGRHKHfyIEXK4P8kU43fq'); -- Password: 1234
+
+INSERT INTO flowrapp_management.business (name, owner_id, altitude, latitude, area, created_at)
+VALUES ('Test Business', 1, 0.0, 0.0, 100.0, NOW());
+
+INSERT INTO flowrapp_management.users_roles (user_id, business_id, role, invited_by, joined_at)
+VALUES (1, 1, 'ADMIN', 1, NOW());
+
+INSERT INTO flowrapp_management.invitations (mail, invited_by, business_id, role, created_at, expires_at, status)
+VALUES ('test@test.com', 1, 1, 'ADMIN', NOW(), NOW() + INTERVAL '7 days', 'ACCEPTED');
+
+INSERT INTO  flowrapp_management.worklogs (user_id, business_id, clocked_in, clocked_out, created_at)
+VALUES (1, 1, NOW() - INTERVAL '1 hour', NOW(), NOW());
+
+INSERT INTO flowrapp_management.reports (user_id, business_id, clock_day, hours)
+VALUES (1, 1, CURRENT_DATE, 1.0);

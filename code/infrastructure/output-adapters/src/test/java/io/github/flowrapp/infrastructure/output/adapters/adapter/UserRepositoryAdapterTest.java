@@ -5,8 +5,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import io.github.flowrapp.infrastructure.jpa.neonazure.entity.UserEntity;
-import io.github.flowrapp.infrastructure.jpa.neonazure.repository.UserJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity;
+import io.github.flowrapp.infrastructure.jpa.businessbd.repository.UserJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.UserEntityMapper;
 
 import org.instancio.junit.InstancioExtension;

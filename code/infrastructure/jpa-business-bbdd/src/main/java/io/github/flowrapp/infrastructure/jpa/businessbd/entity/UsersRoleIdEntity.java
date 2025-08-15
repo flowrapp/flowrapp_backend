@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.jpa.neonazure.entity;
+package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
 import java.io.Serial;
 import java.io.Serializable;

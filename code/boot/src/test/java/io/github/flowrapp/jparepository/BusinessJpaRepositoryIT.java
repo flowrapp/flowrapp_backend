@@ -3,11 +3,9 @@ package io.github.flowrapp.jparepository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.flowrapp.Application;
-import io.github.flowrapp.DatabaseData;
 import io.github.flowrapp.config.InitDatabase;
 import io.github.flowrapp.infrastructure.jpa.businessbd.config.BusinessBdDatasourceConfig;
-import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity;
-import io.github.flowrapp.infrastructure.jpa.businessbd.repository.UserJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.businessbd.repository.BusinessJpaRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,34 +19,19 @@ import org.springframework.test.context.ContextConfiguration;
 @ActiveProfiles("test")
 @ContextConfiguration(classes = {Application.class, BusinessBdDatasourceConfig.class})
 @InitDatabase
-class UserJpaRepositoryIT {
+class BusinessJpaRepositoryIT {
 
   @Autowired
-  private UserJpaRepository userJpaRepositoryIT;
+  private BusinessJpaRepository businessJpaRepositoryIT;
 
   @Test
-  void testFindUserByMail() {
+  void findAll() {
     // GIVEN
 
     // WHEN
-    var user = userJpaRepositoryIT.findByMail(DatabaseData.USER_MAIL);
+    var businesses = businessJpaRepositoryIT.findAll();
 
-    // THEN
-    assertThat(user)
-        .isPresent()
-        .get()
-        .returns(DatabaseData.USER_MAIL, UserEntity::getMail)
-        .returns(DatabaseData.USER_PHONE, UserEntity::getPhone)
-        .returns(DatabaseData.USER_NAME, UserEntity::getName);
-  }
-
-  @Test
-  void findAllUsers_returnsAllUsers() {
-    // WHEN
-    var users = userJpaRepositoryIT.findAll();
-
-    // THEN
-    assertThat(users)
+    assertThat(businesses)
         .isNotNull()
         .isNotEmpty();
   }

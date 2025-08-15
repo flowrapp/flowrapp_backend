@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.jpa.neonazure.config;
+package io.github.flowrapp.infrastructure.jpa.businessbd.config;
 
 import javax.sql.DataSource;
 
@@ -22,32 +22,32 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-    entityManagerFactoryRef = "neonAzureEntityManagerFactory",
-    transactionManagerRef = "neonAzureTransactionManager",
-    basePackages = {"io.github.flowrapp.infrastructure.jpa.neonazure"})
-public class NeonAzureDatasourceConfig {
+    entityManagerFactoryRef = "businessBdEntityManagerFactory",
+    transactionManagerRef = "businessBdTransactionManager",
+    basePackages = {"io.github.flowrapp.infrastructure.jpa.businessbd"})
+public class BusinessBdDatasourceConfig {
 
   @ConfigurationProperties(prefix = "spring.datasource.neon-azure")
-  @Bean("neonAzureDatasource")
+  @Bean("businessBdDatasource")
   public DataSource dataSource() {
     return DataSourceBuilder.create()
         .build();
   }
 
-  @Bean("neonAzureEntityManagerFactory")
+  @Bean("businessBdEntityManagerFactory")
   public LocalContainerEntityManagerFactoryBean entityManagerFactory(
       EntityManagerFactoryBuilder builder,
-      @Qualifier("neonAzureDatasource") DataSource dataSource) {
+      @Qualifier("businessBdDatasource") DataSource dataSource) {
     return builder
         .dataSource(dataSource)
-        .packages("io.github.flowrapp.infrastructure.jpa.neonazure.entity")
-        .persistenceUnit("neonAzurePU")
+        .packages("io.github.flowrapp.infrastructure.jpa.businessbd.entity")
+        .persistenceUnit("businessBdPU")
         .build();
   }
 
-  @Bean("neonAzureTransactionManager")
+  @Bean("businessBdTransactionManager")
   public PlatformTransactionManager transactionManager(
-      @Qualifier("neonAzureEntityManagerFactory") EntityManagerFactory neonAzureEntityManagerFactory) {
+      @Qualifier("businessBdEntityManagerFactory") EntityManagerFactory neonAzureEntityManagerFactory) {
     return new JpaTransactionManager(neonAzureEntityManagerFactory);
   }
 
