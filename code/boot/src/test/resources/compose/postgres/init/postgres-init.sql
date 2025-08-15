@@ -1,6 +1,16 @@
 -- CREATE SCHEMA
 CREATE SCHEMA IF NOT EXISTS flowrapp_management;
 
+-- SEQUENCES
+
+CREATE SEQUENCE flowrapp_management.users_id_seq
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    START 1
+    CACHE 1
+    NO CYCLE;
+
 -- TABLES
 
 CREATE TABLE if not exists flowrapp_management.mockusers
