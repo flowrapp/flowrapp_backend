@@ -120,3 +120,18 @@ VALUES ('21242', 'divios');
 
 INSERT INTO flowrapp_management.users (name, mail, phone, password_hash)
 VALUES ('test', 'test@test.com', '123456789', '$2a$10$8w.xERKkZZhKuCMU6K/0x.OmaEYBVqPBfGRHKHfyIEXK4P8kU43fq'); -- Password: 1234
+
+INSERT INTO flowrapp_management.business (name, owner_id, altitude, latitude, area, created_at)
+VALUES ('Test Business', 1, 0.0, 0.0, 100.0, NOW());
+
+INSERT INTO flowrapp_management.users_roles (user_id, business_id, role, invited_by, joined_at)
+VALUES (1, 1, 'ADMIN', 1, NOW());
+
+INSERT INTO flowrapp_management.invitations (mail, invited_by, business_id, role, created_at, expires_at, status)
+VALUES ('test@test.com', 1, 1, 'ADMIN', NOW(), NOW() + INTERVAL '7 days', 'ACCEPTED');
+
+INSERT INTO  flowrapp_management.worklogs (user_id, business_id, clocked_in, clocked_out, created_at)
+VALUES (1, 1, NOW() - INTERVAL '1 hour', NOW(), NOW());
+
+INSERT INTO flowrapp_management.reports (user_id, business_id, clock_day, hours)
+VALUES (1, 1, CURRENT_DATE, 1.0);

@@ -12,4 +12,6 @@ public class DatabaseData {
 
   public static final String USER_PHONE = "123456789";
 
+  public static final String BUSINESS_NAME = "Test Business";
+
 }
