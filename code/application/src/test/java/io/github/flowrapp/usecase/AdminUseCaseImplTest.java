@@ -64,15 +64,15 @@ class AdminUseCaseImplTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 1)
-    void createUserWithExistingEmail(UserCreationRequest userCreationRequest, User adminUser) {
-        // GIVEN
-        when(userRepositoryOutput.findUserByEmail(ADMIN_USER_MAIL))
-            .thenReturn(Optional.of(adminUser));
-        when(userRepositoryOutput.existsByEmail(userCreationRequest.mail()))
-            .thenReturn(true);
+  void createUserWithExistingEmail(UserCreationRequest userCreationRequest, User adminUser) {
+    // GIVEN
+    when(userRepositoryOutput.findUserByEmail(ADMIN_USER_MAIL))
+        .thenReturn(Optional.of(adminUser));
+    when(userRepositoryOutput.existsByEmail(userCreationRequest.mail()))
+        .thenReturn(true);
 
-        // WHEN && THEN
-        assertThrows(FunctionalException.class, () -> adminUseCase.createUser(userCreationRequest));
-    }
+    // WHEN && THEN
+    assertThrows(FunctionalException.class, () -> adminUseCase.createUser(userCreationRequest));
+  }
 
 }
