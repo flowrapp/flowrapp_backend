@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import io.github.flowrapp.infrastructure.input.rest.mainapi.security.ClaimConstants;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.security.JwtTokenService;
-import io.github.flowrapp.model.TokensResponse;
+import io.github.flowrapp.model.value.TokensResponse;
 import io.github.flowrapp.model.User;
 
 import org.instancio.junit.InstancioExtension;

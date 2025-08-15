@@ -3,7 +3,7 @@ package io.github.flowrapp.usecase;
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.MockUser;
-import io.github.flowrapp.model.MockUserRequest;
+import io.github.flowrapp.model.value.MockUserRequest;
 import io.github.flowrapp.port.input.UserRequestUseCase;
 import io.github.flowrapp.port.output.MockUserRepositoryOutput;
 

@@ -2,7 +2,7 @@ package io.github.flowrapp.port.output;
 
 import java.util.Optional;
 
-import io.github.flowrapp.model.TokensResponse;
+import io.github.flowrapp.model.value.TokensResponse;
 import io.github.flowrapp.model.User;
 
 import org.jspecify.annotations.NonNull;

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.MockUser;
-import io.github.flowrapp.model.MockUserRequest;
+import io.github.flowrapp.model.value.MockUserRequest;
 import io.github.flowrapp.port.output.MockUserRepositoryOutput;
 
 import org.instancio.junit.InstancioExtension;

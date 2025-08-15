@@ -7,9 +7,9 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 
 import io.github.flowrapp.exception.FunctionalException;
-import io.github.flowrapp.model.LoginRequest;
-import io.github.flowrapp.model.RefreshRequest;
-import io.github.flowrapp.model.TokensResponse;
+import io.github.flowrapp.model.value.LoginRequest;
+import io.github.flowrapp.model.value.RefreshRequest;
+import io.github.flowrapp.model.value.TokensResponse;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.output.UserAuthenticationServiceOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;

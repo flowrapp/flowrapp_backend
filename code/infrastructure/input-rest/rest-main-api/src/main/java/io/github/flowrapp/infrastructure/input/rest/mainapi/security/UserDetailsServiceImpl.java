@@ -2,6 +2,8 @@ package io.github.flowrapp.infrastructure.input.rest.mainapi.security;
 
 import static java.util.Collections.emptyList;
 
+import java.util.List;
+
 import io.github.flowrapp.port.input.UserAuthenticationUseCase;
 
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,8 +40,17 @@ public class UserDetailsServiceImpl extends AbstractUserDetailsAuthenticationPro
   @Override
   protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
     return userAuthenticationUseCase.retrieveUserByMail(username)
-        .map(user -> new User(user.mail(), user.passwordHash(), emptyList()))
+        .map(this::mapToUser)
         .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+  }
+
+  private UserDetails mapToUser(io.github.flowrapp.model.User user) {
+    return User.withUsername(user.name())
+        .password(user.passwordHash())
+        .disabled(!user.enabled())
+        .authorities(user.name().equalsIgnoreCase("admin")
+            ? new SimpleGrantedAuthority("ADMIN") : new SimpleGrantedAuthority("USER"))
+        .build();
   }
 
 }

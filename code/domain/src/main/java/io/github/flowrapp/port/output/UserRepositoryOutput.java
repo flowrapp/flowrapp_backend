@@ -13,4 +13,7 @@ public interface UserRepositoryOutput {
 
   Optional<User> findUserByEmail(@NonNull String email);
 
+  boolean existsByEmail(@NonNull String email);
+
+  @NonNull User save(@NonNull User user);
 }
