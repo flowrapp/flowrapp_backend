@@ -1,16 +1,6 @@
 -- CREATE SCHEMA
 CREATE SCHEMA IF NOT EXISTS flowrapp_management;
 
--- SEQUENCES
-
-CREATE SEQUENCE flowrapp_management.users_id_seq
-    INCREMENT BY 1
-    MINVALUE 1
-    MAXVALUE 2147483647
-    START 1
-    CACHE 1
-    NO CYCLE;
-
 -- TABLES
 
 CREATE TABLE if not exists flowrapp_management.mockusers
@@ -59,6 +49,57 @@ CREATE TABLE if not exists flowrapp_management.users_roles
     FOREIGN KEY (invited_by) REFERENCES flowrapp_management.users (id)
 );
 
+CREATE TABLE if not exists flowrapp_management.invitations
+(
+    id          integer GENERATED ALWAYS AS IDENTITY,
+    mail        varchar(320) NOT NULL,
+    invited_by  integer,
+    business_id integer      NOT NULL,
+    role        varchar(50)  NOT NULL,
+    created_at  timestamptz  NOT NULL DEFAULT NOW(),
+    expires_at  timestamptz  NOT NULL DEFAULT NOW() + INTERVAL '7 days',
+    status      varchar(20)  NOT NULL DEFAULT 'PENDING',
+    PRIMARY KEY (id),
+    FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id),
+    FOREIGN KEY (invited_by) REFERENCES flowrapp_management.users (id)
+);
+
+CREATE TABLE if not exists flowrapp_management.worklogs
+(
+    id          integer GENERATED ALWAYS AS IDENTITY,
+    user_id     integer     NOT NULL,
+    business_id integer     NOT NULL,
+    clocked_in  timestamptz NOT NULL,
+    clocked_out timestamptz NOT NULL,
+    created_at  timestamptz NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
+    FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id)
+);
+
+CREATE TABLE if not exists flowrapp_management.reports
+(
+    id          integer GENERATED ALWAYS AS IDENTITY,
+    user_id     integer          NOT NULL,
+    business_id integer          NOT NULL,
+    clock_day   DATE             NOT NULL,
+    hours       double precision NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
+    FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id)
+);
+
+CREATE TABLE if not exists flowrapp_management.push_tokens
+(
+    id          integer GENERATED ALWAYS AS IDENTITY,
+    user_id     integer     NOT NULL,
+    token       varchar(255) NOT NULL,
+    device_id   varchar(255) NOT NULL,
+    platform    varchar(50)  NOT NULL,
+    created_at  timestamptz NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id)
+);
 
 -- INDEXES
 
