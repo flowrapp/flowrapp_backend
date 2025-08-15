@@ -40,7 +40,6 @@ public class JwtTokenService {
 
   private final JwtTokenSettings jwtTokenSettings;
 
-
   /** Creates an access token for a user. */
   public @NonNull String createAccessToken(@NonNull User user) {
     return createToken(jwtAccessEncoder, user, jwtTokenSettings.getAccessToken().getExpirationTime());
