@@ -2,10 +2,10 @@ package io.github.flowrapp.usecase;
 
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
-import io.github.flowrapp.model.User;
-import io.github.flowrapp.model.UserRequest;
+import io.github.flowrapp.model.MockUser;
+import io.github.flowrapp.model.MockUserRequest;
 import io.github.flowrapp.port.input.UserRequestUseCase;
-import io.github.flowrapp.port.output.UserRepositoryOutput;
+import io.github.flowrapp.port.output.MockUserRepositoryOutput;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,15 +14,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserRequestUseCaseImpl implements UserRequestUseCase {
+public class MockUserRequestUseCaseImpl implements UserRequestUseCase {
 
-  private final UserRepositoryOutput userRepositoryOutput;
+  private final MockUserRepositoryOutput mockUserRepositoryOutput;
 
   @Override
-  public User findUser(UserRequest userRequest) {
+  public MockUser findUser(MockUserRequest userRequest) {
     log.debug("Getting request for: {}", userRequest);
 
-    return this.userRepositoryOutput.findUserByName(userRequest.name())
+    return this.mockUserRepositoryOutput.findUserByName(userRequest.name())
         .orElseThrow(() -> new FunctionalException(FunctionalError.USER_NOT_FOUND));
   }
 

@@ -1,10 +1,10 @@
 package io.github.flowrapp.port.input;
 
-import io.github.flowrapp.model.User;
-import io.github.flowrapp.model.UserRequest;
+import io.github.flowrapp.model.MockUser;
+import io.github.flowrapp.model.MockUserRequest;
 
 public interface UserRequestUseCase {
 
-  User findUser(UserRequest userRequest);
+  MockUser findUser(MockUserRequest userRequest);
 
 }

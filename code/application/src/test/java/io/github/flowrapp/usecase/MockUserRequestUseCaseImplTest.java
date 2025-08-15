@@ -7,9 +7,9 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 
 import io.github.flowrapp.exception.FunctionalException;
-import io.github.flowrapp.model.User;
-import io.github.flowrapp.model.UserRequest;
-import io.github.flowrapp.port.output.UserRepositoryOutput;
+import io.github.flowrapp.model.MockUser;
+import io.github.flowrapp.model.MockUserRequest;
+import io.github.flowrapp.port.output.MockUserRepositoryOutput;
 
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
@@ -20,17 +20,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
-class UserRequestUseCaseImplTest {
+class MockUserRequestUseCaseImplTest {
 
   @Mock
-  private UserRepositoryOutput userRepositoryOutput;
+  private MockUserRepositoryOutput userRepositoryOutput;
 
   @InjectMocks
-  private UserRequestUseCaseImpl userRequestUseCase;
+  private MockUserRequestUseCaseImpl userRequestUseCase;
 
   @ParameterizedTest
   @InstancioSource
-  void findUser_returnsUser_whenFound(UserRequest userRequest, User user) {
+  void findUser_returnsUser_whenFound(MockUserRequest userRequest, MockUser user) {
     // GIVEN
     when(userRepositoryOutput.findUserByName(userRequest.name()))
         .thenReturn(Optional.of(user));
@@ -46,7 +46,7 @@ class UserRequestUseCaseImplTest {
 
   @ParameterizedTest
   @InstancioSource
-  void findUser_throwsException_whenNotFound(UserRequest userRequest) {
+  void findUser_throwsException_whenNotFound(MockUserRequest userRequest) {
     // GIVEN
     when(userRepositoryOutput.findUserByName(userRequest.name()))
         .thenReturn(Optional.empty());

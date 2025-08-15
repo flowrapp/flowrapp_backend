@@ -3,7 +3,7 @@ package io.github.flowrapp.model;
 import lombok.Builder;
 
 @Builder(toBuilder = true)
-public record UserRequest(
+public record MockUserRequest(
     String name) {
 
 }

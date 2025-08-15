@@ -8,7 +8,7 @@ import java.util.Optional;
 import io.github.flowrapp.infrastructure.jpa.neonazure.entity.MockUserEntity;
 import io.github.flowrapp.infrastructure.jpa.neonazure.repository.MockUserJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.AdapterMapper;
-import io.github.flowrapp.model.User;
+import io.github.flowrapp.model.MockUser;
 
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
@@ -30,7 +30,7 @@ class UserJpaRepositoryAdapterTest {
   private MockUserJpaRepository mockUserJpaRepository;
 
   @InjectMocks
-  private UserRepositoryAdapter userRepositoryAdapter;
+  private MockUserRepositoryAdapter userRepositoryAdapter;
 
   @ParameterizedTest
   @InstancioSource
@@ -40,14 +40,14 @@ class UserJpaRepositoryAdapterTest {
         .thenReturn(Optional.of(mockUserEntity));
 
     // WHEN
-    Optional<User> result = userRepositoryAdapter.findUserByName(name);
+    Optional<MockUser> result = userRepositoryAdapter.findUserByName(name);
 
     // THEN
     assertThat(result)
         .isNotNull()
         .isPresent()
         .get()
-        .returns(mockUserEntity.getName(), User::name)
-        .returns(mockUserEntity.getDni(), User::dni);
+        .returns(mockUserEntity.getName(), MockUser::name)
+        .returns(mockUserEntity.getDni(), MockUser::dni);
   }
 }
