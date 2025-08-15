@@ -20,4 +20,18 @@ public record Invitation(
     return expiresAt != null && expiresAt.isBefore(OffsetDateTime.now());
   }
 
+  /** Creates a new invitation for a user to join a business. */
+  public static Invitation createInvitation(User invited, Business business, User invitedBy, UserRole role) {
+    return Invitation.builder()
+        .invited(invited)
+        .business(business)
+        .invitedBy(invitedBy)
+        .token(UUID.randomUUID())
+        .role(role)
+        .createdAt(OffsetDateTime.now())
+        .expiresAt(OffsetDateTime.now().plusDays(7)) // TODO: make configurable
+        .status(InvitationStatus.PENDING)
+        .build();
+  }
+
 }

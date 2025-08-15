@@ -2,14 +2,10 @@ package io.github.flowrapp.usecase;
 
 import static io.github.flowrapp.model.config.Constants.ADMIN_USER_MAIL;
 
-import java.time.OffsetDateTime;
-import java.util.UUID;
-
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.Business;
 import io.github.flowrapp.model.Invitation;
-import io.github.flowrapp.model.InvitationStatus;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.UserRole;
 import io.github.flowrapp.model.value.BusinessCreationRequest;
@@ -58,48 +54,22 @@ public class AdminUseCaseImpl implements AdminUseCase {
   }
 
   private User createNewUser(UserCreationRequest userCreationRequest) {
-    log.debug("Creating new user with request: {}", userCreationRequest);
-
-    val user = User.builder()
-        .name(userCreationRequest.username())
-        .mail(userCreationRequest.mail())
-        .phone("") // TODO
-        .passwordHash("")
-        .enabled(false)
-        .createdAt(OffsetDateTime.now())
-        .build();
-
-    return userRepositoryOutput.save(user);
+    return userRepositoryOutput.save(
+        User.fromUserCreationRequest(userCreationRequest));
   }
 
   private Business createNewBusiness(BusinessCreationRequest businessCreationRequest, User user) {
-    log.debug("Creating new business with request: {}", businessCreationRequest);
+    log.debug("Creating business: {} for user {}", businessCreationRequest, user.mail());
 
-    val newUser = Business.builder()
-        .name(businessCreationRequest.name())
-        .location(businessCreationRequest.location())
-        .createdAt(OffsetDateTime.now())
-        .owner(user)
-        .build();
-
-    return businessRepositoryOutput.save(newUser);
+    return businessRepositoryOutput.save(
+        Business.fromBusinessCreationRequest(businessCreationRequest, user));
   }
 
   private Invitation createInvitation(User user, Business newBusiness, User adminUser) {
-    log.debug("Creating invitation for user: {}", user);
+    log.debug("Creating invitation for user {} to business {}", user.mail(), newBusiness.name());
 
-    var invitation = Invitation.builder()
-        .invited(user)
-        .business(newBusiness)
-        .invitedBy(adminUser)
-        .token(UUID.randomUUID())
-        .role(UserRole.ADMIN)
-        .createdAt(OffsetDateTime.now())
-        .expiresAt(OffsetDateTime.now().plusDays(7)) // TODO: make configurable
-        .status(InvitationStatus.PENDING)
-        .build();
-
-    return invitationRepositoryOutput.save(invitation);
+    return invitationRepositoryOutput.save(
+        Invitation.createInvitation(user, newBusiness, adminUser, UserRole.ADMIN));
   }
 
 }
