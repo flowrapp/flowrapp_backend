@@ -2,6 +2,7 @@ package io.github.flowrapp.infrastructure.input.rest.mainapi.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.verify;
 
@@ -59,4 +60,23 @@ class AdminControllerTest {
       assertEquals(dtoLocation.getArea(), location.area());
     }));
   }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void registerUserWithNullBusiness(RegisterUserRequestDTO registerUserRequestDTO) {
+    // Given
+    registerUserRequestDTO.setBusiness(null);
+
+    // When
+    adminController.registerUser(registerUserRequestDTO);
+
+    // Then
+    verify(adminUseCase).createUser(assertArg(argument -> {
+      assertNotNull(argument);
+      assertEquals(registerUserRequestDTO.getUsername(), argument.username());
+      assertEquals(registerUserRequestDTO.getMail(), argument.mail());
+      assertNull(argument.business());
+    }));
+  }
+
 }
