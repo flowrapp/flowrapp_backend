@@ -15,7 +15,6 @@ import io.github.flowrapp.port.output.UserRepositoryOutput;
 
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.InjectMocks;
