@@ -8,24 +8,20 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>output-adapters</artifactId>
+  <artifactId>jpa-business-bbdd</artifactId>
   <packaging>jar</packaging>
 
   <name>${project.groupId}-${project.artifactId}</name>
-  <description>Infra output adapters module.</description>
 
   <dependencies>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
-      <artifactId>domain</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
-      <artifactId>jpa-business-bbdd</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.github.flowrapp</groupId>
-      <artifactId>rest-main-api</artifactId>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -33,8 +29,8 @@
       <artifactId>lombok</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.mapstruct</groupId>
-      <artifactId>mapstruct</artifactId>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
     </dependency>
 
     <dependency>

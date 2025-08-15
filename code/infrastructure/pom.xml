@@ -16,7 +16,7 @@
 
   <modules>
     <module>output-adapters</module>
-    <module>jpa-neon-azure</module>
+    <module>jpa-business-bbdd</module>
     <module>input-rest</module>
   </modules>
 

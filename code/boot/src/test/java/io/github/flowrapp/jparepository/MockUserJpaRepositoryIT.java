@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.github.flowrapp.Application;
 import io.github.flowrapp.DatabaseData;
 import io.github.flowrapp.config.InitDatabase;
-import io.github.flowrapp.infrastructure.jpa.neonazure.config.NeonAzureDatasourceConfig;
-import io.github.flowrapp.infrastructure.jpa.neonazure.entity.MockUserEntity;
-import io.github.flowrapp.infrastructure.jpa.neonazure.repository.MockUserJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.businessBd.config.BusinessBdDatasourceConfig;
+import io.github.flowrapp.infrastructure.jpa.businessBd.entity.MockUserEntity;
+import io.github.flowrapp.infrastructure.jpa.businessBd.repository.MockUserJpaRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
-@ContextConfiguration(classes = {Application.class, NeonAzureDatasourceConfig.class})
+@ContextConfiguration(classes = {Application.class, BusinessBdDatasourceConfig.class})
 @InitDatabase
 class MockUserJpaRepositoryIT {
 
