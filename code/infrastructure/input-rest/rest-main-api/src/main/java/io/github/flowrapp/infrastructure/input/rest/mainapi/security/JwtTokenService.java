@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.jspecify.annotations.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -25,7 +27,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class JwtTokenService {
 
   private final JwtEncoder jwtAccessEncoder;
@@ -34,9 +36,10 @@ public class JwtTokenService {
 
   private final JwtEncoder jwtRefreshEncoder;
 
-  private final JwtDecoder jwtRefreshDecoder;
+  private final @Qualifier("jwtRefreshDecoder") JwtDecoder jwtRefreshDecoder;
 
   private final JwtTokenSettings jwtTokenSettings;
+
 
   /** Creates an access token for a user. */
   public @NonNull String createAccessToken(@NonNull User user) {

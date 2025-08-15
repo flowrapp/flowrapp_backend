@@ -38,7 +38,7 @@ public class UserAuthenticationServiceAdapter implements UserAuthenticationServi
 
   @Override
   public Optional<String> getUserMailFromToken(@NonNull String refreshToken) {
-    return jwtTokenService.decodeAccessToken(refreshToken)
+    return jwtTokenService.decodeRefreshToken(refreshToken)
         .map(jwt -> jwt.getClaimAsString(ClaimConstants.CLAIM_KEY_USER_MAIL));
   }
 
