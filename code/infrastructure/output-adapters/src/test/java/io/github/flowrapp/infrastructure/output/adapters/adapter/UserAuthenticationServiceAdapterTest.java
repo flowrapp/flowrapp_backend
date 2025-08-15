@@ -1,6 +1,7 @@
 package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -29,9 +30,6 @@ class UserAuthenticationServiceAdapterTest {
   @Mock
   private JwtTokenService jwtTokenService;
 
-  @Mock
-  private Jwt jwt;
-
   @InjectMocks
   private UserAuthenticationServiceAdapter userAuthenticationServiceAdapter;
 
@@ -42,7 +40,7 @@ class UserAuthenticationServiceAdapterTest {
     when(passwordEncoder.matches(rawPassword, passwordHash)).thenReturn(true);
 
     // When
-    boolean result = userAuthenticationServiceAdapter.checkPassword(rawPassword, passwordHash);
+    var result = userAuthenticationServiceAdapter.checkPassword(rawPassword, passwordHash);
 
     // Then
     assertThat(result).isTrue();
@@ -71,37 +69,41 @@ class UserAuthenticationServiceAdapterTest {
     when(jwtTokenService.createRefreshToken(user)).thenReturn(refreshToken);
 
     // When
-    TokensResponse result = userAuthenticationServiceAdapter.createTokens(user);
+    var result = userAuthenticationServiceAdapter.createTokens(user);
 
     // Then
-    assertThat(result).isNotNull();
-    assertThat(result.accessToken()).isEqualTo(accessToken);
-    assertThat(result.refreshToken()).isEqualTo(refreshToken);
+    assertThat(result)
+        .isNotNull()
+        .returns(accessToken, TokensResponse::accessToken)
+        .returns(refreshToken, TokensResponse::refreshToken);
   }
 
   @ParameterizedTest
   @InstancioSource
   void getUserMailFromToken_shouldReturnUserMail(String refreshToken, String userMail) {
     // Given
-    when(jwtTokenService.decodeAccessToken(refreshToken)).thenReturn(Optional.of(jwt));
-    when(jwt.getClaimAsString(ClaimConstants.CLAIM_KEY_USER_MAIL)).thenReturn(userMail);
+    var jwt = mock(Jwt.class);
+    when(jwtTokenService.decodeRefreshToken(refreshToken))
+        .thenReturn(Optional.of(jwt));
+    when(jwt.getClaimAsString(ClaimConstants.CLAIM_KEY_USER_MAIL))
+        .thenReturn(userMail);
 
     // When
-    Optional<String> result = userAuthenticationServiceAdapter.getUserMailFromToken(refreshToken);
+    var result = userAuthenticationServiceAdapter.getUserMailFromToken(refreshToken);
 
     // Then
-    assertThat(result).isPresent();
-    assertThat(result.get()).isEqualTo(userMail);
+    assertThat(result)
+        .isPresent()
+        .contains(userMail);
   }
 
   @ParameterizedTest
   @InstancioSource
   void getUserMailFromToken_shouldReturnEmpty_whenTokenCannotBeDecoded(String refreshToken) {
     // Given
-    when(jwtTokenService.decodeAccessToken(refreshToken)).thenReturn(Optional.empty());
 
     // When
-    Optional<String> result = userAuthenticationServiceAdapter.getUserMailFromToken(refreshToken);
+    var result = userAuthenticationServiceAdapter.getUserMailFromToken(refreshToken);
 
     // Then
     assertThat(result).isEmpty();
