@@ -47,7 +47,7 @@ public class AdminUseCaseImpl implements AdminUseCase {
     val newUser = this.createNewUser(userCreationRequest);
     val newBusiness = this.createNewBusiness(userCreationRequest.business(), newUser);
 
-    val invitation = createInvitation(newUser, newBusiness, adminUser);
+    val invitation = this.createInvitation(newUser, newBusiness, adminUser);
     // TODO: send email to user with activation link
 
     log.debug("User created successfully: {}", newUser);

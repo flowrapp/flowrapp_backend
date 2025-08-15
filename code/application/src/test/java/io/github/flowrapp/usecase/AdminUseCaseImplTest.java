@@ -1,12 +1,14 @@
 package io.github.flowrapp.usecase;
 
 import static io.github.flowrapp.model.config.Constants.ADMIN_USER_MAIL;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.value.UserCreationRequest;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
@@ -59,4 +61,18 @@ class AdminUseCaseImplTest {
     // THEN
 
   }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+    void createUserWithExistingEmail(UserCreationRequest userCreationRequest, User adminUser) {
+        // GIVEN
+        when(userRepositoryOutput.findUserByEmail(ADMIN_USER_MAIL))
+            .thenReturn(Optional.of(adminUser));
+        when(userRepositoryOutput.existsByEmail(userCreationRequest.mail()))
+            .thenReturn(true);
+
+        // WHEN && THEN
+        assertThrows(FunctionalException.class, () -> adminUseCase.createUser(userCreationRequest));
+    }
+
 }
