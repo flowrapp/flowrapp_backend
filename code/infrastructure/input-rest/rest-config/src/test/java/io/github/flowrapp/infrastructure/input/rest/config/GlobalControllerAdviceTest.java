@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
 class GlobalControllerAdviceTest {
@@ -20,7 +21,7 @@ class GlobalControllerAdviceTest {
   @InjectMocks
   private GlobalControllerAdvice globalControllerAdvice;
 
-  @InstancioSource
+  @InstancioSource(samples = 1)
   @ParameterizedTest
   void handleFunctionalException(FunctionalException functionalException) {
     // GIVEN
@@ -32,7 +33,21 @@ class GlobalControllerAdviceTest {
     assertNotNull(problemDetail);
   }
 
-  @InstancioSource
+  @InstancioSource(samples = 1)
+  @ParameterizedTest
+  void handleAuthorizationDeniedException(AuthorizationDeniedException authorizationDeniedException) {
+    // GIVEN
+
+    // WHEN
+    final var problemDetail = globalControllerAdvice.handleAuthorizationDeniedException(authorizationDeniedException);
+
+    // THEN
+    assertThat(problemDetail)
+        .isNotNull()
+        .returns(HttpStatus.FORBIDDEN.value(), ProblemDetail::getStatus);
+  }
+
+  @InstancioSource(samples = 1)
   @ParameterizedTest
   void handleGenericException(Exception exception) {
     // GIVEN

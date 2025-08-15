@@ -8,6 +8,7 @@ import io.github.flowrapp.port.input.AdminUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -19,6 +20,7 @@ public class AdminController implements AdminApi {
 
   private final AdminDTOMapper adminDTOMapper;
 
+  @PreAuthorize("hasAnyAuthority('ADMIN')")
   @Override
   public ResponseEntity<Void> registerUser(RegisterUserRequestDTO registerUserRequestDTO) {
     adminUseCase.createUser(
