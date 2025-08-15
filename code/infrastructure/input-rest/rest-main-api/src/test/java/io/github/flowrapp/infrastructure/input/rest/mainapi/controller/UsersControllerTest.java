@@ -10,7 +10,7 @@ import java.util.Objects;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetUser200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetUserRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.UserDTOMapper;
-import io.github.flowrapp.model.User;
+import io.github.flowrapp.model.MockUser;
 import io.github.flowrapp.port.input.UserRequestUseCase;
 
 import org.instancio.junit.InstancioExtension;
@@ -38,7 +38,7 @@ class UsersControllerTest {
 
   @ParameterizedTest
   @InstancioSource
-  void getUser(GetUserRequestDTO getUserRequestDTO, User user) {
+  void getUser(GetUserRequestDTO getUserRequestDTO, MockUser user) {
     // GIVEN
     when(userRequestUseCase.findUser(argThat(dto -> Objects.equals(dto.name(), getUserRequestDTO.getName()))))
         .thenReturn(user);

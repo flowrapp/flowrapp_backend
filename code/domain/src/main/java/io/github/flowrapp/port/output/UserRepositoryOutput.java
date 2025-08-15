@@ -6,8 +6,11 @@ import io.github.flowrapp.model.User;
 
 import org.jspecify.annotations.NonNull;
 
+/**
+ * Output port for user repository operations. Provides methods to interact with user data storage.
+ */
 public interface UserRepositoryOutput {
 
-  Optional<User> findUserByName(@NonNull String user);
+  Optional<User> findUserByEmail(@NonNull String email);
 
 }

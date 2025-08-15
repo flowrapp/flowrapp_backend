@@ -78,4 +78,4 @@ INSERT INTO flowrapp_management.mockusers (dni, name)
 VALUES ('21242', 'divios');
 
 INSERT INTO flowrapp_management.users (name, mail, phone, password_hash)
-VALUES ('test', 'test@test.com', '123456789', '$2a$10$e0N1z5Zb7f8Q3j1h4k5u6O9Y');
+VALUES ('test', 'test@test.com', '123456789', '$2a$10$8w.xERKkZZhKuCMU6K/0x.OmaEYBVqPBfGRHKHfyIEXK4P8kU43fq'); -- Password: 1234

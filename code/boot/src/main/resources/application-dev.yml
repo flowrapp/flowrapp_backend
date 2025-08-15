@@ -8,3 +8,14 @@ spring:
       jdbcUrl: jdbc:postgresql://ep-summer-heart-a9c3ig3a-pooler.gwc.azure.neon.tech/flowrapp
       username: ${NEON_AZURE_USERNAME}
       password: ${NEON_AZURE_PASSWORD}
+
+
+app:
+  security:
+    jwt:
+      access-token:
+        secret-key: ${ACCES_TOKEN_SECRET_KEY}
+        expiration-time: 600  # 10 minutes
+      refresh-token:
+        secret-key: ${REFRESH_TOKEN_SECRET_KEY}
+        expiration-time: 259200  # 3 days
