@@ -1,6 +1,6 @@
-package io.github.flowrapp.infrastructure.jpa.businessBd.repository;
+package io.github.flowrapp.infrastructure.jpa.businessbd.repository;
 
-import io.github.flowrapp.infrastructure.jpa.businessBd.entity.PushTokenEntity;
+import io.github.flowrapp.infrastructure.jpa.businessbd.entity.PushTokenEntity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

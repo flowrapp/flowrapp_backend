@@ -1,6 +1,6 @@
-package io.github.flowrapp.infrastructure.jpa.businessBd.entity;
+package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,12 +14,13 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "reports")
-public class ReportEntity {
+@Table(name = "worklogs")
+public class WorklogEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +38,16 @@ public class ReportEntity {
   private BusinessEntity business;
 
   @NotNull
-  @Column(name = "clock_day", nullable = false)
-  private LocalDate clockDay;
+  @Column(name = "clocked_in", nullable = false)
+  private OffsetDateTime clockedIn;
 
   @NotNull
-  @Column(name = "hours", nullable = false)
-  private Double hours;
+  @Column(name = "clocked_out", nullable = false)
+  private OffsetDateTime clockedOut;
+
+  @NotNull
+  @ColumnDefault("now()")
+  @Column(name = "created_at", nullable = false)
+  private OffsetDateTime createdAt;
 
 }

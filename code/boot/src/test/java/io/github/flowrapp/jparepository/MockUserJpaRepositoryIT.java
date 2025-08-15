@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.github.flowrapp.Application;
 import io.github.flowrapp.DatabaseData;
 import io.github.flowrapp.config.InitDatabase;
-import io.github.flowrapp.infrastructure.jpa.businessBd.config.BusinessBdDatasourceConfig;
-import io.github.flowrapp.infrastructure.jpa.businessBd.entity.MockUserEntity;
-import io.github.flowrapp.infrastructure.jpa.businessBd.repository.MockUserJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.businessbd.config.BusinessBdDatasourceConfig;
+import io.github.flowrapp.infrastructure.jpa.businessbd.entity.MockUserEntity;
+import io.github.flowrapp.infrastructure.jpa.businessbd.repository.MockUserJpaRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

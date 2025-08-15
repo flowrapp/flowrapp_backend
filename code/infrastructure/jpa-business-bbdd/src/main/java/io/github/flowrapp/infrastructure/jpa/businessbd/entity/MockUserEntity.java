@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.jpa.businessBd.entity;
+package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
 import java.util.Objects;
 

@@ -1,17 +1,15 @@
-package io.github.flowrapp.infrastructure.jpa.businessBd.entity;
+package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
 import java.time.OffsetDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -19,31 +17,36 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Setter
 @Entity
-@Table(name = "worklogs")
-public class WorklogEntity {
+@Table(name = "users", schema = "flowrapp_management")
+public class UserEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Integer id;
 
+  @Size(max = 255)
   @NotNull
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
-  @JoinColumn(name = "user_id", nullable = false)
-  private UserEntity user;
+  @Column(name = "name", nullable = false)
+  private String name;
+
+  @Size(max = 320)
+  @NotNull
+  @Column(name = "mail", nullable = false, length = 320)
+  private String mail;
+
+  @Size(max = 15)
+  @Column(name = "phone", length = 15)
+  private String phone;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
-  @JoinColumn(name = "business_id", nullable = false)
-  private BusinessEntity business;
+  @Column(name = "password_hash", nullable = false, length = Integer.MAX_VALUE)
+  private String passwordHash;
 
   @NotNull
-  @Column(name = "clocked_in", nullable = false)
-  private OffsetDateTime clockedIn;
-
-  @NotNull
-  @Column(name = "clocked_out", nullable = false)
-  private OffsetDateTime clockedOut;
+  @ColumnDefault("true")
+  @Column(name = "enabled", nullable = false)
+  private Boolean enabled;
 
   @NotNull
   @ColumnDefault("now()")

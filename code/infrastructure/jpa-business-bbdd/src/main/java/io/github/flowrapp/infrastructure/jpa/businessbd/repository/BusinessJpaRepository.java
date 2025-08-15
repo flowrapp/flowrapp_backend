@@ -1,6 +1,6 @@
-package io.github.flowrapp.infrastructure.jpa.businessBd.repository;
+package io.github.flowrapp.infrastructure.jpa.businessbd.repository;
 
-import io.github.flowrapp.infrastructure.jpa.businessBd.entity.BusinessEntity;
+import io.github.flowrapp.infrastructure.jpa.businessbd.entity.BusinessEntity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.jpa.businessBd.config;
+package io.github.flowrapp.infrastructure.jpa.businessbd.config;
 
 import javax.sql.DataSource;
 
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(
     entityManagerFactoryRef = "businessBdEntityManagerFactory",
     transactionManagerRef = "businessBdTransactionManager",
-    basePackages = {"io.github.flowrapp.infrastructure.jpa.businessBd"})
+    basePackages = {"io.github.flowrapp.infrastructure.jpa.businessbd"})
 public class BusinessBdDatasourceConfig {
 
   @ConfigurationProperties(prefix = "spring.datasource.neon-azure")

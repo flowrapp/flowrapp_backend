@@ -2,7 +2,7 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import java.util.Optional;
 
-import io.github.flowrapp.infrastructure.jpa.businessBd.repository.MockUserJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.businessbd.repository.MockUserJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.AdapterMapper;
 import io.github.flowrapp.model.MockUser;
 import io.github.flowrapp.port.output.MockUserRepositoryOutput;
