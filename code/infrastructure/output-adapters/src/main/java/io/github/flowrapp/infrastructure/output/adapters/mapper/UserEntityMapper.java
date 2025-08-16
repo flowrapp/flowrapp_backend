@@ -8,9 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
-    componentModel = ComponentModel.SPRING,
-    uses = {BusinessEntityMapper.class})
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, componentModel = ComponentModel.SPRING)
 public interface UserEntityMapper {
 
   @Mapping(target = "ownedBusinesses", ignore = true)

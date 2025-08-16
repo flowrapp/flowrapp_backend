@@ -1,6 +1,7 @@
 package io.github.flowrapp.usecase;
 
 import static io.github.flowrapp.model.config.Constants.ADMIN_USER_MAIL;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -55,11 +56,8 @@ class AdminUseCaseImplTest {
         && argument.business().name().equals(userCreationRequest.business().name()))))
             .then(returnsFirstArg());
 
-    // WHEN
-    adminUseCase.createUser(userCreationRequest);
-
-    // THEN
-
+    // WHEN && THEN
+    assertDoesNotThrow(() -> adminUseCase.createUser(userCreationRequest));
   }
 
   @ParameterizedTest
