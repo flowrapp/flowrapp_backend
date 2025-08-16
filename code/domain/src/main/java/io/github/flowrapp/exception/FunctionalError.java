@@ -14,6 +14,7 @@ public enum FunctionalError {
   USERNAME_ALREADY_EXISTS(1002, 409, "user already exists"),
   INVALID_CREDENTIALS(1003, 401, "invalid credentials"),
   INVALID_REFRESH_TOKEN(1004, 401, "invalid refresh token"),
+  INVITATION_NOT_FOUND(1005, 404, "invitation not found"),
   ;
 
   private final int code;

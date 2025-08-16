@@ -21,6 +21,13 @@ public record Invitation(
     return expiresAt != null && expiresAt.isBefore(OffsetDateTime.now());
   }
 
+  public Invitation accepted() {
+    return this.toBuilder()
+        .status(InvitationStatus.ACCEPTED)
+        .expiresAt(null) // Clear expiration on acceptance
+        .build();
+  }
+
   /** Creates a new invitation for a user to join a business. */
   public static Invitation createInvitation(User invited, Business business, User invitedBy, UserRole role) {
     return Invitation.builder()

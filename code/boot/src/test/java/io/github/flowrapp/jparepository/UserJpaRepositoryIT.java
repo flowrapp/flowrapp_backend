@@ -31,15 +31,15 @@ class UserJpaRepositoryIT {
     // GIVEN
 
     // WHEN
-    var user = userJpaRepositoryIT.findByMail(DatabaseData.USER_MAIL);
+    var user = userJpaRepositoryIT.findByMail(DatabaseData.TEST_USER_MAIL);
 
     // THEN
     assertThat(user)
         .isPresent()
         .get()
-        .returns(DatabaseData.USER_MAIL, UserEntity::getMail)
-        .returns(DatabaseData.USER_PHONE, UserEntity::getPhone)
-        .returns(DatabaseData.USER_NAME, UserEntity::getName);
+        .returns(DatabaseData.TEST_USER_MAIL, UserEntity::getMail)
+        .returns(DatabaseData.TEST_USER_PHONE, UserEntity::getPhone)
+        .returns(DatabaseData.TEST_USER_NAME, UserEntity::getName);
   }
 
   @Test

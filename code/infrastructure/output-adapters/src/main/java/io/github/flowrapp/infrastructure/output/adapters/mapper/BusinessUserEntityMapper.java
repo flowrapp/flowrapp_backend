@@ -1,0 +1,21 @@
+package io.github.flowrapp.infrastructure.output.adapters.mapper;
+
+import io.github.flowrapp.infrastructure.jpa.businessbd.entity.BusinessUserEntity;
+import io.github.flowrapp.model.BusinessUser;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
+import org.mapstruct.ReportingPolicy;
+
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
+    componentModel = ComponentModel.SPRING,
+    uses = {UserEntityMapper.class, BusinessEntityMapper.class})
+public interface BusinessUserEntityMapper {
+
+  @Mapping(target = "id", ignore = true)
+  BusinessUserEntity domain2Infra(BusinessUser businessUser);
+
+  BusinessUser infra2domain(BusinessUserEntity businessUserEntity);
+
+}

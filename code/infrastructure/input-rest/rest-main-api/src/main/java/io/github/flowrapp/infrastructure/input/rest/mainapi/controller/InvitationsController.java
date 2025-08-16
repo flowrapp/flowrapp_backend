@@ -3,12 +3,14 @@ package io.github.flowrapp.infrastructure.input.rest.mainapi.controller;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import java.util.List;
+import java.util.UUID;
 
 import io.github.flowrapp.infrastructure.apirest.users.api.InvitationsApi;
 import io.github.flowrapp.infrastructure.apirest.users.model.AcceptInvitation200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.CreateBusinessInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetBusinessInvitations200ResponseInnerDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.InvitationsDTOMapper;
+import io.github.flowrapp.model.InvitationStatus;
 import io.github.flowrapp.port.input.InvitationsUseCase;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class InvitationsController implements InvitationsApi {
 
   @Override
   public ResponseEntity<AcceptInvitation200ResponseDTO> acceptInvitation(String token) {
-    val result = invitationsUseCase.acceptInvitation(token);
+    val result = invitationsUseCase.acceptInvitation(UUID.fromString(token));
 
     return ResponseEntity.ok(
         invitationsDTOMapper.domain2restAccept(result));
@@ -53,7 +55,7 @@ public class InvitationsController implements InvitationsApi {
 
   @Override
   public ResponseEntity<List<GetBusinessInvitations200ResponseInnerDTO>> getBusinessInvitations(Integer businessId, String status) {
-    val result = invitationsUseCase.getBusinessInvitations(businessId, status);
+    val result = invitationsUseCase.getBusinessInvitations(businessId, InvitationStatus.valueOf(status));
 
     return ResponseEntity.ok(
         invitationsDTOMapper.domain2rest(result));

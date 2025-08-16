@@ -8,6 +8,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
 import java.util.List;
+import java.util.UUID;
 
 import io.github.flowrapp.infrastructure.apirest.users.model.AcceptInvitation200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.CreateBusinessInvitationRequestDTO;
@@ -44,13 +45,13 @@ class InvitationsControllerTest {
 
   @ParameterizedTest
   @InstancioSource
-  void acceptInvitation(String token, Invitation invitation) {
+  void acceptInvitation(UUID token, Invitation invitation) {
     // GIVEN
     when(invitationsUseCase.acceptInvitation(token))
         .thenReturn(invitation);
 
     // WHEN
-    var response = invitationsController.acceptInvitation(token);
+    var response = invitationsController.acceptInvitation(token.toString());
 
     // THEN
     assertThat(response)
@@ -112,7 +113,7 @@ class InvitationsControllerTest {
   void getBusinessInvitations(Integer businessId, InvitationStatus status,
       List<Invitation> invitationList) {
     // GIVEN
-    when(invitationsUseCase.getBusinessInvitations(businessId, status.toString()))
+    when(invitationsUseCase.getBusinessInvitations(businessId, status))
         .thenReturn(invitationList);
 
     // WHEN
