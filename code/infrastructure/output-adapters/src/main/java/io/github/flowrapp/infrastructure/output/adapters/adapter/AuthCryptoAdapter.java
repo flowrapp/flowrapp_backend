@@ -1,6 +1,5 @@
 package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
-import java.util.List;
 import java.util.Optional;
 
 import io.github.flowrapp.infrastructure.input.rest.mainapi.security.ClaimConstants;
@@ -11,10 +10,8 @@ import io.github.flowrapp.port.output.AuthCryptoPort;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.jspecify.annotations.NonNull;
-import org.passay.CharacterRule;
-import org.passay.EnglishCharacterData;
-import org.passay.PasswordGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +24,9 @@ public class AuthCryptoAdapter implements AuthCryptoPort {
 
   private final JwtTokenService jwtTokenService;
 
-  private final PasswordGenerator passwordGen = new PasswordGenerator();
-
-  private final List<CharacterRule> rules = List.of(
-      new CharacterRule(EnglishCharacterData.Digit),
-      new CharacterRule(EnglishCharacterData.UpperCase),
-      new CharacterRule(EnglishCharacterData.Alphabetical));
-
   @Override
   public String randomPassword() {
-    return passwordGen.generatePassword(10, rules);
+    return RandomStringUtils.secure().next(10, true, true);
   }
 
   @Override
