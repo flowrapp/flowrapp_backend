@@ -60,4 +60,7 @@ public class UserEntity {
   @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<BusinessEntity> ownedBusinesses = new LinkedHashSet<>();
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<BusinessUserEntity> businessMemberships = new LinkedHashSet<>();
+
 }

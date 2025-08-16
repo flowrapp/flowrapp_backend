@@ -1,8 +1,11 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
 import java.time.OffsetDateTime;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -51,6 +55,9 @@ public class BusinessEntity {
   @ManyToOne
   @JoinColumn(name = "owner_id", nullable = false)
   private UserEntity owner;
+
+  @OneToMany(mappedBy = "business", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<BusinessUserEntity> members = new LinkedHashSet<>();
 
   @Override
   public final boolean equals(Object o) {
