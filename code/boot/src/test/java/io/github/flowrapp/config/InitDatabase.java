@@ -10,10 +10,13 @@ import java.lang.annotation.Target;
 
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlMergeMode;
+import org.springframework.test.context.jdbc.SqlMergeMode.MergeMode;
 
 @DirtiesContext
 @Sql(scripts = {"/compose/postgres/postgrest-cleanUp.sql", "/compose/postgres/init/postgres-init.sql"}, // Clean the schema
     executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@SqlMergeMode(MergeMode.MERGE)
 @Documented
 @Inherited
 @Retention(RUNTIME)
