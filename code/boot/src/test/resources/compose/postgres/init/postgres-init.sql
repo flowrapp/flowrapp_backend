@@ -144,7 +144,7 @@ INSERT INTO flowrapp_management.users_roles (user_id, business_id, role, invited
 VALUES (2, 1, 'USER', 1, NOW());
 
 INSERT INTO flowrapp_management.invitations (invited, invited_by, business_id, token, role, created_at, expires_at, status)
-VALUES (1, 1, 1, gen_random_uuid(), 'ADMIN', NOW(), NOW() + INTERVAL '7 days', 'ACCEPTED');
+VALUES (1, 1, 1, '55dbf9d4-80ec-4e2b-96c7-b2eac6d2910c', 'ADMIN', NOW(), NOW() + INTERVAL '7 days', 'ACCEPTED');
 INSERT INTO flowrapp_management.invitations (invited, invited_by, business_id, token, role, created_at, expires_at, status)
 VALUES (1, 2, 1, gen_random_uuid(), 'USER', NOW(), NOW() + INTERVAL '7 days', 'ACCEPTED');
 

@@ -16,6 +16,8 @@ public interface BusinessEntityMapper {
   @Mapping(target = "longitude", source = "location.longitude")
   @Mapping(target = "latitude", source = "location.latitude")
   @Mapping(target = "area", source = "location.area")
+  @Mapping(target = "members", ignore = true)
+  @Mapping(target = "invitations", ignore = true)
   BusinessEntity domain2Infra(Business business);
 
   @Mapping(target = "location.latitude", source = "latitude")

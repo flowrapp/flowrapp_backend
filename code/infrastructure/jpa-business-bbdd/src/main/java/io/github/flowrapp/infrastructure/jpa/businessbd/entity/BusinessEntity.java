@@ -5,7 +5,6 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -56,8 +55,11 @@ public class BusinessEntity {
   @JoinColumn(name = "owner_id", nullable = false)
   private UserEntity owner;
 
-  @OneToMany(mappedBy = "business", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "business")
   private Set<BusinessUserEntity> members = new LinkedHashSet<>();
+
+  @OneToMany(mappedBy = "business")
+  private Set<InvitationEntity> invitations = new LinkedHashSet<>();
 
   @Override
   public final boolean equals(Object o) {

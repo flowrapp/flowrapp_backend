@@ -14,4 +14,6 @@ public class DatabaseData {
 
   public static final String BUSINESS_NAME = "Test Business";
 
+  public static final String INVITATION_TOKEN = "55dbf9d4-80ec-4e2b-96c7-b2eac6d2910c";
+
 }

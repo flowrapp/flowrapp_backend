@@ -8,6 +8,7 @@ import io.github.flowrapp.config.InitDatabase;
 import io.github.flowrapp.infrastructure.jpa.businessbd.config.BusinessBdDatasourceConfig;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.UserJpaRepository;
+import io.github.flowrapp.model.config.Constants;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,38 @@ class UserJpaRepositoryIT {
     assertThat(users)
         .isNotNull()
         .isNotEmpty();
+  }
+
+  @Test
+  void findAllUsersOwnedBusiness() {
+    // GIVEN
+
+    // WHEN
+    var ownedBusinesses = userJpaRepositoryIT.findByMail(Constants.ADMIN_USER_MAIL)
+        .orElseThrow()
+        .getOwnedBusinesses();
+
+    // THEN
+    assertThat(ownedBusinesses)
+        .isNotNull()
+        .isNotEmpty()
+        .hasSize(1);
+  }
+
+  @Test
+  void findAllUsersBusinessMemberships() {
+    // GIVEN
+
+    // WHEN
+    var businessMemberships = userJpaRepositoryIT.findByMail(Constants.ADMIN_USER_MAIL)
+        .orElseThrow()
+        .getBusinessMemberships();
+
+    // THEN
+    assertThat(businessMemberships)
+        .isNotNull()
+        .isNotEmpty()
+        .hasSize(1);
   }
 
 }
