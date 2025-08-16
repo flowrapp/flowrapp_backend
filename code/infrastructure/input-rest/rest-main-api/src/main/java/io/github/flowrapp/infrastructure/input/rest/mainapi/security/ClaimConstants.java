@@ -1,9 +1,9 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.security;
 
-public final class ClaimConstants {
+import lombok.experimental.UtilityClass;
 
-  private ClaimConstants() {
-  }
+@UtilityClass
+public class ClaimConstants {
 
   public static final String CLAIM_KEY_USER_MAIL = "mail";
 

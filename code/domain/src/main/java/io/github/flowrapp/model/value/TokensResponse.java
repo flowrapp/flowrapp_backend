@@ -1,4 +1,4 @@
-package io.github.flowrapp.model;
+package io.github.flowrapp.model.value;
 
 import lombok.Builder;
 

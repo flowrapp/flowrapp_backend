@@ -8,8 +8,8 @@ import java.util.Optional;
 
 import io.github.flowrapp.infrastructure.input.rest.mainapi.security.ClaimConstants;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.security.JwtTokenService;
-import io.github.flowrapp.model.TokensResponse;
 import io.github.flowrapp.model.User;
+import io.github.flowrapp.model.value.TokensResponse;
 
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
@@ -17,30 +17,70 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
-class UserAuthenticationServiceAdapterTest {
+class AuthCryptoAdapterTest {
 
-  @Mock
-  private PasswordEncoder passwordEncoder;
+  @Spy
+  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(BCryptVersion.$2A, 5);
 
   @Mock
   private JwtTokenService jwtTokenService;
 
   @InjectMocks
-  private UserAuthenticationServiceAdapter userAuthenticationServiceAdapter;
+  private AuthCryptoAdapter authCryptoAdapter;
 
   @ParameterizedTest
-  @InstancioSource
-  void checkPassword_shouldReturnTrue_whenPasswordMatches(String rawPassword, String passwordHash) {
+  @InstancioSource(samples = 1)
+  void randomPassword_shouldReturnRandomPassword() {
     // Given
-    when(passwordEncoder.matches(rawPassword, passwordHash)).thenReturn(true);
 
     // When
-    var result = userAuthenticationServiceAdapter.checkPassword(rawPassword, passwordHash);
+    var generatedPassword = authCryptoAdapter.randomPassword();
+
+    // Then
+    assertThat(generatedPassword).isNotBlank();
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void randomHashesPassword_shouldReturnHashedPassword() {
+    // Given
+
+    // When
+    var hashedPassword = authCryptoAdapter.randomHashesPassword();
+
+    // Then
+    assertThat(hashedPassword).isNotBlank();
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void hashPassword_shouldReturnHashedPassword(String randomPassword) {
+    // Given
+
+    // When
+    var result = authCryptoAdapter.hashPassword(randomPassword);
+
+    // Then
+    assertThat(result)
+        .isNotBlank();
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void checkPassword_shouldReturnTrue_whenPasswordMatches(String rawPassword) {
+    // Given
+    var passwordHash = passwordEncoder.encode(rawPassword);
+
+    // When
+    var result = authCryptoAdapter.checkPassword(rawPassword, passwordHash);
 
     // Then
     assertThat(result).isTrue();
@@ -50,10 +90,9 @@ class UserAuthenticationServiceAdapterTest {
   @InstancioSource
   void checkPassword_shouldReturnFalse_whenPasswordDoesNotMatch(String rawPassword, String passwordHash) {
     // Given
-    when(passwordEncoder.matches(rawPassword, passwordHash)).thenReturn(false);
 
     // When
-    boolean result = userAuthenticationServiceAdapter.checkPassword(rawPassword, passwordHash);
+    boolean result = authCryptoAdapter.checkPassword(rawPassword, passwordHash);
 
     // Then
     assertThat(result).isFalse();
@@ -69,7 +108,7 @@ class UserAuthenticationServiceAdapterTest {
     when(jwtTokenService.createRefreshToken(user)).thenReturn(refreshToken);
 
     // When
-    var result = userAuthenticationServiceAdapter.createTokens(user);
+    var result = authCryptoAdapter.createTokens(user);
 
     // Then
     assertThat(result)
@@ -89,7 +128,7 @@ class UserAuthenticationServiceAdapterTest {
         .thenReturn(userMail);
 
     // When
-    var result = userAuthenticationServiceAdapter.getUserMailFromToken(refreshToken);
+    var result = authCryptoAdapter.getUserMailFromToken(refreshToken);
 
     // Then
     assertThat(result)
@@ -103,7 +142,7 @@ class UserAuthenticationServiceAdapterTest {
     // Given
 
     // When
-    var result = userAuthenticationServiceAdapter.getUserMailFromToken(refreshToken);
+    var result = authCryptoAdapter.getUserMailFromToken(refreshToken);
 
     // Then
     assertThat(result).isEmpty();

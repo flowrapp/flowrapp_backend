@@ -4,12 +4,13 @@ import java.util.Optional;
 
 import io.github.flowrapp.infrastructure.input.rest.mainapi.security.ClaimConstants;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.security.JwtTokenService;
-import io.github.flowrapp.model.TokensResponse;
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.port.output.UserAuthenticationServiceOutput;
+import io.github.flowrapp.model.value.TokensResponse;
+import io.github.flowrapp.port.output.AuthCryptoPort;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,26 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserAuthenticationServiceAdapter implements UserAuthenticationServiceOutput {
+public class AuthCryptoAdapter implements AuthCryptoPort {
 
   private final PasswordEncoder passwordEncoder;
 
   private final JwtTokenService jwtTokenService;
+
+  @Override
+  public String randomPassword() {
+    return RandomStringUtils.secure().next(10, true, true);
+  }
+
+  @Override
+  public String randomHashesPassword() {
+    return this.hashPassword(this.randomPassword());
+  }
+
+  @Override
+  public String hashPassword(String randomPassword) {
+    return passwordEncoder.encode(randomPassword);
+  }
 
   @Override
   public boolean checkPassword(@NonNull String rawPassword, @NonNull String passwordHash) {

@@ -1,12 +1,16 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
 import java.time.OffsetDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,7 +21,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Setter
 @Entity
-@Table(name = "users", schema = "flowrapp_management")
+@Table(name = "users")
 public class UserEntity {
 
   @Id
@@ -52,5 +56,8 @@ public class UserEntity {
   @ColumnDefault("now()")
   @Column(name = "created_at", nullable = false)
   private OffsetDateTime createdAt;
+
+  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<BusinessEntity> ownedBusinesses = new LinkedHashSet<>();
 
 }

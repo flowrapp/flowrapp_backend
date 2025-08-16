@@ -7,6 +7,7 @@ import io.github.flowrapp.exception.FunctionalException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -25,6 +26,14 @@ public class GlobalControllerAdvice {
     return ProblemDetail.forStatusAndDetail(
         requireNonNullElse(HttpStatus.resolve(functionalEx.getStatus()), HttpStatus.I_AM_A_TEAPOT),
         functionalEx.getMessage());
+  }
+
+  @ExceptionHandler(AuthorizationDeniedException.class)
+  public ProblemDetail handleAuthorizationDeniedException(final AuthorizationDeniedException authEx) {
+    log.error("Authorization denied: {}", authEx.getMessage());
+
+    return ProblemDetail.forStatusAndDetail(
+        HttpStatus.FORBIDDEN, "You do not have permission to access this resource");
   }
 
   /**

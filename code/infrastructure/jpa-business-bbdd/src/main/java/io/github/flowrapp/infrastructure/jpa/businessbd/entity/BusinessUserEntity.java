@@ -21,14 +21,14 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter
 @Entity
 @Table(name = "users_roles", schema = "flowrapp_management")
-public class UsersRoleEntity {
+public class BusinessUserEntity {
 
   @SequenceGenerator(name = "users_roles_id_gen", sequenceName = "users_id_seq1", allocationSize = 1)
   @EmbeddedId
   private UsersRoleIdEntity id;
 
   @MapsId("userId")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "user_id", nullable = false)
   private UserEntity user;
 

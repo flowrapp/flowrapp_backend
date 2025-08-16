@@ -1,6 +1,7 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,10 +29,9 @@ public class InvitationEntity {
   @Column(name = "id", nullable = false)
   private Integer id;
 
-  @Size(max = 320)
-  @NotNull
-  @Column(name = "mail", nullable = false, length = 320)
-  private String mail;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "invited")
+  private UserEntity invited;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "invited_by")
@@ -41,6 +41,10 @@ public class InvitationEntity {
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "business_id", nullable = false)
   private BusinessEntity business;
+
+  @NotNull
+  @Column(name = "token", nullable = false)
+  private UUID token;
 
   @Size(max = 50)
   @NotNull

@@ -1,0 +1,40 @@
+package io.github.flowrapp.infrastructure.output.adapters.adapter;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
+import io.github.flowrapp.infrastructure.output.adapters.mapper.InvitationEntityMapper;
+import io.github.flowrapp.model.Invitation;
+import io.github.flowrapp.port.output.InvitationRepositoryOutput;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.jspecify.annotations.NonNull;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class InvitationRepositoryAdapter implements InvitationRepositoryOutput {
+
+  private final InvitationJpaRepository invitationJpaRepository;
+
+  private final InvitationEntityMapper invitationEntityMapper;
+
+  @Override
+  public Optional<Invitation> findByToken(@NonNull UUID token) {
+    return invitationJpaRepository.findByToken(token)
+        .map(invitationEntityMapper::infra2domain);
+  }
+
+  @Override
+  public @NonNull Invitation save(@NonNull Invitation invitation) {
+    val jpaInvitation = invitationJpaRepository.save(
+        invitationEntityMapper.domain2Infra(invitation));
+
+    return invitationEntityMapper.infra2domain(jpaInvitation);
+  }
+
+}

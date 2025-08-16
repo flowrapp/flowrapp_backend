@@ -10,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum FunctionalError {
   USER_NOT_FOUND(1000, 404, "user not found"),
-  INVALID_CREDENTIALS(1001, 401, "invalid credentials"),
-  INVALID_REFRESH_TOKEN(1002, 401, "invalid refresh token"),
+  ADMIN_USER_NOT_FOUND(1001, 500, "admin user not found"),
+  USERNAME_ALREADY_EXISTS(1002, 409, "user already exists"),
+  INVALID_CREDENTIALS(1003, 401, "invalid credentials"),
+  INVALID_REFRESH_TOKEN(1004, 401, "invalid refresh token"),
   ;
 
   private final int code;

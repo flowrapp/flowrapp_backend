@@ -1,6 +1,7 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,7 +37,7 @@ public class PushTokenEntity {
   @Size(max = 255)
   @NotNull
   @Column(name = "token", nullable = false)
-  private String token;
+  private UUID token;
 
   @Size(max = 255)
   @NotNull
