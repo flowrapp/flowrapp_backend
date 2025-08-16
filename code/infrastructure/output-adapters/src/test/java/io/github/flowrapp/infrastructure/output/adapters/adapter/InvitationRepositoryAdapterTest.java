@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.InvitationEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
@@ -21,6 +22,7 @@ import io.github.flowrapp.model.InvitationStatus;
 import io.github.flowrapp.model.UserRole;
 
 import lombok.val;
+import org.apache.commons.lang3.RandomUtils;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
@@ -105,11 +107,57 @@ class InvitationRepositoryAdapterTest {
         .isNotNull();
   }
 
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void findByBusinessIdAndStatus(Integer businessId, InvitationStatus status) {
+    // Given
+    var invitationList = IntStream.range(0, RandomUtils.secure().randomInt(1, 10))
+        .mapToObj(unused -> this.generateInvitationEntity())
+        .toList();
+
+    when(invitationJpaRepository.findAllByBusiness_IdAndStatus(businessId, status.name()))
+        .thenReturn(invitationList);
+
+    // When
+    val result = invitationRepositoryAdapter.findByBusinessIdAndStatus(businessId, status);
+
+    // Then
+    assertThat(result)
+        .isNotNull()
+        .isNotEmpty()
+        .hasSize(invitationList.size());
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void userIsAlreadyInvitedToBusiness(Integer invitedUserId, Integer businessId) {
+    // Given
+    when(invitationJpaRepository.existsByInvited_IdAndBusiness_IdAndStatusIs(invitedUserId, businessId, InvitationStatus.PENDING.name()))
+        .thenReturn(true);
+
+    // When
+    val result = invitationRepositoryAdapter.userIsAlreadyInvitedToBusiness(invitedUserId, businessId);
+
+    // Then
+    assertThat(result).isTrue();
+  }
+
   private InvitationEntity generateInvitationEntity() {
     return Instancio.of(InvitationEntity.class)
         .generate(field(InvitationEntity::getRole), gen -> gen.oneOf(UserRole.values()).asString())
         .generate(field(InvitationEntity::getStatus), gen -> gen.oneOf(InvitationStatus.values()).asString())
         .create();
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void deleteInvitation(Integer businessId, Integer invitationId) {
+    // Given
+    // When
+    invitationRepositoryAdapter.deleteInvitation(businessId, invitationId);
+
+    // Then
+    // No exception thrown, method executed successfully
   }
 
 }

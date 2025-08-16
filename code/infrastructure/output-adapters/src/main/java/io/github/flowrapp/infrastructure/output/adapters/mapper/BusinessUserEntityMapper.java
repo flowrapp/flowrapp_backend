@@ -13,7 +13,8 @@ import org.mapstruct.ReportingPolicy;
     uses = {UserEntityMapper.class, BusinessEntityMapper.class})
 public interface BusinessUserEntityMapper {
 
-  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "id.userId", source = "user.id")
+  @Mapping(target = "id.businessId", source = "business.id")
   BusinessUserEntity domain2Infra(BusinessUser businessUser);
 
   BusinessUser infra2domain(BusinessUserEntity businessUserEntity);

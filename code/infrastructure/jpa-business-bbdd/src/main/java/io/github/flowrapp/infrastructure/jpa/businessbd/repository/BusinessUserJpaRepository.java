@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BusinessUserJpaRepository extends JpaRepository<BusinessUserEntity, UsersRoleIdEntity> {
+
+  boolean existsByUser_IdAndBusiness_Id(Integer userId, Integer businessId);
+
 }

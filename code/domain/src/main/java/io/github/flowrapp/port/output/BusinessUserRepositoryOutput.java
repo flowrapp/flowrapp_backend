@@ -6,4 +6,5 @@ public interface BusinessUserRepositoryOutput {
 
   BusinessUser save(BusinessUser businessUser);
 
+  boolean userIsMemberOfBusiness(Integer userId, Integer businessId);
 }

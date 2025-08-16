@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNullElse;
 
 import io.github.flowrapp.exception.FunctionalException;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -21,7 +22,7 @@ public class GlobalControllerAdvice {
 
   @ExceptionHandler(FunctionalException.class)
   public ProblemDetail handleFunctionalException(final FunctionalException functionalEx) {
-    log.error("Received functional exception: {}", functionalEx.getMessage());
+    log.warn("Received functional exception: {}", functionalEx.getMessage());
 
     return ProblemDetail.forStatusAndDetail(
         requireNonNullElse(HttpStatus.resolve(functionalEx.getStatus()), HttpStatus.I_AM_A_TEAPOT),
@@ -30,10 +31,18 @@ public class GlobalControllerAdvice {
 
   @ExceptionHandler(AuthorizationDeniedException.class)
   public ProblemDetail handleAuthorizationDeniedException(final AuthorizationDeniedException authEx) {
-    log.error("Authorization denied: {}", authEx.getMessage());
+    log.warn("Authorization denied: {}", authEx.getMessage());
 
     return ProblemDetail.forStatusAndDetail(
         HttpStatus.FORBIDDEN, "You do not have permission to access this resource");
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ProblemDetail handleConstraintViolationException(final ConstraintViolationException ex) {
+    log.warn("Constraint violation: {}", ex.getMessage());
+
+    return ProblemDetail.forStatusAndDetail(
+        HttpStatus.BAD_REQUEST, "Invalid request parameters: " + ex.getMessage());
   }
 
   /**

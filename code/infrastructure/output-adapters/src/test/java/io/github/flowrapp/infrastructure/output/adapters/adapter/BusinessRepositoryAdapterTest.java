@@ -46,6 +46,23 @@ class BusinessRepositoryAdapterTest {
 
   @ParameterizedTest
   @InstancioSource
+  void findById(Integer id, BusinessEntity businessEntity) {
+    // GIVEN
+    when(businessJpaRepository.findById(id))
+        .thenReturn(Optional.of(businessEntity));
+
+    // WHEN
+    val result = businessRepositoryAdapter.findById(id);
+
+    // THEN
+    assertThat(result)
+        .isPresent()
+        .get()
+        .returns(businessEntity.getName(), Business::name);
+  }
+
+  @ParameterizedTest
+  @InstancioSource
   void findByName(String name, BusinessEntity businessEntity) {
     // GIVEN
     when(businessJpaRepository.findByName(name))

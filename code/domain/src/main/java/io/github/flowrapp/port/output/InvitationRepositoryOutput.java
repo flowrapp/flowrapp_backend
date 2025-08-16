@@ -19,4 +19,6 @@ public interface InvitationRepositoryOutput {
   void deleteInvitation(@NonNull Integer businessId, @NonNull Integer invitationId);
 
   List<Invitation> findByBusinessIdAndStatus(@NonNull Integer businessId, @NonNull InvitationStatus status);
+
+  boolean userIsAlreadyInvitedToBusiness(Integer invitedUserId, Integer businessId);
 }

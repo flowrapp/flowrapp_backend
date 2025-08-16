@@ -15,9 +15,9 @@ import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessUserEnti
 import io.github.flowrapp.infrastructure.output.adapters.mapper.UserEntityMapper;
 import io.github.flowrapp.model.Business;
 import io.github.flowrapp.model.BusinessUser;
-
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.UserRole;
+
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
@@ -55,7 +55,7 @@ class BusinessUserRepositoryAdapterTest {
     // Given
     var businessUserEntity = Instancio.of(BusinessUserEntity.class)
         .generate(field(BusinessUserEntity::getRole), gen -> gen.oneOf(UserRole.values()).asString())
-            .create();
+        .create();
 
     when(businessUserJpaRepository.save(assertArg(argument -> assertThat(argument)
         .isNotNull()
@@ -75,11 +75,26 @@ class BusinessUserRepositoryAdapterTest {
     assertThat(result)
         .isNotNull()
         .satisfies(businessUser -> {
-            assertThat(businessUser.user()).isNotNull().returns(businessUserEntity.getUser().getMail(), User::mail);
-            assertThat(businessUser.business()).isNotNull().returns(businessUserEntity.getBusiness().getId(), Business::id);
-            assertThat(businessUser.invitedBy()).isNotNull().returns(businessUserEntity.getInvitedBy().getId(), User::id);
+          assertThat(businessUser.user()).isNotNull().returns(businessUserEntity.getUser().getMail(), User::mail);
+          assertThat(businessUser.business()).isNotNull().returns(businessUserEntity.getBusiness().getId(), Business::id);
+          assertThat(businessUser.invitedBy()).isNotNull().returns(businessUserEntity.getInvitedBy().getId(), User::id);
         })
         .returns(businessUserEntity.getJoinedAt(), BusinessUser::joinedAt)
         .returns(businessUserEntity.getRole(), user -> user.role().toString());
   }
+
+  @ParameterizedTest
+  @InstancioSource
+  void userIsMemberOfBusiness(Integer userId, Integer businessId) {
+    // Given
+    when(businessUserJpaRepository.existsByUser_IdAndBusiness_Id(userId, businessId))
+        .thenReturn(true);
+
+    // When
+    boolean result = businessUserRepositoryAdapter.userIsMemberOfBusiness(userId, businessId);
+
+    // Then
+    assertThat(result).isTrue();
+  }
+
 }

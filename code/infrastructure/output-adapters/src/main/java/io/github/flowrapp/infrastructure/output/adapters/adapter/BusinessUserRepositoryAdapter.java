@@ -27,4 +27,9 @@ public class BusinessUserRepositoryAdapter implements BusinessUserRepositoryOutp
     return businessUserEntityMapper.infra2domain(jpaEntity);
   }
 
+  @Override
+  public boolean userIsMemberOfBusiness(Integer userId, Integer businessId) {
+    return businessUserJpaRepository.existsByUser_IdAndBusiness_Id(userId, businessId);
+  }
+
 }

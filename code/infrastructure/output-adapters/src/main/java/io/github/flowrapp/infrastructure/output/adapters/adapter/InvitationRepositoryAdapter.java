@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import io.github.flowrapp.infrastructure.jpa.businessbd.repository.BusinessJpaRepository;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.InvitationEntityMapper;
 import io.github.flowrapp.model.Invitation;
@@ -16,13 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class InvitationRepositoryAdapter implements InvitationRepositoryOutput {
-
-  private final BusinessJpaRepository businessJpaRepository;
 
   private final InvitationJpaRepository invitationJpaRepository;
 
@@ -41,6 +39,11 @@ public class InvitationRepositoryAdapter implements InvitationRepositoryOutput {
   }
 
   @Override
+  public boolean userIsAlreadyInvitedToBusiness(Integer invitedUserId, Integer businessId) {
+    return invitationJpaRepository.existsByInvited_IdAndBusiness_IdAndStatusIs(invitedUserId, businessId, InvitationStatus.PENDING.name());
+  }
+
+  @Override
   public @NonNull Invitation save(@NonNull Invitation invitation) {
     val jpaInvitation = invitationJpaRepository.save(
         invitationEntityMapper.domain2Infra(invitation));
@@ -48,6 +51,7 @@ public class InvitationRepositoryAdapter implements InvitationRepositoryOutput {
     return invitationEntityMapper.infra2domain(jpaInvitation);
   }
 
+  @Transactional
   @Override
   public void deleteInvitation(@NonNull Integer businessId, @NonNull Integer invitationId) {
     invitationJpaRepository.deleteByIdAndBusiness_Id(invitationId, businessId);

@@ -21,6 +21,12 @@ public class BusinessRepositoryAdapter implements BusinessRepositoryOutput {
   private final BusinessEntityMapper businessEntityMapper;
 
   @Override
+  public Optional<Business> findById(Integer id) {
+    return businessJpaRepository.findById(id)
+        .map(businessEntityMapper::infra2domain);
+  }
+
+  @Override
   public Optional<Business> findByName(String name) {
     return businessJpaRepository.findByName(name)
         .map(businessEntityMapper::infra2domain);
