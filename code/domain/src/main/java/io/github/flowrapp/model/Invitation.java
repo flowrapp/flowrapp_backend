@@ -7,6 +7,7 @@ import lombok.Builder;
 
 @Builder(toBuilder = true)
 public record Invitation(
+    Integer id,
     User invited,
     User invitedBy,
     Business business,

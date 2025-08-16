@@ -75,7 +75,7 @@ public class AdminUseCaseImpl implements AdminUseCase {
     log.debug("Creating invitation for user {} to business {}", user.mail(), newBusiness.name());
 
     return invitationRepositoryOutput.save(
-        Invitation.createInvitation(user, newBusiness, adminUser, UserRole.ADMIN));
+        Invitation.createInvitation(user, newBusiness, adminUser, UserRole.OWNER));
   }
 
 }
