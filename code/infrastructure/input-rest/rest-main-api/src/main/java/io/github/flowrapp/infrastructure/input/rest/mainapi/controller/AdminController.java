@@ -1,5 +1,7 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.controller;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 import io.github.flowrapp.infrastructure.apirest.users.api.AdminApi;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.AdminDTOMapper;
@@ -26,7 +28,7 @@ public class AdminController implements AdminApi {
     adminUseCase.createUser(
         adminDTOMapper.rest2domain(registerUserRequestDTO));
 
-    return ResponseEntity.ok().build();
+    return ResponseEntity.status(CREATED).build();
   }
 
 }

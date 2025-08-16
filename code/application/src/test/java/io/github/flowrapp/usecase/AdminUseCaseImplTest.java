@@ -8,10 +8,12 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.value.UserCreationRequest;
+import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
@@ -36,6 +38,9 @@ class AdminUseCaseImplTest {
   @Mock
   private InvitationRepositoryOutput invitationRepositoryOutput;
 
+  @Mock
+  private AuthCryptoPort authCryptoPort;
+
   @InjectMocks
   private AdminUseCaseImpl adminUseCase;
 
@@ -47,6 +52,8 @@ class AdminUseCaseImplTest {
         .thenReturn(Optional.of(adminUser));
     when(userRepositoryOutput.existsByEmail(userCreationRequest.mail()))
         .thenReturn(false);
+    when(authCryptoPort.randomPassword())
+        .thenReturn(UUID.randomUUID().toString());
 
     when(userRepositoryOutput.save(argThat(argument -> argument.mail().equals(userCreationRequest.mail()))))
         .then(returnsFirstArg());

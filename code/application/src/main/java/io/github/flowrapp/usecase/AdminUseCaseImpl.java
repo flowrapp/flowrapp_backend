@@ -11,6 +11,7 @@ import io.github.flowrapp.model.UserRole;
 import io.github.flowrapp.model.value.BusinessCreationRequest;
 import io.github.flowrapp.model.value.UserCreationRequest;
 import io.github.flowrapp.port.input.AdminUseCase;
+import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
@@ -32,6 +33,8 @@ public class AdminUseCaseImpl implements AdminUseCase {
 
   private final InvitationRepositoryOutput invitationRepositoryOutput;
 
+  private final AuthCryptoPort authCryptoPort;
+
   @Transactional
   @Override
   public void createUser(UserCreationRequest userCreationRequest) {
@@ -44,18 +47,21 @@ public class AdminUseCaseImpl implements AdminUseCase {
       throw new FunctionalException(FunctionalError.USERNAME_ALREADY_EXISTS);
     }
 
-    val newUser = this.createNewUser(userCreationRequest);
+    val randomPassword = authCryptoPort.randomPassword();
+    val newUser = this.createNewUser(userCreationRequest, randomPassword);
     val newBusiness = this.createNewBusiness(userCreationRequest.business(), newUser);
 
     val invitation = this.createInvitation(newUser, newBusiness, adminUser);
-    // TODO: send email to user with activation link
+    log.debug("Password for new user: {}", randomPassword);
+    // TODO: send email to user with activation link AND REMOVE THIS LOG
 
     log.debug("User created successfully: {}", newUser);
   }
 
-  private User createNewUser(UserCreationRequest userCreationRequest) {
+  private User createNewUser(UserCreationRequest userCreationRequest, String randomPassword) {
     return userRepositoryOutput.save(
-        User.fromUserCreationRequest(userCreationRequest));
+        User.fromUserCreationRequest(userCreationRequest)
+            .withPasswordHash(authCryptoPort.hashPassword(randomPassword)));
   }
 
   private Business createNewBusiness(BusinessCreationRequest businessCreationRequest, User user) {

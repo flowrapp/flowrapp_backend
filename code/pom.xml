@@ -42,6 +42,7 @@
     <org.mapstruct.version>1.6.3</org.mapstruct.version>
     <jspecify.version>1.0.0</jspecify.version>
     <apache-commons.version>4.5.0</apache-commons.version>
+    <passay.version>1.6.6</passay.version>
     <swagger.version>2.8.9</swagger.version>
     <openapiSwaggerJackson.version>0.2.6</openapiSwaggerJackson.version>
 
@@ -118,6 +119,11 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-collections4</artifactId>
         <version>${apache-commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.passay</groupId>
+        <artifactId>passay</artifactId>
+        <version>${passay.version}</version>
       </dependency>
       <!-- Swagger OpenAPI Documentation -->
       <dependency>
