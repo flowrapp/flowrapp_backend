@@ -11,10 +11,10 @@ import io.github.flowrapp.model.value.InvitationRegistrationRequest;
 public interface InvitationsUseCase {
 
   /** Accepts an invitation using the provided token. In this case, the user is already registered. */
-  Invitation acceptInvitation(UUID token);
+  void acceptInvitation(UUID token);
 
   /** Accepts an invitation from a user that is not registered yet. */
-  Invitation registerInvitation(InvitationRegistrationRequest invitationRegistration);
+  void registerInvitation(InvitationRegistrationRequest invitationRegistration);
 
   void deleteInvitation(Integer businessId, Integer invitationId);
 

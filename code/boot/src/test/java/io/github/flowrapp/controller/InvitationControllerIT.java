@@ -22,14 +22,12 @@ import io.github.flowrapp.Application;
 import io.github.flowrapp.DatabaseData;
 import io.github.flowrapp.config.InitDatabase;
 import io.github.flowrapp.exception.FunctionalError;
-import io.github.flowrapp.infrastructure.apirest.users.model.AcceptInvitation200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.CreateBusinessInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetBusinessInvitations200ResponseInnerDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserFromInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.config.GlobalControllerAdvice;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.InvitationEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity;
-import io.github.flowrapp.infrastructure.jpa.businessbd.repository.BusinessJpaRepository;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.UserJpaRepository;
 import io.github.flowrapp.model.InvitationStatus;
@@ -54,14 +52,6 @@ class InvitationControllerIT {
 
   public static final String VALID_TOKEN = "23a30f35-7aa2-44cf-970a-54b22bfedcfa";
 
-  public static final String EXPIRED_TOKEN = "bdaf548b-ce82-41e0-a6c4-c7d3f78f6ea4";
-
-  public static final String INVALID_TOKEN = "invalid-token-456";
-
-  public static final Integer BUSINESS_ID = 1;
-
-  public static final Integer INVITATION_ID = 1;
-
   public static final String ADMIN_EMAIL = "admin@admin.com";
 
   public static final String ADMIN_PASSWORD = "1234";
@@ -71,9 +61,6 @@ class InvitationControllerIT {
 
   @Autowired
   private UserJpaRepository userJpaRepository;
-
-  @Autowired
-  private BusinessJpaRepository businessJpaRepository;
 
   @Autowired
   private InvitationJpaRepository invitationJpaRepository;
@@ -89,13 +76,11 @@ class InvitationControllerIT {
     var result = testRestTemplate.exchange(post("/api/v1/invitations/accept?token=" + VALID_TOKEN)
         .header(AUTHORIZATION, basicAuth(DatabaseData.TEST_USER_MAIL, DatabaseData.TEST_USER_PASSWORD))
         .contentType(MediaType.APPLICATION_JSON)
-        .build(), AcceptInvitation200ResponseDTO.class);
+        .build(), Void.class);
 
     assertThat(result)
         .isNotNull()
-        .returns(OK, ResponseEntity::getStatusCode)
-        .extracting(ResponseEntity::getBody)
-        .isNotNull();
+        .returns(OK, ResponseEntity::getStatusCode);
 
     // Verify invitation status changed to ACCEPTED in database
     var invitation = invitationJpaRepository.findByToken(UUID.fromString(VALID_TOKEN));
@@ -111,7 +96,7 @@ class InvitationControllerIT {
     var result = testRestTemplate.exchange(post("/api/v1/invitations/accept?token=bdaf548b-ce82-41e0-a6c4-c7d3f78f6ea4")
         .header(AUTHORIZATION, basicAuth("expired@test.com", DatabaseData.TEST_USER_PASSWORD))
         .contentType(MediaType.APPLICATION_JSON)
-        .build(), AcceptInvitation200ResponseDTO.class);
+        .build(), Void.class);
 
     assertThat(result.getStatusCode()).isEqualTo(FORBIDDEN);
     this.verifyException(FunctionalError.INVITATION_EXPIRED);
@@ -154,7 +139,7 @@ class InvitationControllerIT {
     var result = testRestTemplate.exchange(post("/api/v1/invitations/register?token=45ce70ab-ca18-4f04-b717-9afb6fd3070e")
         // No auth required
         .contentType(MediaType.APPLICATION_JSON)
-        .body(body), AcceptInvitation200ResponseDTO.class);
+        .body(body), Void.class);
 
     assertThat(result.getStatusCode()).isEqualTo(CREATED);
     assertThat(userJpaRepository.findByMail("newuser@test.com"))

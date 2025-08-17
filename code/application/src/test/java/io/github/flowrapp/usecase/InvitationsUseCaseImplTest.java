@@ -180,10 +180,9 @@ class InvitationsUseCaseImplTest {
     when(businessUserRepositoryOutput.save(any(BusinessUser.class))).thenReturn(businessUser);
 
     // WHEN
-    Invitation result = invitationsUseCase.acceptInvitation(token);
+    invitationsUseCase.acceptInvitation(token);
 
     // THEN
-    assertThat(result).returns(acceptedInvitation.id(), Invitation::id);
     verify(invitationRepositoryOutput).save(acceptedInvitation);
     verify(businessUserRepositoryOutput).save(any(BusinessUser.class));
   }
@@ -240,9 +239,11 @@ class InvitationsUseCaseImplTest {
     when(invitation.hasExpired()).thenReturn(false);
     when(invitation.isPending()).thenReturn(false);
 
-    // WHEN / THEN
-    assertThatThrownBy(() -> invitationsUseCase.acceptInvitation(token))
-        .isInstanceOf(FunctionalException.class);
+    // WHEN
+    invitationsUseCase.acceptInvitation(token);
+
+    // THEN
+    verify(invitationRepositoryOutput, never()).save(any(Invitation.class));
   }
 
   @ParameterizedTest
@@ -268,12 +269,10 @@ class InvitationsUseCaseImplTest {
         .then(returnsFirstArg());
 
     // WHEN
-    var result = invitationsUseCase.registerInvitation(invitationRequest);
+    invitationsUseCase.registerInvitation(invitationRequest);
 
     // THEN
-    assertThat(result)
-        .isNotNull()
-        .returns(invitation.id(), Invitation::id);
+    verify(invitationRepositoryOutput).save(argThat(argument -> Objects.equals(argument.id(), invitation.id())));
   }
 
   @ParameterizedTest

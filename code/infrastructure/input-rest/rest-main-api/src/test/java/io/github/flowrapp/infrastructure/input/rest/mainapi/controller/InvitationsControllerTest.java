@@ -11,7 +11,6 @@ import static org.springframework.http.HttpStatus.OK;
 import java.util.List;
 import java.util.UUID;
 
-import io.github.flowrapp.infrastructure.apirest.users.model.AcceptInvitation200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.CreateBusinessInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetBusinessInvitations200ResponseInnerDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserFromInvitationRequestDTO;
@@ -48,23 +47,15 @@ class InvitationsControllerTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
-  void acceptInvitation(UUID token, Invitation invitation) {
+  void acceptInvitation(UUID token) {
     // GIVEN
-    when(invitationsUseCase.acceptInvitation(token))
-        .thenReturn(invitation);
 
     // WHEN
     var response = invitationsController.acceptInvitation(token.toString());
 
     // THEN
-    assertThat(response)
-        .isNotNull()
-        .returns(OK, ResponseEntity::getStatusCode)
-        .extracting(ResponseEntity::getBody)
-        .isNotNull()
-        .returns(invitation.id(), AcceptInvitation200ResponseDTO::getInvitationId)
-        .returns(invitation.business().id(), AcceptInvitation200ResponseDTO::getBusinessId)
-        .returns(invitation.role().toString(), dto -> dto.getRole().toString());
+    assertThat(response).returns(OK, ResponseEntity::getStatusCode);
+    verify(invitationsUseCase).acceptInvitation(token);
   }
 
   @ParameterizedTest

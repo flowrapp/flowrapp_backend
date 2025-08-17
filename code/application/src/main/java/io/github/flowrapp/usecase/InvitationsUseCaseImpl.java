@@ -81,7 +81,7 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
 
   @Transactional
   @Override
-  public Invitation acceptInvitation(UUID token) {
+  public void acceptInvitation(UUID token) {
     log.debug("Accepting invitation with token: {}", token);
 
     val currentUser = this.getCurrentUser();
@@ -92,18 +92,25 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
       throw new FunctionalException(FunctionalError.INVITATION_NOT_FOR_CURRENT_USER);
     }
 
-    this.checkIsValidInvitation(invitation);
+    if (invitation.hasExpired()) {
+      throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
+    }
+
+    if (!invitation.isPending()) {
+      log.warn("Cannot accept invitation {}: not in pending status", token);
+      return; // No need to throw an exception, make it idempotent
+    }
 
     log.debug("Creating business user from invitation: {}", invitation);
     businessUserRepositoryOutput.save(
         BusinessUser.fromInvitation(invitation));
 
-    return invitationRepositoryOutput.save(
+    invitationRepositoryOutput.save(
         invitation.accepted()); // Mark invitation as accepted
   }
 
   @Override
-  public Invitation registerInvitation(InvitationRegistrationRequest invitationRegistration) {
+  public void registerInvitation(InvitationRegistrationRequest invitationRegistration) {
     log.debug("Registering invitation: {}", invitationRegistration);
 
     val invitation = invitationRepositoryOutput.findByToken(invitationRegistration.token())
@@ -114,7 +121,13 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
       throw new FunctionalException(FunctionalError.USER_ALREADY_ENABLED);
     }
 
-    this.checkIsValidInvitation(invitation);
+    if (invitation.hasExpired()) {
+      throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
+    }
+
+    if (!invitation.isPending()) {
+      throw new FunctionalException(FunctionalError.INVITATION_ALREADY_ACCEPTED);
+    }
 
     val updatedUser = userRepositoryOutput.save(
         updateUser(invitationRegistration, invitation.invited()));
@@ -123,18 +136,8 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
     businessUserRepositoryOutput.save(
         BusinessUser.fromInvitation(updatedInvitation));
 
-    return invitationRepositoryOutput.save(
+    invitationRepositoryOutput.save(
         updatedInvitation.accepted());
-  }
-
-  private void checkIsValidInvitation(Invitation invitation) {
-    if (invitation.hasExpired()) {
-      throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
-    }
-
-    if (!invitation.isPending()) {
-      throw new FunctionalException(FunctionalError.INVITATION_ALREADY_ACCEPTED);
-    }
   }
 
   private User updateUser(InvitationRegistrationRequest invitationRegistration, User invited) {

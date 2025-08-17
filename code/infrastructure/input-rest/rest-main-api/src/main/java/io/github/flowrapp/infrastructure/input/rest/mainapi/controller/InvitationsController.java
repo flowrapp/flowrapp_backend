@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 import io.github.flowrapp.infrastructure.apirest.users.api.InvitationsApi;
-import io.github.flowrapp.infrastructure.apirest.users.model.AcceptInvitation200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.CreateBusinessInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetBusinessInvitations200ResponseInnerDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserFromInvitationRequestDTO;
@@ -30,11 +29,11 @@ public class InvitationsController implements InvitationsApi {
   private final InvitationsDTOMapper invitationsDTOMapper;
 
   @Override
-  public ResponseEntity<AcceptInvitation200ResponseDTO> acceptInvitation(String token) {
-    val result = invitationsUseCase.acceptInvitation(UUID.fromString(token));
+  public ResponseEntity<Void> acceptInvitation(String token) {
+    invitationsUseCase.acceptInvitation(
+        UUID.fromString(token));
 
-    return ResponseEntity.ok(
-        invitationsDTOMapper.domain2restAccept(result));
+    return ResponseEntity.ok().build();
   }
 
   @Override
