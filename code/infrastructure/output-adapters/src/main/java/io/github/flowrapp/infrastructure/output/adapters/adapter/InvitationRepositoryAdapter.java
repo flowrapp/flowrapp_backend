@@ -27,6 +27,12 @@ public class InvitationRepositoryAdapter implements InvitationRepositoryOutput {
   private final InvitationEntityMapper invitationEntityMapper;
 
   @Override
+  public Optional<Invitation> findById(Integer invitationId) {
+    return invitationJpaRepository.findById(invitationId)
+        .map(invitationEntityMapper::infra2domain);
+  }
+
+  @Override
   public Optional<Invitation> findByToken(@NonNull UUID token) {
     return invitationJpaRepository.findByToken(token)
         .map(invitationEntityMapper::infra2domain);

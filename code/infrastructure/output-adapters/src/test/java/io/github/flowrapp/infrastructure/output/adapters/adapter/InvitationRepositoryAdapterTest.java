@@ -56,6 +56,25 @@ class InvitationRepositoryAdapterTest {
 
   @ParameterizedTest
   @InstancioSource
+  void findById(Integer invitationId) {
+    // Given
+    val invitationEntity = this.generateInvitationEntity();
+
+    when(invitationJpaRepository.findById(invitationId))
+        .thenReturn(Optional.of(invitationEntity));
+
+    // When
+    val result = invitationRepositoryAdapter.findById(invitationId);
+
+    // Then
+    assertThat(result)
+        .isPresent()
+        .get()
+        .returns(invitationEntity.getId(), Invitation::id);
+  }
+
+  @ParameterizedTest
+  @InstancioSource
   void findByToken(UUID token) {
     // Given
     val invitationEntity = this.generateInvitationEntity();

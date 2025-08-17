@@ -11,6 +11,8 @@ import org.jspecify.annotations.NonNull;
 
 public interface InvitationRepositoryOutput {
 
+  Optional<Invitation> findById(Integer invitationId);
+
   Optional<Invitation> findByToken(@NonNull UUID token);
 
   @NonNull
@@ -21,4 +23,5 @@ public interface InvitationRepositoryOutput {
   List<Invitation> findByBusinessIdAndStatus(@NonNull Integer businessId, @NonNull InvitationStatus status);
 
   boolean userIsAlreadyInvitedToBusiness(Integer invitedUserId, Integer businessId);
+
 }

@@ -3,7 +3,6 @@ package io.github.flowrapp.usecase;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -241,10 +240,14 @@ class InvitationsUseCaseImplTest {
   void deleteInvitation_success(Integer businessId, Integer invitationId, User currentUser) {
     // GIVEN
     Business business = mock(Business.class);
+    Invitation invitation = mock(Invitation.class);
+
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
     when(businessRepositoryOutput.findById(businessId)).thenReturn(Optional.of(business));
+    when(invitationRepositoryOutput.findById(invitationId)).thenReturn(Optional.of(invitation));
+
+    when(invitation.isPending()).thenReturn(true);
     when(business.isOwner(currentUser)).thenReturn(true);
-    doNothing().when(invitationRepositoryOutput).deleteInvitation(businessId, invitationId);
 
     // WHEN
     invitationsUseCase.deleteInvitation(businessId, invitationId);
@@ -275,6 +278,27 @@ class InvitationsUseCaseImplTest {
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
     when(businessRepositoryOutput.findById(businessId)).thenReturn(Optional.of(business));
     when(business.isOwner(currentUser)).thenReturn(false);
+
+    // WHEN / THEN
+    assertThatThrownBy(() -> invitationsUseCase.deleteInvitation(businessId, invitationId))
+        .isInstanceOf(FunctionalException.class);
+
+    verify(invitationRepositoryOutput, never()).deleteInvitation(businessId, invitationId);
+  }
+
+  @ParameterizedTest
+  @InstancioSource
+  void deleteInvitation_notPending(Integer businessId, Integer invitationId, User currentUser) {
+    // GIVEN
+    Business business = mock(Business.class);
+    Invitation invitation = mock(Invitation.class);
+
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(businessRepositoryOutput.findById(businessId)).thenReturn(Optional.of(business));
+    when(invitationRepositoryOutput.findById(invitationId)).thenReturn(Optional.of(invitation));
+
+    when(invitation.isPending()).thenReturn(false);
+    when(business.isOwner(currentUser)).thenReturn(true);
 
     // WHEN / THEN
     assertThatThrownBy(() -> invitationsUseCase.deleteInvitation(businessId, invitationId))

@@ -117,6 +117,14 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
       throw new FunctionalException(FunctionalError.USER_INVITATION_NOT_OWNER);
     }
 
+    var invitation = invitationRepositoryOutput.findById(invitationId)
+        .orElseThrow(() -> new FunctionalException(FunctionalError.INVITATION_NOT_FOUND));
+
+    if (!invitation.isPending()) {
+      log.warn("Cannot delete invitation {} for business {}: not in pending status", invitationId, businessId);
+      throw new FunctionalException(FunctionalError.INVITATION_NOT_PENDING);
+    }
+
     invitationRepositoryOutput.deleteInvitation(businessId, invitationId);
   }
 

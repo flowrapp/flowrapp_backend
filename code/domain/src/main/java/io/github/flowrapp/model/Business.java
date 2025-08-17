@@ -16,7 +16,7 @@ public record Business(
     OffsetDateTime createdAt) {
 
   public boolean isOwner(User currentUser) {
-    return Objects.equals(this.id, currentUser.id());
+    return Objects.equals(this.owner.id(), currentUser.id());
   }
 
   /**
