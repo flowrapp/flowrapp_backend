@@ -73,21 +73,10 @@ class UserRequestUseCaseImplTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
-  void changePassword_throwsException_whenNotFound(String password) {
-    // GIVEN
-    when(userSecurityContextHolderOutput.getCurrentUser())
-        .thenReturn(Optional.empty());
-
-    // WHEN / THEN
-    assertThrows(FunctionalException.class, () -> userRequestUseCase.changePassword(password));
-  }
-
-  @ParameterizedTest
-  @InstancioSource(samples = 20)
   void changePassword_OK(String password, User user, String hashPassword, User newUser) {
     // GIVEN
     when(userSecurityContextHolderOutput.getCurrentUser())
-        .thenReturn(Optional.of(user));
+        .thenReturn(user);
 
     when(authCryptoPort.hashPassword(password))
         .thenReturn(hashPassword);
