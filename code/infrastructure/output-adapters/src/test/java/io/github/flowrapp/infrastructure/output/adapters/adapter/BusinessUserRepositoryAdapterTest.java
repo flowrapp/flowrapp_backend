@@ -64,7 +64,7 @@ class BusinessUserRepositoryAdapterTest {
           assertThat(entity.getBusiness()).isNotNull().returns(invitation.business().id(), BusinessEntity::getId);
           assertThat(entity.getInvitedBy()).isNotNull().returns(invitation.invitedBy().id(), UserEntity::getId);
         })
-        .returns(invitation.role().toString(), dto -> dto.getRole().toString())
+        .returns(invitation.role().toString(), BusinessUserEntity::getRole)
         .returns(invitation.joinedAt(), BusinessUserEntity::getJoinedAt))))
             .thenReturn(businessUserEntity);
 

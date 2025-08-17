@@ -31,6 +31,7 @@ import io.github.flowrapp.infrastructure.jpa.businessbd.repository.BusinessJpaRe
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
 import io.github.flowrapp.model.InvitationStatus;
 
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -288,7 +289,7 @@ class InvitationControllerIT {
         .isNotNull()
         .returns(OK, ResponseEntity::getStatusCode)
         .extracting(ResponseEntity::getBody)
-        .asList()
+        .asInstanceOf(InstanceOfAssertFactories.LIST)
         .hasSize(2);
   }
 

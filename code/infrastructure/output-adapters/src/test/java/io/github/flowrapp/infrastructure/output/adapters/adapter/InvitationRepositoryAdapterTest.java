@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -177,6 +178,7 @@ class InvitationRepositoryAdapterTest {
 
     // Then
     // No exception thrown, method executed successfully
+    verify(invitationJpaRepository).deleteByIdAndBusiness_Id(invitationId, businessId);
   }
 
 }
