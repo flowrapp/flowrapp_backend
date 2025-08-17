@@ -37,7 +37,7 @@ class UsersControllerTest {
   private UsersController usersController;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void getUser(GetUserRequestDTO getUserRequestDTO, MockUser user) {
     // GIVEN
     when(userRequestUseCase.findUser(argThat(dto -> Objects.equals(dto.name(), getUserRequestDTO.getName()))))

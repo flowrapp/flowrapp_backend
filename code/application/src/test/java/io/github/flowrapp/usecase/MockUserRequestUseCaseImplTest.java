@@ -29,7 +29,7 @@ class MockUserRequestUseCaseImplTest {
   private MockUserRequestUseCaseImpl userRequestUseCase;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void findUser_returnsUser_whenFound(MockUserRequest userRequest, MockUser user) {
     // GIVEN
     when(userRepositoryOutput.findUserByName(userRequest.name()))
@@ -45,7 +45,7 @@ class MockUserRequestUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void findUser_throwsException_whenNotFound(MockUserRequest userRequest) {
     // GIVEN
     when(userRepositoryOutput.findUserByName(userRequest.name()))

@@ -4,7 +4,6 @@ import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -57,7 +56,10 @@ public class UserEntity {
   @Column(name = "created_at", nullable = false)
   private OffsetDateTime createdAt;
 
-  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "owner")
   private Set<BusinessEntity> ownedBusinesses = new LinkedHashSet<>();
+
+  @OneToMany(mappedBy = "user")
+  private Set<BusinessUserEntity> businessMemberships = new LinkedHashSet<>();
 
 }

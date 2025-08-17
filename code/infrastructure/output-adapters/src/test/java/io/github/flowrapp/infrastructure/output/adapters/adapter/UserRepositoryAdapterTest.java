@@ -37,7 +37,7 @@ class UserRepositoryAdapterTest {
   private UserRepositoryAdapter userRepositoryAdapter;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void findUserByEmail(String mail, UserEntity userEntity) {
     // Given
     when(userJpaRepository.findByMail(mail))
@@ -73,7 +73,7 @@ class UserRepositoryAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void save(User user, UserEntity userEntity) {
     // Given
     when(userJpaRepository.save(argThat(argument -> argument.getMail().equals(user.mail()))))

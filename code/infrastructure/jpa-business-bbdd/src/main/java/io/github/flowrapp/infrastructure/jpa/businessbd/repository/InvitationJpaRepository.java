@@ -1,5 +1,6 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,5 +14,13 @@ import org.springframework.stereotype.Repository;
 public interface InvitationJpaRepository extends JpaRepository<InvitationEntity, Integer> {
 
   Optional<InvitationEntity> findByToken(@NotNull UUID token);
+
+  List<InvitationEntity> findAllByBusiness_IdAndStatus(Integer businessId, String status);
+
+  List<InvitationEntity> findAllByInvited_IdAndStatus(Integer invitedUserId, String status);
+
+  boolean existsByInvited_IdAndBusiness_IdAndStatusIs(Integer invitedUserId, Integer businessId, String status);
+
+  void deleteByIdAndBusiness_Id(Integer id, Integer businessId);
 
 }

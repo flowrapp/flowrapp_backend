@@ -12,6 +12,7 @@ import org.mapstruct.ReportingPolicy;
 public interface UserEntityMapper {
 
   @Mapping(target = "ownedBusinesses", ignore = true)
+  @Mapping(target = "businessMemberships", ignore = true)
   UserEntity domain2Infra(User user);
 
   User infra2domain(UserEntity userEntity);

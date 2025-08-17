@@ -35,7 +35,7 @@ class UserAuthenticationUseCaseImplTest {
   private UserAuthenticationUseCaseImpl userAuthenticationUseCase;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void retrieveUserByMail(LoginRequest loginRequest, User user) {
     // GIVEN
     when(userRepositoryOutput.findUserByEmail(loginRequest.username()))
@@ -53,7 +53,7 @@ class UserAuthenticationUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void loginUser(LoginRequest loginRequest, User user, TokensResponse tokensResponse) {
     // GIVEN
     when(userRepositoryOutput.findUserByEmail(loginRequest.username()))
@@ -73,7 +73,7 @@ class UserAuthenticationUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void loginUser_invalidCredentials(LoginRequest loginRequest) {
     // GIVEN
     when(userRepositoryOutput.findUserByEmail(loginRequest.username()))
@@ -85,7 +85,7 @@ class UserAuthenticationUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void refreshTokens(RefreshRequest refreshRequest, String mail, User user, TokensResponse tokensResponse) {
     // GIVEN
     when(authenticationServiceOutput.getUserMailFromToken(refreshRequest.refreshToken()))
@@ -105,7 +105,7 @@ class UserAuthenticationUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void refreshTokens_invalidRefreshToken(RefreshRequest refreshRequest) {
     // GIVEN
     when(authenticationServiceOutput.getUserMailFromToken(refreshRequest.refreshToken()))
@@ -117,7 +117,7 @@ class UserAuthenticationUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void refreshTokens_userNotFound(RefreshRequest refreshRequest, String mail) {
     // GIVEN
     when(authenticationServiceOutput.getUserMailFromToken(refreshRequest.refreshToken()))

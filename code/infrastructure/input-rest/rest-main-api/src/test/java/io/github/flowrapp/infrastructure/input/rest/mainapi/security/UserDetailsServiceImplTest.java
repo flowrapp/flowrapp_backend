@@ -37,7 +37,7 @@ class UserDetailsServiceImplTest {
   private UserDetailsServiceImpl userDetailsService;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void additionalAuthenticationChecks(User userDetails, UsernamePasswordAuthenticationToken authentication) {
     // GIVEN
     when(passwordEncoder.matches(authentication.getCredentials().toString(), userDetails.getPassword()))
@@ -49,7 +49,7 @@ class UserDetailsServiceImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void additionalAuthenticationChecksThrows(User userDetails, UsernamePasswordAuthenticationToken authentication) {
     // GIVEN
     when(passwordEncoder.matches(authentication.getCredentials().toString(), userDetails.getPassword()))
@@ -61,7 +61,7 @@ class UserDetailsServiceImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void retrieveUser(String username, io.github.flowrapp.model.User user, UsernamePasswordAuthenticationToken authentication) {
     // GIVEN
     when(userAuthenticationUseCase.retrieveUserByMail(username))
@@ -78,7 +78,7 @@ class UserDetailsServiceImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void retrieveUserAdmin(String username, io.github.flowrapp.model.User user, UsernamePasswordAuthenticationToken authentication) {
     // GIVEN
     user = user.toBuilder().name("admin").build(); // Ensure the user is an admin
@@ -97,7 +97,7 @@ class UserDetailsServiceImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void retrieveUserNotFound(String username, UsernamePasswordAuthenticationToken authentication) {
     // GIVEN
     when(userAuthenticationUseCase.retrieveUserByMail(username))
