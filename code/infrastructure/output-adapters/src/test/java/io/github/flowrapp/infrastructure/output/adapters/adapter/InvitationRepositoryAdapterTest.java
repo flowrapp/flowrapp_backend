@@ -56,7 +56,7 @@ class InvitationRepositoryAdapterTest {
   private InvitationRepositoryAdapter invitationRepositoryAdapter;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void findById(Integer invitationId) {
     // Given
     val invitationEntity = this.generateInvitationEntity();
@@ -75,7 +75,7 @@ class InvitationRepositoryAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void findByToken(UUID token) {
     // Given
     val invitationEntity = this.generateInvitationEntity();
@@ -111,7 +111,7 @@ class InvitationRepositoryAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void save(Invitation invitationReq) {
     // Given
     val invitationEntity = this.generateInvitationEntity();

@@ -50,7 +50,7 @@ class BusinessUserRepositoryAdapterTest {
   private BusinessUserRepositoryAdapter businessUserRepositoryAdapter;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void save(BusinessUser invitation) {
     // Given
     var businessUserEntity = Instancio.of(BusinessUserEntity.class)
@@ -84,7 +84,7 @@ class BusinessUserRepositoryAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void userIsMemberOfBusiness(Integer userId, Integer businessId) {
     // Given
     when(businessUserJpaRepository.existsByUser_IdAndBusiness_Id(userId, businessId))

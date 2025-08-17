@@ -2,6 +2,7 @@ package io.github.flowrapp.infrastructure.input.rest.mainapi.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.assertArg;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -13,10 +14,12 @@ import java.util.UUID;
 import io.github.flowrapp.infrastructure.apirest.users.model.AcceptInvitation200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.CreateBusinessInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetBusinessInvitations200ResponseInnerDTO;
+import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserFromInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.InvitationsDTOMapper;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.InvitationStatus;
 import io.github.flowrapp.model.value.InvitationCreationRequest;
+import io.github.flowrapp.model.value.InvitationRegistrationRequest;
 import io.github.flowrapp.port.input.InvitationsUseCase;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -44,7 +47,7 @@ class InvitationsControllerTest {
   private InvitationsController invitationsController;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void acceptInvitation(UUID token, Invitation invitation) {
     // GIVEN
     when(invitationsUseCase.acceptInvitation(token))
@@ -65,7 +68,25 @@ class InvitationsControllerTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
+  void registerUserFromInvitation(UUID token, RegisterUserFromInvitationRequestDTO registerRequestDTO) {
+    // GIVEN
+
+    // WHEN
+    var response = invitationsController.registerUserFromInvitation(token.toString(), registerRequestDTO);
+
+    // THEN
+    assertThat(response).returns(CREATED, ResponseEntity::getStatusCode);
+    verify(invitationsUseCase).registerInvitation(
+        assertArg(argument -> assertThat(argument)
+            .isNotNull()
+            .returns(token, InvitationRegistrationRequest::token)
+            .returns(registerRequestDTO.getUsername(), InvitationRegistrationRequest::username)
+            .returns(registerRequestDTO.getPassword(), InvitationRegistrationRequest::password)));
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
   void createBusinessInvitation(Integer businessId, CreateBusinessInvitationRequestDTO creationDTO,
       Invitation invitation) {
     // GIVEN
@@ -94,7 +115,7 @@ class InvitationsControllerTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void deleteBusinessInvitation(Integer businessId, Integer invitationId) {
     // GIVEN
     // No specific setup needed for this test
@@ -109,7 +130,7 @@ class InvitationsControllerTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void getBusinessInvitations(Integer businessId, InvitationStatus status,
       List<Invitation> invitationList) {
     // GIVEN

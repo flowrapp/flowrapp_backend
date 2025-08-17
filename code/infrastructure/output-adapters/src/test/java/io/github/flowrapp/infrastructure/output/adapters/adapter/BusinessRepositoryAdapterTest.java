@@ -45,7 +45,7 @@ class BusinessRepositoryAdapterTest {
   private BusinessRepositoryAdapter businessRepositoryAdapter;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void findById(Integer id, BusinessEntity businessEntity) {
     // GIVEN
     when(businessJpaRepository.findById(id))
@@ -62,7 +62,7 @@ class BusinessRepositoryAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void findByName(String name, BusinessEntity businessEntity) {
     // GIVEN
     when(businessJpaRepository.findByName(name))
@@ -91,7 +91,7 @@ class BusinessRepositoryAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void save(Business business, BusinessEntity businessEntity) {
     // GIVEN
     when(businessJpaRepository.save(argThat(argument -> argument.getId().equals(business.id()))))

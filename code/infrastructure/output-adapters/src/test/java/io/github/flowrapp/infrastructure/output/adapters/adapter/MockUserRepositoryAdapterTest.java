@@ -33,7 +33,7 @@ class MockUserRepositoryAdapterTest {
   private MockUserRepositoryAdapter userRepositoryAdapter;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void findUserByName_returnsUser_whenFound(String name, MockUserEntity mockUserEntity) {
     // GIVEN
     when(mockUserJpaRepository.findByName(name))

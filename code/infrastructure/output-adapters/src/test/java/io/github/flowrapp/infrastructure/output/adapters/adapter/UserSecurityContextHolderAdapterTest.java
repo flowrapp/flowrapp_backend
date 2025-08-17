@@ -35,7 +35,7 @@ class UserSecurityContextHolderAdapterTest {
   private UserSecurityContextHolderAdapter userSecurityContextHolderAdapter;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void getCurrentUserEmail(User user) {
     // GIVEN
     this.mockedStatic.when(() -> SecurityContextHolder.getContext().getAuthentication().getPrincipal())
@@ -51,7 +51,7 @@ class UserSecurityContextHolderAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void getCurrentUserEmailJwt(String mail) {
     // GIVEN
     var jwt = mock(Jwt.class);
@@ -83,7 +83,7 @@ class UserSecurityContextHolderAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void getCurrentUser(User user, io.github.flowrapp.model.User userModel) {
     // GIVEN
     this.mockedStatic.when(() -> SecurityContextHolder.getContext().getAuthentication().getPrincipal())

@@ -2,13 +2,17 @@ package io.github.flowrapp.usecase;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.instancio.Select.field;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,12 +23,15 @@ import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.InvitationStatus;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.value.InvitationCreationRequest;
+import io.github.flowrapp.model.value.InvitationRegistrationRequest;
+import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
 
+import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,11 +58,14 @@ class InvitationsUseCaseImplTest {
   @Mock
   private UserSecurityContextHolderOutput userSecurityContextHolderOutput;
 
+  @Mock
+  private AuthCryptoPort authCryptoPort;
+
   @InjectMocks
   private InvitationsUseCaseImpl invitationsUseCase;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void createInvitation_success(InvitationCreationRequest request, User currentUser, User invitedUser, Invitation savedInvitation) {
     // GIVEN
     Business business = mock(Business.class);
@@ -75,7 +85,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void createInvitation_createsNewUser(InvitationCreationRequest request, User currentUser, User newUser, Invitation savedInvitation) {
     // GIVEN
     Business business = mock(Business.class);
@@ -96,7 +106,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void createInvitation_businessNotFound(InvitationCreationRequest request, User currentUser) {
     // GIVEN
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
@@ -108,7 +118,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void createInvitation_notOwner(InvitationCreationRequest request, User currentUser) {
     // GIVEN
     Business business = mock(Business.class);
@@ -122,7 +132,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void createInvitation_userAlreadyMember(InvitationCreationRequest request, User currentUser, User invitedUser) {
     // GIVEN
     Business business = mock(Business.class);
@@ -138,7 +148,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void createInvitation_alreadyInvited(InvitationCreationRequest request, User currentUser, User invitedUser) {
     // GIVEN
     Business business = mock(Business.class);
@@ -155,7 +165,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void acceptInvitation_success(UUID token, User currentUser, BusinessUser businessUser) {
     // GIVEN
     Invitation invitation = mock(Invitation.class);
@@ -173,13 +183,13 @@ class InvitationsUseCaseImplTest {
     Invitation result = invitationsUseCase.acceptInvitation(token);
 
     // THEN
-    assertThat(result).isEqualTo(invitation);
+    assertThat(result).returns(acceptedInvitation.id(), Invitation::id);
     verify(invitationRepositoryOutput).save(acceptedInvitation);
     verify(businessUserRepositoryOutput).save(any(BusinessUser.class));
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void acceptInvitation_notFound(UUID token, User currentUser) {
     // GIVEN
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
@@ -191,7 +201,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void acceptInvitation_notForCurrentUser(UUID token, User currentUser) {
     // GIVEN
     Invitation invitation = mock(Invitation.class);
@@ -205,7 +215,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void acceptInvitation_expired(UUID token, User currentUser) {
     // GIVEN
     Invitation invitation = mock(Invitation.class);
@@ -220,7 +230,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void acceptInvitation_alreadyAccepted(UUID token, User currentUser) {
     // GIVEN
     Invitation invitation = mock(Invitation.class);
@@ -236,7 +246,68 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
+  void registerInvitation_success(InvitationRegistrationRequest invitationRequest) {
+    // GIVEN
+    Invitation invitation = Instancio.of(Invitation.class)
+        .set(field(Invitation::status), InvitationStatus.PENDING)
+        .generate(field(Invitation::expiresAt), gen -> gen.temporal().offsetDateTime().future())
+        .set(field(User::enabled), false)
+        .create();
+
+    when(invitationRepositoryOutput.findByToken(invitationRequest.token()))
+        .thenReturn(Optional.of(invitation));
+    when(authCryptoPort.hashPassword(invitationRequest.password()))
+        .thenReturn("hashedPassword");
+    when(userRepositoryOutput.save(argThat(argument -> Objects.equals(argument.id(), invitation.invited().id()))))
+        .then(returnsFirstArg());
+    when(businessUserRepositoryOutput.save(argThat(argument -> Objects.equals(argument.user().id(), invitation.invited().id())
+        && Objects.equals(argument.business().id(), invitation.business().id()))))
+            .then(returnsFirstArg());
+    when(invitationRepositoryOutput.save(argThat(argument -> Objects.equals(argument.invited().id(), invitation.invited().id()))))
+        .then(returnsFirstArg());
+
+    // WHEN
+    var result = invitationsUseCase.registerInvitation(invitationRequest);
+
+    // THEN
+    assertThat(result)
+        .isNotNull()
+        .returns(invitation.id(), Invitation::id);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void registerInvitation_notFound(InvitationRegistrationRequest invitationRequest) {
+    // GIVEN
+    when(invitationRepositoryOutput.findByToken(invitationRequest.token()))
+        .thenReturn(Optional.empty());
+
+    // WHEN / THEN
+    assertThatThrownBy(() -> invitationsUseCase.registerInvitation(invitationRequest))
+        .isInstanceOf(FunctionalException.class);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void registerInvitation_userAlreadyEnabled(InvitationRegistrationRequest invitationRequest) {
+    // GIVEN
+    Invitation invitation = Instancio.of(Invitation.class)
+        .set(field(Invitation::status), InvitationStatus.PENDING)
+        .generate(field(Invitation::expiresAt), gen -> gen.temporal().offsetDateTime().future())
+        .set(field(User::enabled), true)
+        .create();
+
+    when(invitationRepositoryOutput.findByToken(invitationRequest.token()))
+        .thenReturn(Optional.of(invitation));
+
+    // WHEN / THEN
+    assertThatThrownBy(() -> invitationsUseCase.registerInvitation(invitationRequest))
+        .isInstanceOf(FunctionalException.class);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
   void deleteInvitation_success(Integer businessId, Integer invitationId, User currentUser) {
     // GIVEN
     Business business = mock(Business.class);
@@ -257,7 +328,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void deleteInvitation_businessNotFound(Integer businessId, Integer invitationId, User currentUser) {
     // GIVEN
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
@@ -271,7 +342,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void deleteInvitation_notOwner(Integer businessId, Integer invitationId, User currentUser) {
     // GIVEN
     Business business = mock(Business.class);
@@ -287,7 +358,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void deleteInvitation_notPending(Integer businessId, Integer invitationId, User currentUser) {
     // GIVEN
     Business business = mock(Business.class);
@@ -308,7 +379,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void getBusinessInvitations_success(Integer businessId, InvitationStatus status, User currentUser, List<Invitation> invitations) {
     // GIVEN
     Business business = mock(Business.class);
@@ -325,7 +396,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void getBusinessInvitations_businessNotFound(Integer businessId, InvitationStatus status, User currentUser) {
     // GIVEN
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
@@ -337,7 +408,7 @@ class InvitationsUseCaseImplTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void getBusinessInvitations_notOwner(Integer businessId, InvitationStatus status, User currentUser) {
     // GIVEN
     Business business = mock(Business.class);

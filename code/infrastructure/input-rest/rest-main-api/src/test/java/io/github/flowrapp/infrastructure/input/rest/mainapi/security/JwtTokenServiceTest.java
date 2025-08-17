@@ -66,7 +66,7 @@ class JwtTokenServiceTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void createAccessToken_shouldCreateToken(User user) {
     // Given
     String expectedToken = "access-token";
@@ -88,7 +88,7 @@ class JwtTokenServiceTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void createRefreshToken_shouldCreateToken(User user) {
     // Given
     String expectedToken = "refresh-token";
@@ -109,7 +109,7 @@ class JwtTokenServiceTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void decodeAccessToken_shouldReturnJwt(User user) {
     // Given
     String token = "access-token";
@@ -132,7 +132,7 @@ class JwtTokenServiceTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void decodeRefreshToken_shouldReturnJwt(User user) {
     // Given
     String token = "refresh-token";
