@@ -9,6 +9,7 @@ import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.MockUserRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,11 @@ import org.springframework.stereotype.Service;
 public class MockUserRequestUseCaseImpl implements UserRequestUseCase {
 
   private final MockUserRepositoryOutput mockUserRepositoryOutput;
+
   private final UserRepositoryOutput userRepositoryOutput;
+
   private final UserSecurityContextHolderOutput userSecurityContextHolderOutput;
+
   private final AuthCryptoPort authCryptoPort;
 
   @Override
