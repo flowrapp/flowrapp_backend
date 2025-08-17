@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MockUserRequestUseCaseImpl implements UserRequestUseCase {
+public class UserRequestUseCaseImpl implements UserRequestUseCase {
 
   private final MockUserRepositoryOutput mockUserRepositoryOutput;
 
