@@ -63,9 +63,16 @@ public class InvitationsController implements InvitationsApi {
 
   @Override
   public ResponseEntity<List<GetBusinessInvitations200ResponseInnerDTO>> getBusinessInvitations(Integer businessId, String status) {
-    val result = invitationsUseCase.getBusinessInvitations(businessId, InvitationStatus.valueOf(status));
-
     return ResponseEntity.ok(
-        invitationsDTOMapper.domain2rest(result));
+        invitationsDTOMapper.domain2rest(
+            invitationsUseCase.getBusinessInvitations(businessId, InvitationStatus.valueOf(status))));
   }
+
+  @Override
+  public ResponseEntity<List<GetBusinessInvitations200ResponseInnerDTO>> getUserInvitations(String status) {
+    return ResponseEntity.ok(
+        invitationsDTOMapper.domain2rest(
+            invitationsUseCase.getUserInvitations(InvitationStatus.valueOf(status))));
+  }
+
 }

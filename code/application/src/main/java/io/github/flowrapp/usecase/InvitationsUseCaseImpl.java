@@ -190,6 +190,15 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
     return invitationRepositoryOutput.findByBusinessIdAndStatus(businessId, status);
   }
 
+  @Override
+  public List<Invitation> getUserInvitations(InvitationStatus invitationStatus) {
+    log.debug("Retrieving invitations for user with status {}", invitationStatus);
+
+    val currentUser = this.getCurrentUser();
+
+    return invitationRepositoryOutput.findByUserAndStatus(currentUser.id(), invitationStatus);
+  }
+
   private User getCurrentUser() {
     return userSecurityContextHolderOutput.getCurrentUser()
         .orElseThrow(() -> new FunctionalException(FunctionalError.USER_NOT_FOUND));

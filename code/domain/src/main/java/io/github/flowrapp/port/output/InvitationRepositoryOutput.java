@@ -15,13 +15,15 @@ public interface InvitationRepositoryOutput {
 
   Optional<Invitation> findByToken(@NonNull UUID token);
 
+  List<Invitation> findByBusinessIdAndStatus(@NonNull Integer businessId, @NonNull InvitationStatus status);
+
+  List<Invitation> findByUserAndStatus(Integer id, InvitationStatus invitationStatus);
+
+  boolean userIsAlreadyInvitedToBusiness(Integer invitedUserId, Integer businessId);
+
   @NonNull
   Invitation save(@NonNull Invitation invitation);
 
   void deleteInvitation(@NonNull Integer businessId, @NonNull Integer invitationId);
-
-  List<Invitation> findByBusinessIdAndStatus(@NonNull Integer businessId, @NonNull InvitationStatus status);
-
-  boolean userIsAlreadyInvitedToBusiness(Integer invitedUserId, Integer businessId);
 
 }

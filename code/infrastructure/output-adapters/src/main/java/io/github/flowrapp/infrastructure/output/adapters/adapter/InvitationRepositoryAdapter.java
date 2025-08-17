@@ -45,6 +45,12 @@ public class InvitationRepositoryAdapter implements InvitationRepositoryOutput {
   }
 
   @Override
+  public List<Invitation> findByUserAndStatus(Integer id, InvitationStatus invitationStatus) {
+    return invitationEntityMapper.infra2domain(
+        invitationJpaRepository.findAllByInvited_IdAndStatus(id, invitationStatus.name()));
+  }
+
+  @Override
   public boolean userIsAlreadyInvitedToBusiness(Integer invitedUserId, Integer businessId) {
     return invitationJpaRepository.existsByInvited_IdAndBusiness_IdAndStatusIs(invitedUserId, businessId, InvitationStatus.PENDING.name());
   }

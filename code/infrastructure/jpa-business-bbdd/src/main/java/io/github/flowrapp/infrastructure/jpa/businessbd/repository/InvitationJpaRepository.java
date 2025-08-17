@@ -17,6 +17,8 @@ public interface InvitationJpaRepository extends JpaRepository<InvitationEntity,
 
   List<InvitationEntity> findAllByBusiness_IdAndStatus(Integer businessId, String status);
 
+  List<InvitationEntity> findAllByInvited_IdAndStatus(Integer invitedUserId, String status);
+
   boolean existsByInvited_IdAndBusiness_IdAndStatusIs(Integer invitedUserId, Integer businessId, String status);
 
   void deleteByIdAndBusiness_Id(Integer id, Integer businessId);

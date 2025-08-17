@@ -150,6 +150,27 @@ class InvitationRepositoryAdapterTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 1)
+  void findByUserAndStatus(Integer userId, InvitationStatus status) {
+    // Given
+    var invitationList = IntStream.range(0, RandomUtils.secure().randomInt(1, 10))
+        .mapToObj(unused -> this.generateInvitationEntity())
+        .toList();
+
+    when(invitationJpaRepository.findAllByInvited_IdAndStatus(userId, status.name()))
+        .thenReturn(invitationList);
+
+    // When
+    val result = invitationRepositoryAdapter.findByUserAndStatus(userId, status);
+
+    // Then
+    assertThat(result)
+        .isNotNull()
+        .isNotEmpty()
+        .hasSize(invitationList.size());
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
   void userIsAlreadyInvitedToBusiness(Integer invitedUserId, Integer businessId) {
     // Given
     when(invitationJpaRepository.existsByInvited_IdAndBusiness_IdAndStatusIs(invitedUserId, businessId, InvitationStatus.PENDING.name()))

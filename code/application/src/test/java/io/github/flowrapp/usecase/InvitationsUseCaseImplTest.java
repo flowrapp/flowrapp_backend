@@ -419,4 +419,23 @@ class InvitationsUseCaseImplTest {
     assertThatThrownBy(() -> invitationsUseCase.getBusinessInvitations(businessId, status))
         .isInstanceOf(FunctionalException.class);
   }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void getUserInvitations_success(InvitationStatus status, User currentUser, List<Invitation> invitations) {
+    // GIVEN
+    when(userSecurityContextHolderOutput.getCurrentUser())
+        .thenReturn(Optional.of(currentUser));
+    when(invitationRepositoryOutput.findByUserAndStatus(currentUser.id(), status))
+        .thenReturn(invitations);
+
+    // WHEN
+    List<Invitation> result = invitationsUseCase.getUserInvitations(status);
+
+    // THEN
+    assertThat(result)
+        .isNotNull()
+        .hasSize(invitations.size());
+  }
+
 }

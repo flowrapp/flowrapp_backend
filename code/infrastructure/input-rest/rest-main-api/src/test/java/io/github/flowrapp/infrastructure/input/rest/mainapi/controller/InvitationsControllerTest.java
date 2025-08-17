@@ -142,4 +142,25 @@ class InvitationsControllerTest {
         .hasSize(invitationList.size());
   }
 
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void getUserInvitations(InvitationStatus status, List<Invitation> invitationList) {
+    // GIVEN
+    when(invitationsUseCase.getUserInvitations(status))
+        .thenReturn(invitationList);
+
+    // WHEN
+    var response = invitationsController.getUserInvitations(status.toString());
+
+    // THEN
+    assertThat(response)
+        .isNotNull()
+        .returns(OK, ResponseEntity::getStatusCode)
+        .extracting(ResponseEntity::getBody)
+        .isNotNull()
+        .isInstanceOf(List.class)
+        .asInstanceOf(InstanceOfAssertFactories.list(Invitation.class))
+        .hasSize(invitationList.size());
+  }
+
 }

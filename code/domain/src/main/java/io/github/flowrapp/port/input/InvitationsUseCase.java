@@ -21,4 +21,6 @@ public interface InvitationsUseCase {
   Invitation createInvitation(InvitationCreationRequest invitationCreationRequest);
 
   List<Invitation> getBusinessInvitations(Integer businessId, InvitationStatus status);
+
+  List<Invitation> getUserInvitations(InvitationStatus invitationStatus);
 }
