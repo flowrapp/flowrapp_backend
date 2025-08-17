@@ -7,6 +7,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 import java.util.Objects;
 
+import io.github.flowrapp.infrastructure.apirest.users.model.ChangePasswordRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetUser200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetUserRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.UserDTOMapper;
@@ -53,6 +54,19 @@ class UsersControllerTest {
         .isNotNull()
         .returns(user.name(), GetUser200ResponseDTO::getName)
         .returns(user.dni(), GetUser200ResponseDTO::getDni);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void changePassword(ChangePasswordRequestDTO changePasswordRequestDTO) {
+    // GIVEN
+
+    // WHEN
+    var response = usersController.changePassword(changePasswordRequestDTO);
+
+    // THEN
+    assertThat(response)
+        .returns(OK, ResponseEntity::getStatusCode);
   }
 
 }
