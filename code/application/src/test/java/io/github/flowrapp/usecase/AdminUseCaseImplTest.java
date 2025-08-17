@@ -45,7 +45,7 @@ class AdminUseCaseImplTest {
   private AdminUseCaseImpl adminUseCase;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void createUser(UserCreationRequest userCreationRequest, User adminUser) {
     // GIVEN
     when(userRepositoryOutput.findUserByEmail(ADMIN_USER_MAIL))

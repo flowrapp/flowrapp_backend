@@ -38,7 +38,7 @@
     <java.version>21</java.version>
 
     <!-- Dependencies versions -->
-    <instancio.version>5.5.0</instancio.version>
+    <instancio.version>5.5.1</instancio.version>
     <org.mapstruct.version>1.6.3</org.mapstruct.version>
     <jspecify.version>1.0.0</jspecify.version>
     <apache-commons.version>4.5.0</apache-commons.version>

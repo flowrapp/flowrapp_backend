@@ -87,7 +87,7 @@ class AuthCryptoAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void checkPassword_shouldReturnFalse_whenPasswordDoesNotMatch(String rawPassword, String passwordHash) {
     // Given
 
@@ -99,7 +99,7 @@ class AuthCryptoAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void createTokens_shouldReturnTokensResponse(User user) {
     // Given
     String accessToken = "access-token";
@@ -118,7 +118,7 @@ class AuthCryptoAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void getUserMailFromToken_shouldReturnUserMail(String refreshToken, String userMail) {
     // Given
     var jwt = mock(Jwt.class);
@@ -137,7 +137,7 @@ class AuthCryptoAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void getUserMailFromToken_shouldReturnEmpty_whenTokenCannotBeDecoded(String refreshToken) {
     // Given
 

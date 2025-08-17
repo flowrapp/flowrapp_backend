@@ -43,6 +43,7 @@ public class MainApiSecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/v1/ping").permitAll()
             .requestMatchers("/api/v1/auth/**").permitAll()
+            .requestMatchers("/api/v1/invitations/register").permitAll()
             .requestMatchers("/api/**").authenticated())
         .build();
   }

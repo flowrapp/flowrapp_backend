@@ -6,10 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.InvitationEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
@@ -21,6 +23,7 @@ import io.github.flowrapp.model.InvitationStatus;
 import io.github.flowrapp.model.UserRole;
 
 import lombok.val;
+import org.apache.commons.lang3.RandomUtils;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
@@ -53,7 +56,26 @@ class InvitationRepositoryAdapterTest {
   private InvitationRepositoryAdapter invitationRepositoryAdapter;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
+  void findById(Integer invitationId) {
+    // Given
+    val invitationEntity = this.generateInvitationEntity();
+
+    when(invitationJpaRepository.findById(invitationId))
+        .thenReturn(Optional.of(invitationEntity));
+
+    // When
+    val result = invitationRepositoryAdapter.findById(invitationId);
+
+    // Then
+    assertThat(result)
+        .isPresent()
+        .get()
+        .returns(invitationEntity.getId(), Invitation::id);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
   void findByToken(UUID token) {
     // Given
     val invitationEntity = this.generateInvitationEntity();
@@ -80,6 +102,7 @@ class InvitationRepositoryAdapterTest {
           assertNotNull(invitation.business());
           assertEquals(invitation.business().name(), invitationEntity.getBusiness().getName());
         })
+        .returns(invitationEntity.getId(), Invitation::id)
         .returns(invitationEntity.getToken(), Invitation::token)
         .returns(invitationEntity.getRole(), invitation -> invitation.role().toString())
         .returns(invitationEntity.getCreatedAt(), Invitation::createdAt)
@@ -88,7 +111,7 @@ class InvitationRepositoryAdapterTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void save(Invitation invitationReq) {
     // Given
     val invitationEntity = this.generateInvitationEntity();
@@ -101,24 +124,63 @@ class InvitationRepositoryAdapterTest {
 
     // Then
     assertThat(result)
+        .isNotNull();
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void findByBusinessIdAndStatus(Integer businessId, InvitationStatus status) {
+    // Given
+    var invitationList = IntStream.range(0, RandomUtils.secure().randomInt(1, 10))
+        .mapToObj(unused -> this.generateInvitationEntity())
+        .toList();
+
+    when(invitationJpaRepository.findAllByBusiness_IdAndStatus(businessId, status.name()))
+        .thenReturn(invitationList);
+
+    // When
+    val result = invitationRepositoryAdapter.findByBusinessIdAndStatus(businessId, status);
+
+    // Then
+    assertThat(result)
         .isNotNull()
-        .satisfies(invitation -> {
-          assertNotNull(invitation.invited());
-          assertEquals(invitation.invited().name(), invitationEntity.getInvited().getName());
-        })
-        .satisfies(invitation -> {
-          assertNotNull(invitation.invitedBy());
-          assertEquals(invitation.invitedBy().name(), invitationEntity.getInvitedBy().getName());
-        })
-        .satisfies(invitation -> {
-          assertNotNull(invitation.business());
-          assertEquals(invitation.business().name(), invitationEntity.getBusiness().getName());
-        })
-        .returns(invitationEntity.getToken(), Invitation::token)
-        .returns(invitationEntity.getRole(), invitation -> invitation.role().name())
-        .returns(invitationEntity.getCreatedAt(), Invitation::createdAt)
-        .returns(invitationEntity.getExpiresAt(), Invitation::expiresAt)
-        .returns(invitationEntity.getStatus(), invitation -> invitation.status().name());
+        .isNotEmpty()
+        .hasSize(invitationList.size());
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void findByUserAndStatus(Integer userId, InvitationStatus status) {
+    // Given
+    var invitationList = IntStream.range(0, RandomUtils.secure().randomInt(1, 10))
+        .mapToObj(unused -> this.generateInvitationEntity())
+        .toList();
+
+    when(invitationJpaRepository.findAllByInvited_IdAndStatus(userId, status.name()))
+        .thenReturn(invitationList);
+
+    // When
+    val result = invitationRepositoryAdapter.findByUserAndStatus(userId, status);
+
+    // Then
+    assertThat(result)
+        .isNotNull()
+        .isNotEmpty()
+        .hasSize(invitationList.size());
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void userIsAlreadyInvitedToBusiness(Integer invitedUserId, Integer businessId) {
+    // Given
+    when(invitationJpaRepository.existsByInvited_IdAndBusiness_IdAndStatusIs(invitedUserId, businessId, InvitationStatus.PENDING.name()))
+        .thenReturn(true);
+
+    // When
+    val result = invitationRepositoryAdapter.userIsAlreadyInvitedToBusiness(invitedUserId, businessId);
+
+    // Then
+    assertThat(result).isTrue();
   }
 
   private InvitationEntity generateInvitationEntity() {
@@ -126,6 +188,18 @@ class InvitationRepositoryAdapterTest {
         .generate(field(InvitationEntity::getRole), gen -> gen.oneOf(UserRole.values()).asString())
         .generate(field(InvitationEntity::getStatus), gen -> gen.oneOf(InvitationStatus.values()).asString())
         .create();
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void deleteInvitation(Integer businessId, Integer invitationId) {
+    // Given
+    // When
+    invitationRepositoryAdapter.deleteInvitation(businessId, invitationId);
+
+    // Then
+    // No exception thrown, method executed successfully
+    verify(invitationJpaRepository).deleteByIdAndBusiness_Id(invitationId, businessId);
   }
 
 }

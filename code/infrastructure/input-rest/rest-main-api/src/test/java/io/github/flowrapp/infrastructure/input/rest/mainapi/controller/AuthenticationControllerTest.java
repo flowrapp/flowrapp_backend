@@ -36,7 +36,7 @@ class AuthenticationControllerTest {
   private AuthenticationController authenticationController;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void login_returnsOk(LoginRequestDTO loginRequestDTO, TokensResponse tokensResponse) {
     // GIVEN
     when(userAuthenticationUseCase.loginUser(argThat(argument -> argument.username().equals(loginRequestDTO.getUsername())
@@ -57,7 +57,7 @@ class AuthenticationControllerTest {
   }
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void refreshToken_returnsOk(RefreshTokenRequestDTO refreshTokenRequestDTO, TokensResponse tokensResponse) {
     // GIVEN
     when(userAuthenticationUseCase

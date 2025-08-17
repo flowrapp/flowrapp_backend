@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.github.flowrapp.exception.FunctionalException;
 
+import jakarta.validation.ConstraintViolationException;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,6 +46,20 @@ class GlobalControllerAdviceTest {
     assertThat(problemDetail)
         .isNotNull()
         .returns(HttpStatus.FORBIDDEN.value(), ProblemDetail::getStatus);
+  }
+
+  @InstancioSource(samples = 1)
+  @ParameterizedTest
+  void handleConstraintViolationException(ConstraintViolationException constraintViolationException) {
+    // GIVEN
+
+    // WHEN
+    final var problemDetail = globalControllerAdvice.handleConstraintViolationException(constraintViolationException);
+
+    // THEN
+    assertThat(problemDetail)
+        .isNotNull()
+        .returns(HttpStatus.BAD_REQUEST.value(), ProblemDetail::getStatus);
   }
 
   @InstancioSource(samples = 1)

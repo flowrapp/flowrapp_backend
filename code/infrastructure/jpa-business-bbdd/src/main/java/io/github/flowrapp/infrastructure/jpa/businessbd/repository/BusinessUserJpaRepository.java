@@ -7,5 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsersRoleJpaRepository extends JpaRepository<BusinessUserEntity, UsersRoleIdEntity> {
+public interface BusinessUserJpaRepository extends JpaRepository<BusinessUserEntity, UsersRoleIdEntity> {
+
+  boolean existsByUser_IdAndBusiness_Id(Integer userId, Integer businessId);
+
 }

@@ -33,7 +33,7 @@ class AdminControllerTest {
   private AdminController adminController;
 
   @ParameterizedTest
-  @InstancioSource
+  @InstancioSource(samples = 20)
   void registerUser(RegisterUserRequestDTO registerUserRequestDTO) {
     // Given
 

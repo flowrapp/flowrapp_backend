@@ -1,12 +1,17 @@
 package io.github.flowrapp.model;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import lombok.Builder;
+import lombok.NonNull;
+import lombok.With;
 
 @Builder(toBuilder = true)
+@With
 public record Invitation(
+    Integer id,
     User invited,
     User invitedBy,
     Business business,
@@ -16,12 +21,27 @@ public record Invitation(
     OffsetDateTime expiresAt,
     InvitationStatus status) {
 
-  public boolean isExpired() {
+  public boolean hasExpired() {
     return expiresAt != null && expiresAt.isBefore(OffsetDateTime.now());
   }
 
+  public boolean isPending() {
+    return status == InvitationStatus.PENDING;
+  }
+
+  public boolean isInvited(@NonNull User user) {
+    return Objects.equals(invited.id(), user.id());
+  }
+
+  public Invitation accepted() {
+    return this.toBuilder()
+        .status(InvitationStatus.ACCEPTED)
+        .expiresAt(OffsetDateTime.now()) // Set expiresAt to now when accepted
+        .build();
+  }
+
   /** Creates a new invitation for a user to join a business. */
-  public static Invitation createInvitation(User invited, Business business, User invitedBy, UserRole role) {
+  public static Invitation create(User invited, Business business, User invitedBy, UserRole role) {
     return Invitation.builder()
         .invited(invited)
         .business(business)
