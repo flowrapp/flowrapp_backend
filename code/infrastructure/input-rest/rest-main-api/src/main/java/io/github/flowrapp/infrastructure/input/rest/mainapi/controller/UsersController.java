@@ -1,6 +1,7 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.controller;
 
 import io.github.flowrapp.infrastructure.apirest.users.api.UsersApi;
+import io.github.flowrapp.infrastructure.apirest.users.model.ChangePasswordRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetUser200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetUserRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.UserDTOMapper;
@@ -28,4 +29,9 @@ public class UsersController implements UsersApi {
         userDTOMapper.domain2infra(result));
   }
 
+  @Override
+  public ResponseEntity<Void> changePassword(ChangePasswordRequestDTO changePasswordRequestDTO) {
+    userRequestUseCase.changePassword(changePasswordRequestDTO.getPassword());
+    return ResponseEntity.ok().build();
+  }
 }
