@@ -69,7 +69,7 @@ class InvitationsUseCaseImplTest {
   void createInvitation_success(InvitationCreationRequest request, User currentUser, User invitedUser, Invitation savedInvitation) {
     // GIVEN
     Business business = mock(Business.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(request.businessId())).thenReturn(Optional.of(business));
     when(business.isOwner(currentUser)).thenReturn(true);
     when(userRepositoryOutput.findUserByEmail(request.email())).thenReturn(Optional.of(invitedUser));
@@ -89,7 +89,7 @@ class InvitationsUseCaseImplTest {
   void createInvitation_createsNewUser(InvitationCreationRequest request, User currentUser, User newUser, Invitation savedInvitation) {
     // GIVEN
     Business business = mock(Business.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(request.businessId())).thenReturn(Optional.of(business));
     when(business.isOwner(currentUser)).thenReturn(true);
     when(userRepositoryOutput.findUserByEmail(request.email())).thenReturn(Optional.empty());
@@ -109,7 +109,7 @@ class InvitationsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void createInvitation_businessNotFound(InvitationCreationRequest request, User currentUser) {
     // GIVEN
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(request.businessId())).thenReturn(Optional.empty());
 
     // WHEN / THEN
@@ -122,7 +122,7 @@ class InvitationsUseCaseImplTest {
   void createInvitation_notOwner(InvitationCreationRequest request, User currentUser) {
     // GIVEN
     Business business = mock(Business.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(request.businessId())).thenReturn(Optional.of(business));
     when(business.isOwner(currentUser)).thenReturn(false);
 
@@ -136,7 +136,7 @@ class InvitationsUseCaseImplTest {
   void createInvitation_userAlreadyMember(InvitationCreationRequest request, User currentUser, User invitedUser) {
     // GIVEN
     Business business = mock(Business.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(request.businessId())).thenReturn(Optional.of(business));
     when(business.isOwner(currentUser)).thenReturn(true);
     when(userRepositoryOutput.findUserByEmail(request.email())).thenReturn(Optional.of(invitedUser));
@@ -152,7 +152,7 @@ class InvitationsUseCaseImplTest {
   void createInvitation_alreadyInvited(InvitationCreationRequest request, User currentUser, User invitedUser) {
     // GIVEN
     Business business = mock(Business.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(request.businessId())).thenReturn(Optional.of(business));
     when(business.isOwner(currentUser)).thenReturn(true);
     when(userRepositoryOutput.findUserByEmail(request.email())).thenReturn(Optional.of(invitedUser));
@@ -170,7 +170,7 @@ class InvitationsUseCaseImplTest {
     // GIVEN
     Invitation invitation = mock(Invitation.class);
     Invitation acceptedInvitation = mock(Invitation.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(invitationRepositoryOutput.findByToken(token)).thenReturn(Optional.of(invitation));
     when(invitation.isInvited(currentUser)).thenReturn(true);
     when(invitation.hasExpired()).thenReturn(false);
@@ -191,7 +191,7 @@ class InvitationsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void acceptInvitation_notFound(UUID token, User currentUser) {
     // GIVEN
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(invitationRepositoryOutput.findByToken(token)).thenReturn(Optional.empty());
 
     // WHEN / THEN
@@ -204,7 +204,7 @@ class InvitationsUseCaseImplTest {
   void acceptInvitation_notForCurrentUser(UUID token, User currentUser) {
     // GIVEN
     Invitation invitation = mock(Invitation.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(invitationRepositoryOutput.findByToken(token)).thenReturn(Optional.of(invitation));
     when(invitation.isInvited(currentUser)).thenReturn(false);
 
@@ -218,7 +218,7 @@ class InvitationsUseCaseImplTest {
   void acceptInvitation_expired(UUID token, User currentUser) {
     // GIVEN
     Invitation invitation = mock(Invitation.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(invitationRepositoryOutput.findByToken(token)).thenReturn(Optional.of(invitation));
     when(invitation.isInvited(currentUser)).thenReturn(true);
     when(invitation.hasExpired()).thenReturn(true);
@@ -233,7 +233,7 @@ class InvitationsUseCaseImplTest {
   void acceptInvitation_alreadyAccepted(UUID token, User currentUser) {
     // GIVEN
     Invitation invitation = mock(Invitation.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(invitationRepositoryOutput.findByToken(token)).thenReturn(Optional.of(invitation));
     when(invitation.isInvited(currentUser)).thenReturn(true);
     when(invitation.hasExpired()).thenReturn(false);
@@ -312,7 +312,7 @@ class InvitationsUseCaseImplTest {
     Business business = mock(Business.class);
     Invitation invitation = mock(Invitation.class);
 
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(businessId)).thenReturn(Optional.of(business));
     when(invitationRepositoryOutput.findById(invitationId)).thenReturn(Optional.of(invitation));
 
@@ -330,7 +330,7 @@ class InvitationsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void deleteInvitation_businessNotFound(Integer businessId, Integer invitationId, User currentUser) {
     // GIVEN
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(businessId)).thenReturn(Optional.empty());
 
     // WHEN / THEN
@@ -345,7 +345,7 @@ class InvitationsUseCaseImplTest {
   void deleteInvitation_notOwner(Integer businessId, Integer invitationId, User currentUser) {
     // GIVEN
     Business business = mock(Business.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(businessId)).thenReturn(Optional.of(business));
     when(business.isOwner(currentUser)).thenReturn(false);
 
@@ -363,7 +363,7 @@ class InvitationsUseCaseImplTest {
     Business business = mock(Business.class);
     Invitation invitation = mock(Invitation.class);
 
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(businessId)).thenReturn(Optional.of(business));
     when(invitationRepositoryOutput.findById(invitationId)).thenReturn(Optional.of(invitation));
 
@@ -382,7 +382,7 @@ class InvitationsUseCaseImplTest {
   void getBusinessInvitations_success(Integer businessId, InvitationStatus status, User currentUser, List<Invitation> invitations) {
     // GIVEN
     Business business = mock(Business.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(businessId)).thenReturn(Optional.of(business));
     when(business.isOwner(currentUser)).thenReturn(true);
     when(invitationRepositoryOutput.findByBusinessIdAndStatus(businessId, status)).thenReturn(invitations);
@@ -398,7 +398,7 @@ class InvitationsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void getBusinessInvitations_businessNotFound(Integer businessId, InvitationStatus status, User currentUser) {
     // GIVEN
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(businessId)).thenReturn(Optional.empty());
 
     // WHEN / THEN
@@ -411,7 +411,7 @@ class InvitationsUseCaseImplTest {
   void getBusinessInvitations_notOwner(Integer businessId, InvitationStatus status, User currentUser) {
     // GIVEN
     Business business = mock(Business.class);
-    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(Optional.of(currentUser));
+    when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(businessId)).thenReturn(Optional.of(business));
     when(business.isOwner(currentUser)).thenReturn(false);
 
@@ -425,7 +425,7 @@ class InvitationsUseCaseImplTest {
   void getUserInvitations_success(InvitationStatus status, User currentUser, List<Invitation> invitations) {
     // GIVEN
     when(userSecurityContextHolderOutput.getCurrentUser())
-        .thenReturn(Optional.of(currentUser));
+        .thenReturn(currentUser);
     when(invitationRepositoryOutput.findByUserAndStatus(currentUser.id(), status))
         .thenReturn(invitations);
 

@@ -6,6 +6,8 @@ import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.BusinessEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.BusinessUserEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity;
@@ -51,11 +53,27 @@ class BusinessUserRepositoryAdapterTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
+  void getByUserAndBusinessId(Integer userId, Integer businessId) {
+    // Given
+    var businessUserEntity = generateBusinessUser();
+
+    when(businessUserJpaRepository.findByUser_IdAndBusiness_Id(userId, businessId))
+        .thenReturn(Optional.of(businessUserEntity));
+
+    // When
+    var result = businessUserRepositoryAdapter.getByUserAndBusinessId(userId, businessId);
+
+    // Then
+    assertThat(result)
+        .isNotNull()
+        .isPresent();
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
   void save(BusinessUser invitation) {
     // Given
-    var businessUserEntity = Instancio.of(BusinessUserEntity.class)
-        .generate(field(BusinessUserEntity::getRole), gen -> gen.oneOf(UserRole.values()).asString())
-        .create();
+    var businessUserEntity = generateBusinessUser();
 
     when(businessUserJpaRepository.save(assertArg(argument -> assertThat(argument)
         .isNotNull()
@@ -95,6 +113,12 @@ class BusinessUserRepositoryAdapterTest {
 
     // Then
     assertThat(result).isTrue();
+  }
+
+  private BusinessUserEntity generateBusinessUser() {
+    return Instancio.of(BusinessUserEntity.class)
+        .generate(field(BusinessUserEntity::getRole), gen -> gen.oneOf(UserRole.values()).asString())
+        .create();
   }
 
 }

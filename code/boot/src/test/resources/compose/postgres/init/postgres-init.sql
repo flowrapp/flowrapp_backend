@@ -82,7 +82,7 @@ CREATE TABLE if not exists flowrapp_management.worklogs
     user_id     integer     NOT NULL,
     business_id integer     NOT NULL,
     clocked_in  timestamptz NOT NULL,
-    clocked_out timestamptz NOT NULL,
+    clocked_out timestamptz,
     created_at  timestamptz NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
@@ -139,14 +139,14 @@ INSERT INTO flowrapp_management.business (name, owner_id, longitude, latitude, a
 VALUES ('Test Business', 1, 0.0, 0.0, 100.0, NOW());
 
 INSERT INTO flowrapp_management.users_roles (user_id, business_id, role, invited_by, joined_at)
-VALUES (1, 1, 'ADMIN', 1, NOW());
+VALUES (1, 1, 'OWNER', 1, NOW());
 INSERT INTO flowrapp_management.users_roles (user_id, business_id, role, invited_by, joined_at)
-VALUES (2, 1, 'USER', 1, NOW());
+VALUES (2, 1, 'EMPLOYEE', 1, NOW());
 
 INSERT INTO flowrapp_management.invitations (invited, invited_by, business_id, token, role, created_at, expires_at, status)
-VALUES (1, 1, 1, gen_random_uuid(), 'ADMIN', NOW(), NOW() + INTERVAL '7 days', 'ACCEPTED');
+VALUES (1, 1, 1, gen_random_uuid(), 'OWNER', NOW(), NOW() + INTERVAL '7 days', 'ACCEPTED');
 INSERT INTO flowrapp_management.invitations (invited, invited_by, business_id, token, role, created_at, expires_at, status)
-VALUES (1, 2, 1, gen_random_uuid(), 'USER', NOW(), NOW() + INTERVAL '7 days', 'ACCEPTED');
+VALUES (1, 2, 1, gen_random_uuid(), 'EMPLOYEE', NOW(), NOW() + INTERVAL '7 days', 'ACCEPTED');
 
 INSERT INTO flowrapp_management.worklogs (user_id, business_id, clocked_in, clocked_out, created_at)
 VALUES (2, 1, NOW() - INTERVAL '1 hour', NOW(), NOW());

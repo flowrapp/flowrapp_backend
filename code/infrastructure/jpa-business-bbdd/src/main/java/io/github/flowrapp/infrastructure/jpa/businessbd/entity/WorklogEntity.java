@@ -39,11 +39,10 @@ public class WorklogEntity {
 
   @NotNull
   @Column(name = "clocked_in", nullable = false)
-  private OffsetDateTime clockedIn;
+  private OffsetDateTime clockIn;
 
-  @NotNull
   @Column(name = "clocked_out", nullable = false)
-  private OffsetDateTime clockedOut;
+  private OffsetDateTime clockOut;
 
   @NotNull
   @ColumnDefault("now()")

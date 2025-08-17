@@ -24,6 +24,13 @@ public enum FunctionalError {
   INVITATION_ALREADY_ACCEPTED(1012, 403, "invitation already accepted"),
   INVITATION_NOT_PENDING(1013, 403, "invitation not pending"),
   USER_ALREADY_ENABLED(1014, 409, "user already enabled"),
+  USER_IS_NOT_MEMBER_OF_BUSINESS(1015, 403, "user is not member of business"),
+  CURRENT_USER_NOT_FOUND(1016, 500, "Current user not found"),
+  WORKLOG_NOT_FOUND(1017, 404, "worklog not found"),
+  WORKLOG_CLOSED(1018, 403, "worklog already closed"),
+  WORKLOG_NOT_OWNER(1019, 403, "user is not the owner of worklog"),
+  WORKLOG_NOT_VALID(1019, 400, "worklog is not valid"),
+  USER_NOT_OWNER_OF_BUSINESS(1020, 403, "user is not the owner of business"),
   ;
 
   private final int code;
