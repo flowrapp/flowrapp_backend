@@ -6,8 +6,10 @@ import java.util.UUID;
 
 import lombok.Builder;
 import lombok.NonNull;
+import lombok.With;
 
 @Builder(toBuilder = true)
+@With
 public record Invitation(
     Integer id,
     User invited,

@@ -6,13 +6,15 @@ import java.util.UUID;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.InvitationStatus;
 import io.github.flowrapp.model.value.InvitationCreationRequest;
+import io.github.flowrapp.model.value.InvitationRegistrationRequest;
 
 public interface InvitationsUseCase {
 
-  /**
-   * Accepts an invitation using the provided token. In this case, the user is already registered.
-   */
+  /** Accepts an invitation using the provided token. In this case, the user is already registered. */
   Invitation acceptInvitation(UUID token);
+
+  /** Accepts an invitation from a user that is not registered yet. */
+  Invitation registerInvitation(InvitationRegistrationRequest invitationRegistration);
 
   void deleteInvitation(Integer businessId, Integer invitationId);
 

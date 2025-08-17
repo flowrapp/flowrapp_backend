@@ -23,6 +23,7 @@ public enum FunctionalError {
   USER_INVITATION_NOT_OWNER(1011, 403, "user not authorized for invitation"),
   INVITATION_ALREADY_ACCEPTED(1012, 403, "invitation already accepted"),
   INVITATION_NOT_PENDING(1013, 403, "invitation not pending"),
+  USER_ALREADY_ENABLED(1014, 409, "user already enabled"),
   ;
 
   private final int code;

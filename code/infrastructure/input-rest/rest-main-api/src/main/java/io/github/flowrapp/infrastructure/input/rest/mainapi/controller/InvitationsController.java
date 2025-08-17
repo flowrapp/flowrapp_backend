@@ -9,6 +9,7 @@ import io.github.flowrapp.infrastructure.apirest.users.api.InvitationsApi;
 import io.github.flowrapp.infrastructure.apirest.users.model.AcceptInvitation200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.CreateBusinessInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetBusinessInvitations200ResponseInnerDTO;
+import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserFromInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.InvitationsDTOMapper;
 import io.github.flowrapp.model.InvitationStatus;
 import io.github.flowrapp.port.input.InvitationsUseCase;
@@ -34,6 +35,14 @@ public class InvitationsController implements InvitationsApi {
 
     return ResponseEntity.ok(
         invitationsDTOMapper.domain2restAccept(result));
+  }
+
+  @Override
+  public ResponseEntity<Void> registerUserFromInvitation(String token, RegisterUserFromInvitationRequestDTO registerRequestDTO) {
+    invitationsUseCase.registerInvitation(
+        invitationsDTOMapper.rest2domain(token, registerRequestDTO));
+
+    return ResponseEntity.status(CREATED).build();
   }
 
   @Override

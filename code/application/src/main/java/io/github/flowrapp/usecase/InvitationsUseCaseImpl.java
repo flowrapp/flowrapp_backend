@@ -10,7 +10,9 @@ import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.InvitationStatus;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.value.InvitationCreationRequest;
+import io.github.flowrapp.model.value.InvitationRegistrationRequest;
 import io.github.flowrapp.port.input.InvitationsUseCase;
+import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
@@ -37,6 +39,8 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
   private final BusinessUserRepositoryOutput businessUserRepositoryOutput;
 
   private final UserSecurityContextHolderOutput userSecurityContextHolderOutput;
+
+  private final AuthCryptoPort authCryptoPort;
 
   @Transactional
   @Override
@@ -88,6 +92,42 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
       throw new FunctionalException(FunctionalError.INVITATION_NOT_FOR_CURRENT_USER);
     }
 
+    this.checkIsValidInvitation(invitation);
+
+    log.debug("Creating business user from invitation: {}", invitation);
+    businessUserRepositoryOutput.save(
+        BusinessUser.fromInvitation(invitation));
+
+    return invitationRepositoryOutput.save(
+        invitation.accepted()); // Mark invitation as accepted
+  }
+
+  @Override
+  public Invitation registerInvitation(InvitationRegistrationRequest invitationRegistration) {
+    log.debug("Registering invitation: {}", invitationRegistration);
+
+    val invitation = invitationRepositoryOutput.findByToken(invitationRegistration.token())
+        .orElseThrow(() -> new FunctionalException(FunctionalError.INVITATION_NOT_FOUND));
+
+    if (invitation.invited().enabled()) {
+      log.warn("Cannot register invitation {}: user is already enabled: {}", invitationRegistration.token(), invitation.invited().mail());
+      throw new FunctionalException(FunctionalError.USER_ALREADY_ENABLED);
+    }
+
+    this.checkIsValidInvitation(invitation);
+
+    val updatedUser = userRepositoryOutput.save(
+        updateUser(invitationRegistration, invitation.invited()));
+    val updatedInvitation = invitation.withInvited(updatedUser);
+
+    businessUserRepositoryOutput.save(
+        BusinessUser.fromInvitation(updatedInvitation));
+
+    return invitationRepositoryOutput.save(
+        updatedInvitation.accepted());
+  }
+
+  private void checkIsValidInvitation(Invitation invitation) {
     if (invitation.hasExpired()) {
       throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
     }
@@ -95,13 +135,16 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
     if (!invitation.isPending()) {
       throw new FunctionalException(FunctionalError.INVITATION_ALREADY_ACCEPTED);
     }
+  }
 
-    log.debug("Creating business user from invitation: {}", invitation);
-    invitationRepositoryOutput.save(invitation.accepted()); // Mark invitation as accepted
-    businessUserRepositoryOutput.save(
-        BusinessUser.fromInvitation(invitation));
-
-    return invitation;
+  private User updateUser(InvitationRegistrationRequest invitationRegistration, User invited) {
+    return invited.toBuilder()
+        .name(invitationRegistration.username())
+        .phone(invitationRegistration.phone())
+        .passwordHash(
+            authCryptoPort.hashPassword(invitationRegistration.password()))
+        .enabled(true)
+        .build();
   }
 
   @Override

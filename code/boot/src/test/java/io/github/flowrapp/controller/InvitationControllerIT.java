@@ -25,10 +25,13 @@ import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.infrastructure.apirest.users.model.AcceptInvitation200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.CreateBusinessInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetBusinessInvitations200ResponseInnerDTO;
+import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserFromInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.config.GlobalControllerAdvice;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.InvitationEntity;
+import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.BusinessJpaRepository;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
+import io.github.flowrapp.infrastructure.jpa.businessbd.repository.UserJpaRepository;
 import io.github.flowrapp.model.InvitationStatus;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -65,6 +68,9 @@ class InvitationControllerIT {
 
   @Autowired
   private TestRestTemplate testRestTemplate;
+
+  @Autowired
+  private UserJpaRepository userJpaRepository;
 
   @Autowired
   private BusinessJpaRepository businessJpaRepository;
@@ -133,6 +139,46 @@ class InvitationControllerIT {
 
     assertThat(result.getStatusCode()).isEqualTo(FORBIDDEN);
     this.verifyException(FunctionalError.INVITATION_NOT_FOR_CURRENT_USER);
+  }
+
+  // ================================ REGISTER INVITATION TESTS ================================
+
+  @Test
+  @Sql("classpath:scripts/register_test_data.sql")
+  void testRegisterInvitation_Success() {
+    var body = new RegisterUserFromInvitationRequestDTO()
+        .username("Test User")
+        .phone("1234567890")
+        .password("testPassword123");
+
+    var result = testRestTemplate.exchange(post("/api/v1/invitations/register?token=45ce70ab-ca18-4f04-b717-9afb6fd3070e")
+        // No auth required
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(body), AcceptInvitation200ResponseDTO.class);
+
+    assertThat(result.getStatusCode()).isEqualTo(CREATED);
+    assertThat(userJpaRepository.findByMail("newuser@test.com"))
+        .isPresent()
+        .get()
+        .returns("Test User", UserEntity::getName)
+        .returns("1234567890", UserEntity::getPhone);
+  }
+
+  @Test
+  @Sql("classpath:scripts/register_test_data.sql")
+  void testRegisterInvitation_UserIsAlreadyRegistered() {
+    var body = new RegisterUserFromInvitationRequestDTO()
+        .username("Test User")
+        .phone("1234567890")
+        .password("testPassword123");
+
+    var result = testRestTemplate.exchange(post("/api/v1/invitations/register?token=582ed6f4-2524-4ad6-8fbc-8ea5fe71c9af")
+        // No auth required
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(body), String.class);
+
+    assertThat(result.getStatusCode()).isEqualTo(CONFLICT);
+    this.verifyException(FunctionalError.USER_ALREADY_ENABLED);
   }
 
   // ================================ CREATE INVITATION TESTS ================================
