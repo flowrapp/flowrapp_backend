@@ -5,6 +5,7 @@ import java.util.List;
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.Worklog;
+import io.github.flowrapp.model.value.UpdateWorklogEvent;
 import io.github.flowrapp.model.value.WorklogClockInRequest;
 import io.github.flowrapp.model.value.WorklogClockOutRequest;
 import io.github.flowrapp.model.value.WorklogFilteredRequest;
@@ -18,6 +19,7 @@ import io.github.flowrapp.port.output.WorklogRepositoryOutput;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -32,6 +34,8 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
   private final BusinessUserRepositoryOutput businessUserRepositoryOutput;
 
   private final UserSecurityContextHolderOutput userSecurityContextHolderOutput;
+
+  private final ApplicationEventPublisher applicationEventPublisher;
 
   @Override
   public Worklog clockIn(WorklogClockInRequest request) {
@@ -71,7 +75,10 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
     }
 
     log.debug("User {} is clockOut {} for worklog {}", currentUser.mail(), request.clockOut(), request.worklogId());
-    return worklogRepositoryOutput.save(updatedWorklog);
+    worklogRepositoryOutput.save(updatedWorklog);
+
+    applicationEventPublisher.publishEvent(UpdateWorklogEvent.of(updatedWorklog)); // Publish event for further processing
+    return updatedWorklog;
   }
 
   @Override
@@ -97,7 +104,10 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
       throw new FunctionalException(FunctionalError.WORKLOG_NOT_VALID);
     }
 
-    return worklogRepositoryOutput.save(updatedWorklog);
+    worklogRepositoryOutput.save(updatedWorklog);
+    applicationEventPublisher.publishEvent(UpdateWorklogEvent.of(updatedWorklog)); // Publish event for further processing
+
+    return updatedWorklog;
   }
 
   @Override
@@ -122,7 +132,7 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
 
     val currentUser = userSecurityContextHolderOutput.getCurrentUser();
     return worklogRepositoryOutput.findAllFiltered(
-        worklogFilteredRequest.withUserId(currentUser.id()));
+        worklogFilteredRequest.truncate().withUserId(currentUser.id()));
   }
 
   @Override
@@ -138,7 +148,7 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
       throw new FunctionalException(FunctionalError.USER_NOT_OWNER_OF_BUSINESS);
     }
 
-    return worklogRepositoryOutput.findAllFiltered(worklogFilteredRequest);
+    return worklogRepositoryOutput.findAllFiltered(worklogFilteredRequest.truncate());
   }
 
 }

@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.OK;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import io.github.flowrapp.infrastructure.apirest.users.model.ClockIn200ResponseDTO;
@@ -139,9 +140,9 @@ class WorklogsControllerTest {
         .isNotNull()
         .returns(null, WorklogFilteredRequest::userId)
         .returns(businessId.intValue(), WorklogFilteredRequest::businessId)
-        .returns(from, WorklogFilteredRequest::from)
-        .returns(to, WorklogFilteredRequest::to)
-        .returns(date, WorklogFilteredRequest::date))))
+        .returns(from.atStartOfDay().atOffset(OffsetDateTime.now().getOffset()), WorklogFilteredRequest::from)
+        .returns(to.atStartOfDay().atOffset(OffsetDateTime.now().getOffset()), WorklogFilteredRequest::to)
+        .returns(date.atStartOfDay().atOffset(OffsetDateTime.now().getOffset()), WorklogFilteredRequest::date))))
             .thenReturn(worklogs);
 
     // WHEN
@@ -166,9 +167,9 @@ class WorklogsControllerTest {
         .isNotNull()
         .returns(userId.intValue(), WorklogFilteredRequest::userId)
         .returns(businessId.intValue(), WorklogFilteredRequest::businessId)
-        .returns(from, WorklogFilteredRequest::from)
-        .returns(to, WorklogFilteredRequest::to)
-        .returns(date, WorklogFilteredRequest::date))))
+        .returns(from.atStartOfDay().atOffset(OffsetDateTime.now().getOffset()), WorklogFilteredRequest::from)
+        .returns(to.atStartOfDay().atOffset(OffsetDateTime.now().getOffset()), WorklogFilteredRequest::to)
+        .returns(date.atStartOfDay().atOffset(OffsetDateTime.now().getOffset()), WorklogFilteredRequest::date))))
             .thenReturn(worklogs);
 
     // WHEN

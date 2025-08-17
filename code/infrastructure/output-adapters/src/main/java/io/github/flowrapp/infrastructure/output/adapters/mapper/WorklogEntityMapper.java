@@ -19,7 +19,7 @@ public interface WorklogEntityMapper {
 
   Worklog infra2domain(WorklogEntity worklogEntity);
 
-  List<Worklog> infra2domain(List<WorklogEntity> worklogEntities);
+  List<Worklog> infra2domain(Iterable<WorklogEntity> worklogEntities);
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "business.id", source = "businessId")

@@ -3,6 +3,7 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 import java.util.List;
 import java.util.Optional;
 
+import io.github.flowrapp.infrastructure.jpa.businessbd.entity.QWorklogEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.WorklogJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.WorklogEntityMapper;
 import io.github.flowrapp.model.Worklog;
@@ -12,7 +13,6 @@ import io.github.flowrapp.port.output.WorklogRepositoryOutput;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -32,10 +32,14 @@ public class WorklogRepositoryAdapter implements WorklogRepositoryOutput {
 
   @Override
   public List<Worklog> findAllFiltered(WorklogFilteredRequest worklogFilteredRequest) {
-    val example = Example.of(worklogEntityMapper.domain2Infra(worklogFilteredRequest));
+    val qWorklog = QWorklogEntity.worklogEntity;
+    val predicate = qWorklog.business.id.eq(worklogFilteredRequest.businessId())
+        .and(worklogFilteredRequest.userId() != null ? qWorklog.user.id.eq(worklogFilteredRequest.userId()) : null)
+        .and(worklogFilteredRequest.from() != null ? qWorklog.clockIn.after(worklogFilteredRequest.from()) : null)
+        .and(worklogFilteredRequest.to() != null ? qWorklog.clockOut.before(worklogFilteredRequest.to()) : null);
 
     return worklogEntityMapper.infra2domain(
-        worklogJpaRepository.findAll(example));
+        worklogJpaRepository.findAll(predicate, QWorklogEntity.worklogEntity.clockIn.asc()));
   }
 
   @Override

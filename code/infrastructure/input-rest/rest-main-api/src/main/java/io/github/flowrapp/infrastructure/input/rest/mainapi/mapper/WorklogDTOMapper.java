@@ -3,6 +3,7 @@ package io.github.flowrapp.infrastructure.input.rest.mainapi.mapper;
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import io.github.flowrapp.infrastructure.apirest.users.model.ClockIn200ResponseDTO;
@@ -39,5 +40,9 @@ public interface WorklogDTOMapper {
   ClockIn200ResponseDTO domain2rest(Worklog result);
 
   List<ClockIn200ResponseDTO> domain2rest(List<Worklog> worklogs);
+
+  default OffsetDateTime map(LocalDate date) {
+    return date != null ? date.atStartOfDay().atOffset(OffsetDateTime.now().getOffset()) : null;
+  }
 
 }
