@@ -1,6 +1,6 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -54,7 +54,7 @@ public class UserEntity {
   @NotNull
   @ColumnDefault("now()")
   @Column(name = "created_at", nullable = false)
-  private OffsetDateTime createdAt;
+  private Instant createdAt;
 
   @OneToMany(mappedBy = "owner")
   private Set<BusinessEntity> ownedBusinesses = new LinkedHashSet<>();

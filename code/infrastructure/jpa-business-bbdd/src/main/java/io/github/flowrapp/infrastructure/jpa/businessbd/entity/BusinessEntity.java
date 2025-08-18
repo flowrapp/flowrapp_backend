@@ -1,6 +1,6 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -49,7 +49,7 @@ public class BusinessEntity {
   @NotNull
   @ColumnDefault("now()")
   @Column(name = "created_at", nullable = false)
-  private OffsetDateTime createdAt;
+  private Instant createdAt;
 
   @ManyToOne
   @JoinColumn(name = "owner_id", nullable = false)

@@ -1,6 +1,7 @@
 package io.github.flowrapp.model;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,12 +18,12 @@ public record Invitation(
     Business business,
     UUID token,
     UserRole role,
-    OffsetDateTime createdAt,
-    OffsetDateTime expiresAt,
+    Instant createdAt,
+    Instant expiresAt,
     InvitationStatus status) {
 
   public boolean hasExpired() {
-    return expiresAt != null && expiresAt.isBefore(OffsetDateTime.now());
+    return expiresAt != null && expiresAt.isBefore(Instant.now());
   }
 
   public boolean isPending() {
@@ -36,7 +37,7 @@ public record Invitation(
   public Invitation accepted() {
     return this.toBuilder()
         .status(InvitationStatus.ACCEPTED)
-        .expiresAt(OffsetDateTime.now()) // Set expiresAt to now when accepted
+        .expiresAt(Instant.now()) // Set expiresAt to now when accepted
         .build();
   }
 
@@ -48,8 +49,8 @@ public record Invitation(
         .invitedBy(invitedBy)
         .token(UUID.randomUUID())
         .role(role)
-        .createdAt(OffsetDateTime.now())
-        .expiresAt(OffsetDateTime.now().plusDays(7)) // TODO: make configurable
+        .createdAt(Instant.now())
+        .expiresAt(Instant.now().plus(7, ChronoUnit.DAYS)) // TODO: make configurable
         .status(InvitationStatus.PENDING)
         .build();
   }

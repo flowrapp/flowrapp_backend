@@ -96,8 +96,7 @@ class UserSecurityContextHolderAdapterTest {
 
     // THEN
     assertThat(result)
-        .isPresent()
-        .hasValue(userModel);
+        .isEqualTo(userModel);
   }
 
 }

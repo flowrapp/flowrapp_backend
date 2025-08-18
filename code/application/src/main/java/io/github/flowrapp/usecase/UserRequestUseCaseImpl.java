@@ -37,8 +37,7 @@ public class UserRequestUseCaseImpl implements UserRequestUseCase {
 
   @Override
   public void changePassword(String password) {
-    var currentUser = userSecurityContextHolderOutput.getCurrentUser()
-        .orElseThrow(() -> new FunctionalException(FunctionalError.USER_NOT_FOUND));
+    var currentUser = userSecurityContextHolderOutput.getCurrentUser();
 
     userRepositoryOutput.save(
         currentUser.withPasswordHash(authCryptoPort.hashPassword(password)));

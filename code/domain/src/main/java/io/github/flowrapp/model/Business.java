@@ -1,6 +1,6 @@
 package io.github.flowrapp.model;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 import io.github.flowrapp.model.value.BusinessCreationRequest;
@@ -13,7 +13,7 @@ public record Business(
     String name,
     User owner,
     Location location,
-    OffsetDateTime createdAt) {
+    Instant createdAt) {
 
   public boolean isOwner(User currentUser) {
     return Objects.equals(this.owner.id(), currentUser.id());
@@ -31,7 +31,7 @@ public record Business(
         .name(businessCreationRequest.name())
         .location(businessCreationRequest.location())
         .owner(owner)
-        .createdAt(OffsetDateTime.now())
+        .createdAt(Instant.now())
         .build();
   }
 

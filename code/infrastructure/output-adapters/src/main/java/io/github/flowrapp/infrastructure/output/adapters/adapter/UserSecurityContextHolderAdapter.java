@@ -2,6 +2,8 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import java.util.Optional;
 
+import io.github.flowrapp.exception.FunctionalError;
+import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.security.ClaimConstants;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
@@ -36,8 +38,9 @@ public class UserSecurityContextHolderAdapter implements UserSecurityContextHold
   }
 
   @Override
-  public Optional<User> getCurrentUser() {
+  public User getCurrentUser() {
     return getCurrentUserEmail()
-        .flatMap(userRepositoryAdapter::findUserByEmail);
+        .flatMap(userRepositoryAdapter::findUserByEmail)
+        .orElseThrow(() -> new FunctionalException(FunctionalError.CURRENT_USER_NOT_FOUND));
   }
 }
