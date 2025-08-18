@@ -158,7 +158,7 @@ class WorklogsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void clockOut_invalidWorklog(WorklogClockOutRequest request, User currentUser, Worklog openWorklog) {
     // Given
-    request = request.toBuilder().clockOut(openWorklog.clockIn().plus(3, ChronoUnit.HOURS)).build();
+    request = request.toBuilder().clockOut(openWorklog.clockIn().minus(3, ChronoUnit.HOURS)).build();
     openWorklog = openWorklog.withUser(currentUser).withClockOut(null);
 
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);

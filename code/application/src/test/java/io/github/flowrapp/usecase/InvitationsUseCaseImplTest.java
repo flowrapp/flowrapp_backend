@@ -252,7 +252,7 @@ class InvitationsUseCaseImplTest {
     // GIVEN
     Invitation invitation = Instancio.of(Invitation.class)
         .set(field(Invitation::status), InvitationStatus.PENDING)
-        .generate(field(Invitation::expiresAt), gen -> gen.temporal().offsetDateTime().future())
+        .generate(field(Invitation::expiresAt), gen -> gen.temporal().instant().future())
         .set(field(User::enabled), false)
         .create();
 
@@ -293,7 +293,7 @@ class InvitationsUseCaseImplTest {
     // GIVEN
     Invitation invitation = Instancio.of(Invitation.class)
         .set(field(Invitation::status), InvitationStatus.PENDING)
-        .generate(field(Invitation::expiresAt), gen -> gen.temporal().offsetDateTime().future())
+        .generate(field(Invitation::expiresAt), gen -> gen.temporal().instant().future())
         .set(field(User::enabled), true)
         .create();
 
