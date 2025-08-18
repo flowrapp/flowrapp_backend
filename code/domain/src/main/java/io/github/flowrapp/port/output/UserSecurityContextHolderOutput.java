@@ -8,6 +8,6 @@ public interface UserSecurityContextHolderOutput {
 
   Optional<String> getCurrentUserEmail();
 
-  Optional<User> getCurrentUser();
+  User getCurrentUser();
 
 }

@@ -8,6 +8,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -101,8 +102,8 @@ class InvitationsControllerTest {
         .returns(invitation.invited().mail(), GetBusinessInvitations200ResponseInnerDTO::getEmail)
         .returns(invitation.status().toString(), dto -> dto.getStatus().toString())
         .returns(invitation.role().toString(), dto -> dto.getRole().toString())
-        .returns(invitation.expiresAt(), GetBusinessInvitations200ResponseInnerDTO::getExpiresAt)
-        .returns(invitation.createdAt(), GetBusinessInvitations200ResponseInnerDTO::getCreatedAt);
+        .returns(invitation.expiresAt().atOffset(ZoneOffset.UTC), GetBusinessInvitations200ResponseInnerDTO::getExpiresAt)
+        .returns(invitation.createdAt().atOffset(ZoneOffset.UTC), GetBusinessInvitations200ResponseInnerDTO::getCreatedAt);
   }
 
   @ParameterizedTest

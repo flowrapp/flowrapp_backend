@@ -7,4 +7,5 @@ public interface UserRequestUseCase {
 
   MockUser findUser(MockUserRequest userRequest);
 
+  void changePassword(String password);
 }

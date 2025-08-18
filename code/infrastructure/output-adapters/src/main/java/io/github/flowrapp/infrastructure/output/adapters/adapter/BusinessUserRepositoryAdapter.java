@@ -1,5 +1,7 @@
 package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
+import java.util.Optional;
+
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.BusinessUserJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessUserEntityMapper;
 import io.github.flowrapp.model.BusinessUser;
@@ -18,6 +20,12 @@ public class BusinessUserRepositoryAdapter implements BusinessUserRepositoryOutp
   private final BusinessUserJpaRepository businessUserJpaRepository;
 
   private final BusinessUserEntityMapper businessUserEntityMapper;
+
+  @Override
+  public Optional<BusinessUser> getByUserAndBusinessId(Integer userId, Integer businessId) {
+    return businessUserJpaRepository.findByUser_IdAndBusiness_Id(userId, businessId)
+        .map(businessUserEntityMapper::infra2domain);
+  }
 
   @Override
   public BusinessUser save(BusinessUser businessUser) {

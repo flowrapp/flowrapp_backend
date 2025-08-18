@@ -1,6 +1,6 @@
 package io.github.flowrapp.model;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 import lombok.Builder;
 
@@ -10,7 +10,7 @@ public record BusinessUser(
     Business business,
     UserRole role,
     User invitedBy,
-    OffsetDateTime joinedAt) {
+    Instant joinedAt) {
 
   public static BusinessUser fromInvitation(Invitation invitation) {
     return BusinessUser.builder()
@@ -18,7 +18,7 @@ public record BusinessUser(
         .business(invitation.business())
         .role(invitation.role())
         .invitedBy(invitation.invitedBy())
-        .joinedAt(OffsetDateTime.now()) // Set joinedAt to now when creating from invitation
+        .joinedAt(Instant.now()) // Set joinedAt to now when creating from invitation
         .build();
   }
 

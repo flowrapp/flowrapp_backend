@@ -1,6 +1,6 @@
 package io.github.flowrapp.model;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 import io.github.flowrapp.model.value.UserCreationRequest;
 
@@ -18,7 +18,7 @@ public record User(
     String phone,
     String passwordHash,
     boolean enabled,
-    OffsetDateTime createdAt) {
+    Instant createdAt) {
 
   /** Creates a new user from a user creation request. */
   public static User fromUserCreationRequest(UserCreationRequest userCreationRequest) {
@@ -37,7 +37,7 @@ public record User(
         .phone("") // Phone is not provided
         .passwordHash("") // Password hash is not set
         .enabled(false) // Not enabled by default
-        .createdAt(OffsetDateTime.now())
+        .createdAt(Instant.now())
         .build();
   }
 

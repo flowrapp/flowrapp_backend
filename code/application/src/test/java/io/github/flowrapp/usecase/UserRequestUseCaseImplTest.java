@@ -2,14 +2,21 @@ package io.github.flowrapp.usecase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.MockUser;
+import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.value.MockUserRequest;
+import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.MockUserRepositoryOutput;
+import io.github.flowrapp.port.output.UserRepositoryOutput;
+import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
 
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
@@ -20,19 +27,28 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
-class MockUserRequestUseCaseImplTest {
+class UserRequestUseCaseImplTest {
 
   @Mock
-  private MockUserRepositoryOutput userRepositoryOutput;
+  private MockUserRepositoryOutput mockUserRepositoryOutput;
+
+  @Mock
+  private UserRepositoryOutput userRepositoryOutput;
+
+  @Mock
+  private UserSecurityContextHolderOutput userSecurityContextHolderOutput;
+
+  @Mock
+  private AuthCryptoPort authCryptoPort;
 
   @InjectMocks
-  private MockUserRequestUseCaseImpl userRequestUseCase;
+  private UserRequestUseCaseImpl userRequestUseCase;
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
   void findUser_returnsUser_whenFound(MockUserRequest userRequest, MockUser user) {
     // GIVEN
-    when(userRepositoryOutput.findUserByName(userRequest.name()))
+    when(mockUserRepositoryOutput.findUserByName(userRequest.name()))
         .thenReturn(Optional.of(user));
 
     // WHEN
@@ -48,11 +64,31 @@ class MockUserRequestUseCaseImplTest {
   @InstancioSource(samples = 20)
   void findUser_throwsException_whenNotFound(MockUserRequest userRequest) {
     // GIVEN
-    when(userRepositoryOutput.findUserByName(userRequest.name()))
+    when(mockUserRepositoryOutput.findUserByName(userRequest.name()))
         .thenReturn(Optional.empty());
 
     // WHEN / THEN
     assertThrows(FunctionalException.class, () -> userRequestUseCase.findUser(userRequest));
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void changePassword_OK(String password, User user, String hashPassword, User newUser) {
+    // GIVEN
+    when(userSecurityContextHolderOutput.getCurrentUser())
+        .thenReturn(user);
+
+    when(authCryptoPort.hashPassword(password))
+        .thenReturn(hashPassword);
+
+    when(userRepositoryOutput.save(argThat(argument -> argument.id().equals(user.id()))))
+        .thenReturn(newUser);
+
+    // WHEN
+    userRequestUseCase.changePassword(password);
+
+    // THEN
+    verify(userRepositoryOutput).save(any());
   }
 
 }
