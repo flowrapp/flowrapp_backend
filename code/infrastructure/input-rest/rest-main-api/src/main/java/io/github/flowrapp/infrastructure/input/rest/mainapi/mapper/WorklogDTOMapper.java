@@ -20,9 +20,10 @@ import io.github.flowrapp.model.value.WorklogUpdateRequest;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, componentModel = SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, componentModel = SPRING, nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 public interface WorklogDTOMapper {
 
   @Mapping(target = "clockIn", source = "clockInRequestDTO.clockIn", defaultExpression = "java(java.time.Instant.now())")

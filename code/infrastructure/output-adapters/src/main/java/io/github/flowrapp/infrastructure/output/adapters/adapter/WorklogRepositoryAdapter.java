@@ -9,7 +9,6 @@ import io.github.flowrapp.infrastructure.output.adapters.mapper.WorklogEntityMap
 import io.github.flowrapp.model.Worklog;
 import io.github.flowrapp.model.value.WorklogFilteredRequest;
 import io.github.flowrapp.port.output.WorklogRepositoryOutput;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -33,7 +32,8 @@ public class WorklogRepositoryAdapter implements WorklogRepositoryOutput {
   @Override
   public List<Worklog> findAllFiltered(WorklogFilteredRequest worklogFilteredRequest) {
     val qWorklog = QWorklogEntity.worklogEntity;
-    val predicate = qWorklog.business.id.eq(worklogFilteredRequest.businessId())
+    val predicate = qWorklog.isNotNull()
+        .and(worklogFilteredRequest.businessId() != null ? qWorklog.business.id.eq(worklogFilteredRequest.businessId()) : null)
         .and(worklogFilteredRequest.userId() != null ? qWorklog.user.id.eq(worklogFilteredRequest.userId()) : null)
         .and(worklogFilteredRequest.from() != null ? qWorklog.clockIn.after(worklogFilteredRequest.from()) : null)
         .and(worklogFilteredRequest.to() != null ? qWorklog.clockOut.before(worklogFilteredRequest.to()) : null);
