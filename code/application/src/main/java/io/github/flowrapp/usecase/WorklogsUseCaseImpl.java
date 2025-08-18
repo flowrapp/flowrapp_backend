@@ -5,7 +5,7 @@ import java.util.List;
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.UpdateWorklogEvent;
+import io.github.flowrapp.model.value.CreateWorklogEvent;
 import io.github.flowrapp.model.value.WorklogClockInRequest;
 import io.github.flowrapp.model.value.WorklogClockOutRequest;
 import io.github.flowrapp.model.value.WorklogFilteredRequest;
@@ -77,7 +77,9 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
     log.debug("User {} is clockOut {} for worklog {}", currentUser.mail(), request.clockOut(), request.worklogId());
     worklogRepositoryOutput.save(updatedWorklog);
 
-    applicationEventPublisher.publishEvent(UpdateWorklogEvent.of(updatedWorklog)); // Publish event for further processing
+    applicationEventPublisher.publishEvent(
+        CreateWorklogEvent.created(updatedWorklog)); // Publish event for further processing
+
     return updatedWorklog;
   }
 
@@ -105,7 +107,8 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
     }
 
     worklogRepositoryOutput.save(updatedWorklog);
-    applicationEventPublisher.publishEvent(UpdateWorklogEvent.of(updatedWorklog)); // Publish event for further processing
+    applicationEventPublisher.publishEvent(
+        CreateWorklogEvent.updated(updatedWorklog, worklog)); // Publish event for further processing
 
     return updatedWorklog;
   }
