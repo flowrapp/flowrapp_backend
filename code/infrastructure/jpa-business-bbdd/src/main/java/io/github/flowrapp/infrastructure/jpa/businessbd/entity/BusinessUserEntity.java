@@ -1,6 +1,6 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -51,7 +51,7 @@ public class BusinessUserEntity {
   @NotNull
   @ColumnDefault("now()")
   @Column(name = "joined_at", nullable = false)
-  private OffsetDateTime joinedAt;
+  private Instant joinedAt;
 
   @Override
   public final boolean equals(Object o) {

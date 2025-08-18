@@ -1,6 +1,6 @@
 package io.github.flowrapp.model;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 import lombok.Builder;
 import lombok.NonNull;
@@ -12,9 +12,9 @@ public record Worklog(
     Integer id,
     User user,
     Business business,
-    OffsetDateTime clockIn,
-    OffsetDateTime clockOut,
-    OffsetDateTime createdAt) {
+    Instant clockIn,
+    Instant clockOut,
+    Instant createdAt) {
 
   public boolean isOwner(@NonNull User user) {
     return this.user.id().equals(user.id());
@@ -32,17 +32,17 @@ public record Worklog(
     return !isOpen();
   }
 
-  public static Worklog fromBusinessUser(@NonNull BusinessUser businessUser, @NonNull OffsetDateTime clockIn) {
+  public static Worklog fromBusinessUser(@NonNull BusinessUser businessUser, @NonNull Instant clockIn) {
     return fromBusinessUser(businessUser, clockIn, null);
   }
 
-  public static Worklog fromBusinessUser(BusinessUser businessUser, OffsetDateTime clockIn, OffsetDateTime clockOut) {
+  public static Worklog fromBusinessUser(BusinessUser businessUser, Instant clockIn, Instant clockOut) {
     return Worklog.builder()
         .user(businessUser.user())
         .business(businessUser.business())
         .clockIn(clockIn)
         .clockOut(clockOut)
-        .createdAt(OffsetDateTime.now())
+        .createdAt(Instant.now())
         .build();
   }
 

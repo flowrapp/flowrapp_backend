@@ -1,12 +1,12 @@
 package io.github.flowrapp.model.value;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 import lombok.Builder;
 
 @Builder(toBuilder = true)
 public record WorklogUpdateRequest(
     Integer worklogId,
-    OffsetDateTime clockIn,
-    OffsetDateTime clockOut) {
+    Instant clockIn,
+    Instant clockOut) {
 }

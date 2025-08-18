@@ -8,7 +8,8 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -97,7 +98,7 @@ class WorklogsUseCaseImplTest {
   void clockOut_success(WorklogClockOutRequest request, User currentUser, Worklog openWorklog) {
     // Given
     openWorklog = openWorklog.withUser(currentUser).withClockOut(null);
-    request = request.toBuilder().clockOut(openWorklog.clockIn().plusDays(3)).build();
+    request = request.toBuilder().clockOut(openWorklog.clockIn().plus(3, ChronoUnit.HOURS)).build();
 
     when(userSecurityContextHolderOutput.getCurrentUser())
         .thenReturn(currentUser);
@@ -157,7 +158,7 @@ class WorklogsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void clockOut_invalidWorklog(WorklogClockOutRequest request, User currentUser, Worklog openWorklog) {
     // Given
-    request = request.toBuilder().clockOut(openWorklog.clockIn().minusDays(3)).build();
+    request = request.toBuilder().clockOut(openWorklog.clockIn().plus(3, ChronoUnit.HOURS)).build();
     openWorklog = openWorklog.withUser(currentUser).withClockOut(null);
 
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
@@ -173,7 +174,7 @@ class WorklogsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void updateWorklog_success(WorklogUpdateRequest request, User currentUser, Worklog existingWorklog) {
     // Given
-    request = request.toBuilder().clockOut(request.clockIn().plusDays(3)).build();
+    request = request.toBuilder().clockOut(request.clockIn().plus(3, ChronoUnit.HOURS)).build();
     var existingWorklog2 = existingWorklog.withUser(currentUser);
 
     when(userSecurityContextHolderOutput.getCurrentUser())
@@ -223,8 +224,8 @@ class WorklogsUseCaseImplTest {
     // Given
     var request = WorklogUpdateRequest.builder()
         .worklogId(existingWorklog.id())
-        .clockIn(OffsetDateTime.now())
-        .clockOut(OffsetDateTime.now().plusHours(3)) // Invalid clock out
+        .clockIn(Instant.now())
+        .clockOut(Instant.now().plus(3, ChronoUnit.HOURS)) // Invalid clock out
         .build();
 
     when(userSecurityContextHolderOutput.getCurrentUser())

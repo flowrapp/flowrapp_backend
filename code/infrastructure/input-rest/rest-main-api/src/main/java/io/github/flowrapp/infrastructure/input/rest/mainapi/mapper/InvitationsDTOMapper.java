@@ -2,6 +2,9 @@ package io.github.flowrapp.infrastructure.input.rest.mainapi.mapper;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import io.github.flowrapp.infrastructure.apirest.users.model.CreateBusinessInvitationRequestDTO;
@@ -30,4 +33,9 @@ public interface InvitationsDTOMapper {
       CreateBusinessInvitationRequestDTO createBusinessInvitationRequestDTO);
 
   InvitationRegistrationRequest rest2domain(String token, RegisterUserFromInvitationRequestDTO registerDTO);
+
+  default OffsetDateTime map(Instant date) {
+    return date != null ? date.atOffset(ZoneOffset.UTC) : null;
+  }
+
 }

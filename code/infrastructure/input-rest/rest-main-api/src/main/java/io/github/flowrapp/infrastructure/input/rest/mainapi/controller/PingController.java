@@ -1,6 +1,7 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.controller;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
+import java.time.ZoneOffset;
 
 import io.github.flowrapp.infrastructure.apirest.users.api.SystemApi;
 import io.github.flowrapp.infrastructure.apirest.users.model.Ping200ResponseDTO;
@@ -18,6 +19,6 @@ public class PingController implements SystemApi {
     return ResponseEntity.ok(
         new Ping200ResponseDTO()
             .status("System is up and running")
-            .timestamp(OffsetDateTime.now()));
+            .timestamp(Instant.now().atOffset(ZoneOffset.UTC)));
   }
 }

@@ -1,6 +1,6 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -54,12 +54,12 @@ public class InvitationEntity {
   @NotNull
   @ColumnDefault("now()")
   @Column(name = "created_at", nullable = false)
-  private OffsetDateTime createdAt;
+  private Instant createdAt;
 
   @NotNull
   @ColumnDefault("(now() + '7 days'::interval)")
   @Column(name = "expires_at", nullable = false)
-  private OffsetDateTime expiresAt;
+  private Instant expiresAt;
 
   @Size(max = 20)
   @NotNull

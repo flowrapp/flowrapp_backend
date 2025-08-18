@@ -1,6 +1,6 @@
 package io.github.flowrapp.model.value;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
@@ -12,9 +12,9 @@ import lombok.With;
 public record WorklogFilteredRequest(
     Integer userId,
     Integer businessId,
-    OffsetDateTime from,
-    OffsetDateTime to,
-    OffsetDateTime date) {
+    Instant from,
+    Instant to,
+    Instant date) {
 
   public static long SECONDS_IN_DAY = 24 * 60 * 60L;
 

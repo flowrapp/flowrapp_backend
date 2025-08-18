@@ -1,6 +1,6 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,14 +39,14 @@ public class WorklogEntity {
 
   @NotNull
   @Column(name = "clocked_in", nullable = false)
-  private OffsetDateTime clockIn;
+  private Instant clockIn;
 
-  @Column(name = "clocked_out", nullable = false)
-  private OffsetDateTime clockOut;
+  @Column(name = "clocked_out")
+  private Instant clockOut;
 
   @NotNull
   @ColumnDefault("now()")
   @Column(name = "created_at", nullable = false)
-  private OffsetDateTime createdAt;
+  private Instant createdAt;
 
 }
