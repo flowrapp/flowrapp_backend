@@ -95,8 +95,8 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
     }
 
     val updatedWorklog = worklog.toBuilder()
-        .clockIn(request.clockIn())
-        .clockOut(request.clockOut())
+        .clockIn(request.clockIn() != null ? request.clockIn() : worklog.clockIn())
+        .clockOut(request.clockOut() != null ? request.clockOut() : worklog.clockOut())
         .build();
 
     if (!updatedWorklog.isValid()) {
