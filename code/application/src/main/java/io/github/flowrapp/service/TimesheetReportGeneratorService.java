@@ -1,12 +1,9 @@
 package io.github.flowrapp.service;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.reducing;
+import static java.util.stream.Collectors.toMap;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import io.github.flowrapp.model.Report;
 import io.github.flowrapp.model.value.UserTimeReportSummary;
@@ -29,15 +26,12 @@ public class TimesheetReportGeneratorService {
   public List<UserTimeReportSummary> computeWeeklyHoursReport(LocalDate from, LocalDate to, List<Report> reports) {
     log.debug("Computing weekly hours report for {} reports", reports.size());
 
-    // Group reports by user, then compute the total hours for each user
+    // Aggregate reports by user in a single pass without intermediate Optionals
     return reports.stream()
-        .collect(
-            groupingBy(report -> report.user().id(),
-                mapping(UserTimeReportSummary::fromReport,
-                    reducing(UserTimeReportSummary::merge))))
+        .collect(toMap(r -> r.user().id(),
+            UserTimeReportSummary::fromReport,
+            UserTimeReportSummary::merge))
         .values().stream()
-        .filter(Optional::isPresent) // Should not be empty, but just in case
-        .map(Optional::get)
         .map(timeReportSummary -> timeReportSummary.toBuilder()
             .start(from) // Update start/end to match the requested range
             .end(to)

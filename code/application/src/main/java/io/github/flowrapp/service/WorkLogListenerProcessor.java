@@ -8,7 +8,6 @@ import io.github.flowrapp.model.value.CreateWorklogEvent;
 import io.github.flowrapp.port.output.ReportRepositoryOutput;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.context.event.EventListener;
@@ -25,8 +24,7 @@ public class WorkLogListenerProcessor {
 
   private final ReportRepositoryOutput reportRepositoryOutput;
 
-  @SneakyThrows
-  @Async
+  @Async("virtualThreadsExecutor")
   @EventListener
   void listenToWorkLogEvents(CreateWorklogEvent event) {
     log.info("Received work log event: {}", event);

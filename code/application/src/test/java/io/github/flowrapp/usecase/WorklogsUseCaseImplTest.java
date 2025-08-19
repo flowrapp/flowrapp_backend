@@ -2,6 +2,7 @@ package io.github.flowrapp.usecase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.instancio.Select.field;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -13,6 +14,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.Business;
@@ -29,6 +31,7 @@ import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
 import io.github.flowrapp.port.output.WorklogRepositoryOutput;
 
 import lombok.val;
+import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -97,8 +100,12 @@ class WorklogsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void clockOut_success(WorklogClockOutRequest request, User currentUser, Worklog openWorklog) {
     // Given
-    openWorklog = openWorklog.withUser(currentUser).withClockOut(null);
-    request = request.toBuilder().clockOut(openWorklog.clockIn().plus(3, ChronoUnit.HOURS)).build();
+    openWorklog = openWorklog.withUser(currentUser)
+        .withClockIn(Instant.now().minus(5, ChronoUnit.HOURS))
+        .withClockOut(null);
+    request = request.toBuilder()
+        .clockOut(openWorklog.clockIn().plus(3, ChronoUnit.HOURS))
+        .build();
 
     when(userSecurityContextHolderOutput.getCurrentUser())
         .thenReturn(currentUser);
@@ -172,9 +179,9 @@ class WorklogsUseCaseImplTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
-  void updateWorklog_success(WorklogUpdateRequest request, User currentUser, Worklog existingWorklog) {
+  void updateWorklog_success(User currentUser, Worklog existingWorklog) {
     // Given
-    request = request.toBuilder().clockOut(request.clockIn().plus(3, ChronoUnit.HOURS)).build();
+    var request = this.createValidWorklogUpdate();
     var existingWorklog2 = existingWorklog.withUser(currentUser);
 
     when(userSecurityContextHolderOutput.getCurrentUser())
@@ -190,7 +197,7 @@ class WorklogsUseCaseImplTest {
     // Then
     assertThat(result)
         .isNotNull()
-        .returns(existingWorklog.id(), Worklog::id);
+        .returns(existingWorklog2.id(), Worklog::id);
     verify(applicationEventPublisher).publishEvent(any());
   }
 
@@ -344,6 +351,15 @@ class WorklogsUseCaseImplTest {
     // When / Then
     assertThatThrownBy(() -> worklogsUseCase.getBusinessWorklogs(request))
         .isInstanceOf(FunctionalException.class);
+  }
+
+  private WorklogUpdateRequest createValidWorklogUpdate() {
+    val clockIntInstant = Instant.now().minus(new Random().nextInt(1, 10), ChronoUnit.HOURS);
+
+    return Instancio.of(WorklogUpdateRequest.class)
+        .set(field(WorklogUpdateRequest::clockIn), clockIntInstant)
+        .generate(field(WorklogUpdateRequest::clockOut), gen -> gen.temporal().instant().range(clockIntInstant, Instant.now()))
+        .create();
   }
 
 }

@@ -6,6 +6,10 @@ spring:
     problemdetails:
       enabled: true
 
+  threads:
+    virtual:
+      enabled: false # Enable for virtual threads
+
   # Datasource Configuration
   jpa:
     hibernate:

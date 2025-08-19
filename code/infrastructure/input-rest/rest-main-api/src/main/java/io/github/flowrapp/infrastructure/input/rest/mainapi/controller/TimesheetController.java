@@ -22,6 +22,7 @@ public class TimesheetController implements TimesheetApi {
 
   @Override
   public ResponseEntity<GetWeeklyHoursReport200ResponseDTO> getWeeklyHoursReport(String businessId, String week, String userId) {
+    log.info(Thread.currentThread().toString());
     val response = timesheetUseCase.getSummaryReport(
         timesheetDTOMapper.rest2domain(userId, businessId, week));
 
