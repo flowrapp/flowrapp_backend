@@ -11,7 +11,6 @@ import io.github.flowrapp.model.Business;
 import io.github.flowrapp.model.Report;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.value.UserTimeReportSummary;
-
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.junit.jupiter.api.DisplayName;
@@ -83,7 +82,7 @@ class TimesheetReportGeneratorServiceTest {
 
       // Then
       assertThat(result).hasSize(1);
-      UserTimeReportSummary summary = result.get(0);
+      UserTimeReportSummary summary = result.getFirst();
       assertThat(summary.user()).isEqualTo(user);
       assertThat(summary.start()).isEqualTo(from);
       assertThat(summary.end()).isEqualTo(to);
@@ -94,14 +93,15 @@ class TimesheetReportGeneratorServiceTest {
 
       // Verify daily hours are filled for the entire range
       var dailyHoursMap = summary.dailyHours().hours();
-      assertThat(dailyHoursMap).hasSize(7); // 7 days from 15th to 21st inclusive
-      assertThat(dailyHoursMap.get(reportDay)).isEqualTo(hours);
+      assertThat(dailyHoursMap)
+          .hasSize(7) // 7 days from 15th to 21st inclusive
+          .containsEntry(reportDay, hours);
 
       // Other days should have zero hours
       LocalDate current = from;
       while (!current.isAfter(to)) {
         if (!current.equals(reportDay)) {
-          assertThat(dailyHoursMap.get(current)).isEqualTo(BigDecimal.ZERO);
+          assertThat(dailyHoursMap).containsEntry(current, BigDecimal.ZERO);
         }
         current = current.plusDays(1);
       }
@@ -149,13 +149,14 @@ class TimesheetReportGeneratorServiceTest {
 
       // Then
       assertThat(result).hasSize(1);
-      UserTimeReportSummary summary = result.get(0);
+      UserTimeReportSummary summary = result.getFirst();
       assertThat(summary.user()).isEqualTo(user);
       assertThat(summary.totalHours()).isEqualTo(hours1.add(hours2));
 
       var dailyHoursMap = summary.dailyHours().hours();
-      assertThat(dailyHoursMap.get(day1)).isEqualTo(hours1);
-      assertThat(dailyHoursMap.get(day2)).isEqualTo(hours2);
+      assertThat(dailyHoursMap)
+          .containsEntry(day1, hours1)
+          .containsEntry(day2, hours2);
     }
 
     @Test
@@ -269,12 +270,13 @@ class TimesheetReportGeneratorServiceTest {
 
       // Then
       assertThat(result).hasSize(1);
-      UserTimeReportSummary summary = result.get(0);
+      UserTimeReportSummary summary = result.getFirst();
       assertThat(summary.user()).isEqualTo(user);
       assertThat(summary.totalHours()).isEqualTo(hours1.add(hours2));
 
       var dailyHoursMap = summary.dailyHours().hours();
-      assertThat(dailyHoursMap.get(reportDay)).isEqualTo(hours1.add(hours2));
+      assertThat(dailyHoursMap)
+          .containsEntry(reportDay, hours1.add(hours2));
     }
 
     @Test
@@ -309,9 +311,10 @@ class TimesheetReportGeneratorServiceTest {
 
       // Then
       assertThat(result).hasSize(1);
-      UserTimeReportSummary summary = result.get(0);
+      UserTimeReportSummary summary = result.getFirst();
       assertThat(summary.totalHours()).isEqualTo(BigDecimal.ZERO);
-      assertThat(summary.dailyHours().hours().get(reportDay)).isEqualTo(BigDecimal.ZERO);
+      assertThat(summary.dailyHours().hours())
+          .containsEntry(reportDay, BigDecimal.ZERO);
     }
 
     @Test
