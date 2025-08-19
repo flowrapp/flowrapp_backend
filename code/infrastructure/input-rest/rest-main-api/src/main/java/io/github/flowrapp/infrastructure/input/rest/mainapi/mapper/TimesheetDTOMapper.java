@@ -25,7 +25,7 @@ public interface TimesheetDTOMapper {
 
   @Mapping(target = "from", expression = "java(mapWeek2from(week))")
   @Mapping(target = "to", expression = "java(mapWeek2to(week))")
-  TimesheetFilterRequest rest2domain(Integer userId, @NotNull Integer businessId, @NotNull String week);
+  TimesheetFilterRequest rest2domain(Integer userId, Integer businessId, @NotNull String week);
 
   @Mapping(target = "startDate", expression = "java(mapWeek2from(week))")
   @Mapping(target = "endDate", expression = "java(mapWeek2to(week))")

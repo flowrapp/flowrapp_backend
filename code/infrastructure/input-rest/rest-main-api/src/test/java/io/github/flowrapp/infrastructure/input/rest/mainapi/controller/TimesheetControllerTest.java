@@ -72,4 +72,26 @@ class TimesheetControllerTest {
         .singleElement()
         .isNotNull();
   }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void getCurrentUserWeeklyHoursReport(Integer businessId, UserTimeReportSummary response) {
+    // GIVEN
+    String week = "2025-W01";
+    when(timesheetUseCase.getSummaryReport(assertArg(argument -> assertThat(argument)
+        .isNotNull()
+        .returns(businessId, TimesheetFilterRequest::businessId)
+        .returns(null, TimesheetFilterRequest::userId)
+        .returns(LocalDate.parse("2024-12-30"), TimesheetFilterRequest::from)
+        .returns(LocalDate.parse("2025-01-05"), TimesheetFilterRequest::to))))
+            .thenReturn(List.of(response));
+
+    // WHEN
+    var result = timesheetController.getCurrentUserWeeklyHoursReport(week, businessId);
+
+    // THEN
+    assertThat(result)
+        .isNotNull();
+  }
+
 }
