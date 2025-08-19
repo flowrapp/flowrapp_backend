@@ -14,10 +14,12 @@ import org.mapstruct.ReportingPolicy;
     uses = {UserEntityMapper.class, BusinessEntityMapper.class})
 public interface ReportEntityMapper {
 
-  @Mapping(target = "clockDay", source = "day")
+  @Mapping(target = "id.clockDay", source = "day")
+  @Mapping(target = "id.userId", source = "user.id")
+  @Mapping(target = "id.businessId", source = "business.id")
   ReportEntity domain2Infra(Report report);
 
-  @Mapping(target = "day", source = "clockDay")
+  @Mapping(target = "day", source = "id.clockDay")
   Report infra2domain(ReportEntity reportEntity);
 
   List<Report> infra2domain(Iterable<ReportEntity> reportEntities);

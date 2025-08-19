@@ -32,8 +32,8 @@ public class ReportRepositoryAdapter implements ReportRepositoryOutput {
     val predicate = qReport.isNotNull()
         .and(filter.userId() != null ? qReport.user.id.eq(filter.userId()) : null)
         .and(filter.businessId() != null ? qReport.business.id.eq(filter.businessId()) : null)
-        .and(filter.from() != null ? qReport.clockDay.goe(filter.from()) : null)
-        .and(filter.to() != null ? qReport.clockDay.loe(filter.to()) : null);
+        .and(filter.from() != null ? qReport.id.clockDay.goe(filter.from()) : null)
+        .and(filter.to() != null ? qReport.id.clockDay.loe(filter.to()) : null);
 
     return reportEntityMapper.infra2domain(
         reportJpaRepository.findAll(predicate));
@@ -45,7 +45,7 @@ public class ReportRepositoryAdapter implements ReportRepositoryOutput {
     val predicate = qReport.isNotNull()
         .and(qReport.user.id.eq(userId))
         .and(qReport.business.id.eq(businessId))
-        .and(qReport.clockDay.eq(day));
+        .and(qReport.id.clockDay.eq(day));
 
     return reportJpaRepository.findOne(predicate)
         .map(reportEntityMapper::infra2domain);

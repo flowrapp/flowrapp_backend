@@ -10,7 +10,6 @@ import org.springframework.util.Assert;
 @Builder(toBuilder = true)
 @With
 public record Report(
-    Integer id,
     User user,
     Business business,
     LocalDate day,

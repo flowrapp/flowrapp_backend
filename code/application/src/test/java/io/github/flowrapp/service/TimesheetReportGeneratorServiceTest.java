@@ -68,7 +68,6 @@ class TimesheetReportGeneratorServiceTest {
           .create();
 
       Report report = Instancio.of(Report.class)
-          .set(field(Report::id), 1)
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)

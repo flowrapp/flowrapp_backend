@@ -92,12 +92,11 @@ CREATE TABLE if not exists flowrapp_management.worklogs
 
 CREATE TABLE if not exists flowrapp_management.reports
 (
-    id          integer GENERATED ALWAYS AS IDENTITY,
     user_id     integer          NOT NULL,
     business_id integer          NOT NULL,
     clock_day   DATE             NOT NULL,
     hours       double precision NOT NULL,
-    PRIMARY KEY (id),
+    PRIMARY KEY (user_id, business_id, clock_day),
     FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
     FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id)
 );

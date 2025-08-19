@@ -84,7 +84,7 @@ class ReportRepositoryAdapterTest {
         .get()
         .returns(reportEntity.getUser().getId(), report -> report.user().id())
         .returns(reportEntity.getBusiness().getId(), report -> report.business().id())
-        .returns(reportEntity.getClockDay(), Report::day)
+        .returns(reportEntity.getId().getClockDay(), Report::day)
         .returns(BigDecimal.valueOf(reportEntity.getHours()), Report::hours);
   }
 
@@ -94,10 +94,9 @@ class ReportRepositoryAdapterTest {
     // GIVEN
     when(reportJpaRepository.save(assertArg(argument -> assertThat(argument)
         .isNotNull()
-        .returns(report.id(), ReportEntity::getId)
         .returns(report.user().id(), r -> r.getUser().getId())
         .returns(report.business().id(), r -> r.getBusiness().getId())
-        .returns(report.day(), ReportEntity::getClockDay)
+        .returns(report.day(), reportEntity1 -> reportEntity1.getId().getClockDay())
         .returns(Objects.requireNonNull(report.hours()).doubleValue(), ReportEntity::getHours))))
             .thenReturn(reportEntity);
 
