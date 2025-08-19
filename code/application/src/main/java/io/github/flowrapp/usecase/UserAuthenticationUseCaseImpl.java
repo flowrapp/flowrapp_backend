@@ -5,12 +5,12 @@ import java.util.Optional;
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.value.LoginRequest;
-import io.github.flowrapp.value.RefreshRequest;
-import io.github.flowrapp.value.TokensResponse;
 import io.github.flowrapp.port.input.UserAuthenticationUseCase;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
+import io.github.flowrapp.value.LoginRequest;
+import io.github.flowrapp.value.RefreshRequest;
+import io.github.flowrapp.value.TokensResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class UserAuthenticationUseCaseImpl implements UserAuthenticationUseCase 
     log.debug("Logging in user: {}", request.username());
 
     val user = userRepositoryOutput.findUserByEmail(request.username())
-        .filter(u -> authCryptoPort.checkPassword(request.password(), u.passwordHash()))
+        .filter(u -> authCryptoPort.checkPassword(request.password(), u.passwordHash().get()))
         .orElseThrow(() -> new FunctionalException(FunctionalError.INVALID_CREDENTIALS));
 
     log.debug("Creating access token for user: {}", user.mail());

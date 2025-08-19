@@ -14,8 +14,8 @@ import java.util.Optional;
 
 import io.github.flowrapp.model.Report;
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.value.CreateWorklogEvent;
 import io.github.flowrapp.port.output.ReportRepositoryOutput;
+import io.github.flowrapp.value.CreateWorklogEvent;
 
 import lombok.val;
 import org.instancio.Instancio;

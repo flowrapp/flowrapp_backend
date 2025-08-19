@@ -8,13 +8,14 @@ import io.github.flowrapp.model.Business;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.UserRole;
-import io.github.flowrapp.value.BusinessCreationRequest;
-import io.github.flowrapp.value.UserCreationRequest;
 import io.github.flowrapp.port.input.AdminUseCase;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
+import io.github.flowrapp.value.BusinessCreationRequest;
+import io.github.flowrapp.value.SensitiveInfo;
+import io.github.flowrapp.value.UserCreationRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +62,8 @@ public class AdminUseCaseImpl implements AdminUseCase {
   private User createNewUser(UserCreationRequest userCreationRequest, String randomPassword) {
     return userRepositoryOutput.save(
         User.fromUserCreationRequest(userCreationRequest)
-            .withPasswordHash(authCryptoPort.hashPassword(randomPassword)));
+            .withPasswordHash(SensitiveInfo.of(
+                authCryptoPort.hashPassword(randomPassword))));
   }
 
   private Business createNewBusiness(BusinessCreationRequest businessCreationRequest, User user) {

@@ -9,8 +9,8 @@ import io.github.flowrapp.infrastructure.apirest.users.model.Login200ResponseDTO
 import io.github.flowrapp.infrastructure.apirest.users.model.LoginRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RefreshTokenRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.AuthDTOMapper;
-import io.github.flowrapp.value.TokensResponse;
 import io.github.flowrapp.port.input.UserAuthenticationUseCase;
+import io.github.flowrapp.value.TokensResponse;
 
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;

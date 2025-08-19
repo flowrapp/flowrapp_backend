@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import io.github.flowrapp.model.User;
 import io.github.flowrapp.config.JwtTokenSettings;
 import io.github.flowrapp.config.JwtTokenSettings.TokenProperty;
+import io.github.flowrapp.model.User;
 
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;

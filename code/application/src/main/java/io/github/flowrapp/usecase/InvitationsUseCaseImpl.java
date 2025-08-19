@@ -9,8 +9,6 @@ import io.github.flowrapp.model.BusinessUser;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.InvitationStatus;
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.value.InvitationCreationRequest;
-import io.github.flowrapp.value.InvitationRegistrationRequest;
 import io.github.flowrapp.port.input.InvitationsUseCase;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
@@ -18,6 +16,9 @@ import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
+import io.github.flowrapp.value.InvitationCreationRequest;
+import io.github.flowrapp.value.InvitationRegistrationRequest;
+import io.github.flowrapp.value.SensitiveInfo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -144,8 +145,8 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
     return invited.toBuilder()
         .name(invitationRegistration.username())
         .phone(invitationRegistration.phone())
-        .passwordHash(
-            authCryptoPort.hashPassword(invitationRegistration.password()))
+        .passwordHash(SensitiveInfo.of(
+            authCryptoPort.hashPassword(invitationRegistration.password())))
         .enabled(true)
         .build();
   }

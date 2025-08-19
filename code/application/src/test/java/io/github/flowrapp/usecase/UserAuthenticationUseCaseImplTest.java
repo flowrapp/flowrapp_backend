@@ -8,11 +8,11 @@ import java.util.Optional;
 
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
+import io.github.flowrapp.port.output.AuthCryptoPort;
+import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.value.LoginRequest;
 import io.github.flowrapp.value.RefreshRequest;
 import io.github.flowrapp.value.TokensResponse;
-import io.github.flowrapp.port.output.AuthCryptoPort;
-import io.github.flowrapp.port.output.UserRepositoryOutput;
 
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
@@ -58,7 +58,7 @@ class UserAuthenticationUseCaseImplTest {
     // GIVEN
     when(userRepositoryOutput.findUserByEmail(loginRequest.username()))
         .thenReturn(Optional.of(user));
-    when(authenticationServiceOutput.checkPassword(loginRequest.password(), user.passwordHash()))
+    when(authenticationServiceOutput.checkPassword(loginRequest.password(), user.passwordHash().get()))
         .thenReturn(true);
     when(authenticationServiceOutput.createTokens(user))
         .thenReturn(tokensResponse);

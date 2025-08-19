@@ -18,9 +18,9 @@ import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserFromInv
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.InvitationsDTOMapper;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.InvitationStatus;
+import io.github.flowrapp.port.input.InvitationsUseCase;
 import io.github.flowrapp.value.InvitationCreationRequest;
 import io.github.flowrapp.value.InvitationRegistrationRequest;
-import io.github.flowrapp.port.input.InvitationsUseCase;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.instancio.junit.InstancioExtension;

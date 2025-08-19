@@ -15,11 +15,11 @@ import io.github.flowrapp.infrastructure.apirest.users.model.ClockOutRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.UpdateWorklogRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.WorklogDTOMapper;
 import io.github.flowrapp.model.Worklog;
+import io.github.flowrapp.port.input.WorklogUseCase;
 import io.github.flowrapp.value.WorklogClockInRequest;
 import io.github.flowrapp.value.WorklogClockOutRequest;
 import io.github.flowrapp.value.WorklogFilteredRequest;
 import io.github.flowrapp.value.WorklogUpdateRequest;
-import io.github.flowrapp.port.input.WorklogUseCase;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.instancio.junit.InstancioExtension;

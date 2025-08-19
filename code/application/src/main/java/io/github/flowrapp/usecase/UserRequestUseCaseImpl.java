@@ -3,12 +3,13 @@ package io.github.flowrapp.usecase;
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.MockUser;
-import io.github.flowrapp.value.MockUserRequest;
 import io.github.flowrapp.port.input.UserRequestUseCase;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.MockUserRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
+import io.github.flowrapp.value.MockUserRequest;
+import io.github.flowrapp.value.SensitiveInfo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,8 @@ public class UserRequestUseCaseImpl implements UserRequestUseCase {
     var currentUser = userSecurityContextHolderOutput.getCurrentUser();
 
     userRepositoryOutput.save(
-        currentUser.withPasswordHash(authCryptoPort.hashPassword(password)));
+        currentUser.withPasswordHash(SensitiveInfo.of(
+            authCryptoPort.hashPassword(password))));
   }
 
 }

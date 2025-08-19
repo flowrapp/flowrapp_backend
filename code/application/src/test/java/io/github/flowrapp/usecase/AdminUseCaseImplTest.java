@@ -12,11 +12,11 @@ import java.util.UUID;
 
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.value.UserCreationRequest;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
+import io.github.flowrapp.value.UserCreationRequest;
 
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
