@@ -1,8 +1,8 @@
 -- Test data for get invitations scenarios
 
 -- Create business for get invitations testing (business_id = 4)
-INSERT INTO flowrapp_management.business (name, owner_id, longitude, latitude, area, created_at)
-VALUES ('Get Invitations Business', 1, 0.0, 0.0, 100.0, NOW());
+INSERT INTO flowrapp_management.business (name, owner_id, longitude, latitude, area, timezone_offset, created_at)
+VALUES ('Get Invitations Business', 1, 0.0, 0.0, 100.0, 'Europe/Madrid', NOW());
 
 -- Create users for get invitations testing
 INSERT INTO flowrapp_management.users (name, mail, phone, password_hash)
