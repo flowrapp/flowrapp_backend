@@ -54,7 +54,7 @@ class TimesheetControllerTest {
             .thenReturn(List.of(response));
 
     // WHEN
-    var result = timesheetController.getWeeklyHoursReport(String.valueOf(businessId), week, String.valueOf(userId));
+    var result = timesheetController.getWeeklyHoursReport(businessId, week, userId);
 
     // THEN
     assertThat(result)
@@ -62,7 +62,7 @@ class TimesheetControllerTest {
         .returns(OK, ResponseEntity::getStatusCode)
         .extracting(ResponseEntity::getBody)
         .isNotNull()
-        .returns(String.valueOf(businessId), GetWeeklyHoursReport200ResponseDTO::getBusinessId)
+        .returns(businessId, GetWeeklyHoursReport200ResponseDTO::getBusinessId)
         .returns(week, GetWeeklyHoursReport200ResponseDTO::getWeek)
         .returns(YearWeek.parse(week).atDay(DayOfWeek.MONDAY), GetWeeklyHoursReport200ResponseDTO::getStartDate)
         .returns(YearWeek.parse(week).atDay(DayOfWeek.SUNDAY), GetWeeklyHoursReport200ResponseDTO::getEndDate)

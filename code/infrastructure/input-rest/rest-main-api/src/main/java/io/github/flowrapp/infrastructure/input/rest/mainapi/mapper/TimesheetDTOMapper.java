@@ -25,15 +25,14 @@ public interface TimesheetDTOMapper {
 
   @Mapping(target = "from", expression = "java(mapWeek2from(week))")
   @Mapping(target = "to", expression = "java(mapWeek2to(week))")
-  TimesheetFilterRequest rest2domain(String userId, @NotNull String businessId, @NotNull String week);
+  TimesheetFilterRequest rest2domain(Integer userId, @NotNull Integer businessId, @NotNull String week);
 
   @Mapping(target = "startDate", expression = "java(mapWeek2from(week))")
   @Mapping(target = "endDate", expression = "java(mapWeek2to(week))")
   @Mapping(target = "users", source = "response")
-  GetWeeklyHoursReport200ResponseDTO domain2rest(String businessId, String week, List<UserTimeReportSummary> response);
+  GetWeeklyHoursReport200ResponseDTO domain2rest(Integer businessId, String week, List<UserTimeReportSummary> response);
 
   @Mapping(target = "userId", source = "user.id")
-  @Mapping(target = "email", ignore = true)
   @Mapping(target = "username", source = "user.name")
   GetWeeklyHoursReport200ResponseUsersInnerDTO map(UserTimeReportSummary summary);
 
