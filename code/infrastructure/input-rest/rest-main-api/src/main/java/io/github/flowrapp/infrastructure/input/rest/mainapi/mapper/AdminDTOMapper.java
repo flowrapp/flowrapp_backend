@@ -3,6 +3,8 @@ package io.github.flowrapp.infrastructure.input.rest.mainapi.mapper;
 import java.time.ZoneId;
 import java.util.List;
 
+import io.github.flowrapp.exception.FunctionalError;
+import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequestBusinessInnerDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequestBusinessInnerLocationDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequestDTO;
@@ -33,7 +35,11 @@ public interface AdminDTOMapper {
   BusinessCreationRequest rest2domain(RegisterUserRequestBusinessInnerDTO businessCreationRequestDTO);
 
   default ZoneId map(String timezoneOffset) {
-    return ZoneId.of(timezoneOffset);
+    try {
+      return ZoneId.of(timezoneOffset);
+    } catch (Exception e) {
+      throw new FunctionalException(FunctionalError.ZONE_ID_NOT_FOUND, e);
+    }
   }
 
   Location rest2domain(RegisterUserRequestBusinessInnerLocationDTO locationDTO);

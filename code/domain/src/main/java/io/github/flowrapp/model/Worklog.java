@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 
 import lombok.Builder;
 import lombok.NonNull;
@@ -31,7 +30,8 @@ public record Worklog(
         && clockOut != null
         && clockIn.isBefore(clockOut)
         && clockIn.isBefore(Instant.now())
-        && clockOut.isBefore(Instant.now());
+        && clockOut.isBefore(Instant.now())
+        && Duration.between(clockIn, Instant.now()).compareTo(Duration.ofDays(1)) <= 0;
   }
 
   public boolean isOpen() {
@@ -43,7 +43,7 @@ public record Worklog(
   }
 
   public @Nullable LocalDate getDay() {
-    return clockIn != null ? clockIn.atZone(ZoneOffset.UTC).toLocalDate() : null;
+    return clockIn != null ? clockIn.atZone(business.timezoneOffset()).toLocalDate() : null;
   }
 
   public BigDecimal getHours() {

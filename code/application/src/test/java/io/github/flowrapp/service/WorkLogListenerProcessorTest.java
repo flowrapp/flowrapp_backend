@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import io.github.flowrapp.model.Report;
@@ -171,7 +172,8 @@ class WorkLogListenerProcessorTest {
   }
 
   private Worklog createValidWorklog() {
-    var clockIn = Instancio.gen().temporal().instant().past().get();
+    var clockIn = Instancio.gen().temporal().instant().max(Instant.now())
+        .min(Instant.now().minus(24, ChronoUnit.HOURS)).get();
     return Instancio.of(Worklog.class)
         .set(field(Worklog::clockIn), clockIn)
         .generate(field(Worklog::clockOut), gen -> gen.temporal().instant().range(clockIn, Instant.now()))
