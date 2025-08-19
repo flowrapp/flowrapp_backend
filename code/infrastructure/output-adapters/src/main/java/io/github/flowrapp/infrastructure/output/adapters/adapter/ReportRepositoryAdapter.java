@@ -8,7 +8,7 @@ import io.github.flowrapp.infrastructure.jpa.businessbd.entity.QReportEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.ReportJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.ReportEntityMapper;
 import io.github.flowrapp.model.Report;
-import io.github.flowrapp.model.value.TimesheetFilterRequest;
+import io.github.flowrapp.value.TimesheetFilterRequest;
 import io.github.flowrapp.port.output.ReportRepositoryOutput;
 
 import lombok.RequiredArgsConstructor;

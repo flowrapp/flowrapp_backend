@@ -15,7 +15,7 @@ import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessEntityMa
 import io.github.flowrapp.infrastructure.output.adapters.mapper.UserEntityMapper;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.WorklogEntityMapper;
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.WorklogFilteredRequest;
+import io.github.flowrapp.value.WorklogFilteredRequest;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;

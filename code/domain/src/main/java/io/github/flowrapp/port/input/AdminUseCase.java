@@ -1,6 +1,6 @@
 package io.github.flowrapp.port.input;
 
-import io.github.flowrapp.model.value.UserCreationRequest;
+import io.github.flowrapp.value.UserCreationRequest;
 
 public interface AdminUseCase {
 

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import io.github.flowrapp.model.Report;
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.CreateWorklogEvent;
+import io.github.flowrapp.value.CreateWorklogEvent;
 import io.github.flowrapp.port.output.ReportRepositoryOutput;
 
 import lombok.RequiredArgsConstructor;

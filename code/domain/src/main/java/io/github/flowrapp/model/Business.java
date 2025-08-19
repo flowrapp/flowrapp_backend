@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Objects;
 
-import io.github.flowrapp.model.value.BusinessCreationRequest;
+import io.github.flowrapp.value.BusinessCreationRequest;
 
 import lombok.Builder;
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.WorklogEntity;
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.WorklogFilteredRequest;
+import io.github.flowrapp.value.WorklogFilteredRequest;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

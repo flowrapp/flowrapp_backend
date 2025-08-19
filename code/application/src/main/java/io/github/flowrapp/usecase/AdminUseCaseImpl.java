@@ -1,6 +1,6 @@
 package io.github.flowrapp.usecase;
 
-import static io.github.flowrapp.model.config.Constants.ADMIN_USER_MAIL;
+import static io.github.flowrapp.config.Constants.ADMIN_USER_MAIL;
 
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
@@ -8,8 +8,8 @@ import io.github.flowrapp.model.Business;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.UserRole;
-import io.github.flowrapp.model.value.BusinessCreationRequest;
-import io.github.flowrapp.model.value.UserCreationRequest;
+import io.github.flowrapp.value.BusinessCreationRequest;
+import io.github.flowrapp.value.UserCreationRequest;
 import io.github.flowrapp.port.input.AdminUseCase;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;

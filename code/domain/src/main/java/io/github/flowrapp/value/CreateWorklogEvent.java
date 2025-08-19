@@ -1,4 +1,4 @@
-package io.github.flowrapp.model.value;
+package io.github.flowrapp.value;
 
 import io.github.flowrapp.model.Worklog;
 

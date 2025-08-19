@@ -18,7 +18,7 @@ import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessEntityMa
 import io.github.flowrapp.infrastructure.output.adapters.mapper.ReportEntityMapper;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.UserEntityMapper;
 import io.github.flowrapp.model.Report;
-import io.github.flowrapp.model.value.TimesheetFilterRequest;
+import io.github.flowrapp.value.TimesheetFilterRequest;
 
 import com.querydsl.core.types.Predicate;
 import org.instancio.junit.InstancioExtension;

@@ -15,10 +15,10 @@ import io.github.flowrapp.infrastructure.apirest.users.model.ClockOutRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.UpdateWorklogRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.WorklogDTOMapper;
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.WorklogClockInRequest;
-import io.github.flowrapp.model.value.WorklogClockOutRequest;
-import io.github.flowrapp.model.value.WorklogFilteredRequest;
-import io.github.flowrapp.model.value.WorklogUpdateRequest;
+import io.github.flowrapp.value.WorklogClockInRequest;
+import io.github.flowrapp.value.WorklogClockOutRequest;
+import io.github.flowrapp.value.WorklogFilteredRequest;
+import io.github.flowrapp.value.WorklogUpdateRequest;
 import io.github.flowrapp.port.input.WorklogUseCase;
 
 import org.assertj.core.api.InstanceOfAssertFactories;

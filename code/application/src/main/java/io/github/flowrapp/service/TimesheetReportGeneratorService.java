@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import io.github.flowrapp.model.Report;
-import io.github.flowrapp.model.value.UserTimeReportSummary;
+import io.github.flowrapp.value.UserTimeReportSummary;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -10,7 +10,7 @@ import java.util.List;
 import io.github.flowrapp.model.Business;
 import io.github.flowrapp.model.Report;
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.model.value.UserTimeReportSummary;
+import io.github.flowrapp.value.UserTimeReportSummary;
 
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;

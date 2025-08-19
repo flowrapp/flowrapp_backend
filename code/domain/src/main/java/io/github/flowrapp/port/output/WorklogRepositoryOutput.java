@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.WorklogFilteredRequest;
+import io.github.flowrapp.value.WorklogFilteredRequest;
 
 public interface WorklogRepositoryOutput {
 

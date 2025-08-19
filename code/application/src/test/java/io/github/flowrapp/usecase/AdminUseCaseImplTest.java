@@ -1,6 +1,6 @@
 package io.github.flowrapp.usecase;
 
-import static io.github.flowrapp.model.config.Constants.ADMIN_USER_MAIL;
+import static io.github.flowrapp.config.Constants.ADMIN_USER_MAIL;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.model.value.UserCreationRequest;
+import io.github.flowrapp.value.UserCreationRequest;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;

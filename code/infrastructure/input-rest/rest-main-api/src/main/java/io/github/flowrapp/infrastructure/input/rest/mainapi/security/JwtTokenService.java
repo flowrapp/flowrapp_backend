@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.model.config.JwtTokenSettings;
+import io.github.flowrapp.config.JwtTokenSettings;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

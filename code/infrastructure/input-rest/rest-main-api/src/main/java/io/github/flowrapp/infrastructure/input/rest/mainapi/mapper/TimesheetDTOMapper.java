@@ -10,9 +10,9 @@ import java.util.Map;
 
 import io.github.flowrapp.infrastructure.apirest.users.model.GetWeeklyHoursReport200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetWeeklyHoursReport200ResponseUsersInnerDTO;
-import io.github.flowrapp.model.value.DayHoursPairList;
-import io.github.flowrapp.model.value.TimesheetFilterRequest;
-import io.github.flowrapp.model.value.UserTimeReportSummary;
+import io.github.flowrapp.value.DayHoursPairList;
+import io.github.flowrapp.value.TimesheetFilterRequest;
+import io.github.flowrapp.value.UserTimeReportSummary;
 
 import jakarta.validation.constraints.NotNull;
 import org.mapstruct.Mapper;

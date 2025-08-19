@@ -13,10 +13,10 @@ import io.github.flowrapp.infrastructure.apirest.users.model.ClockInRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.ClockOutRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.UpdateWorklogRequestDTO;
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.WorklogClockInRequest;
-import io.github.flowrapp.model.value.WorklogClockOutRequest;
-import io.github.flowrapp.model.value.WorklogFilteredRequest;
-import io.github.flowrapp.model.value.WorklogUpdateRequest;
+import io.github.flowrapp.value.WorklogClockInRequest;
+import io.github.flowrapp.value.WorklogClockOutRequest;
+import io.github.flowrapp.value.WorklogFilteredRequest;
+import io.github.flowrapp.value.WorklogUpdateRequest;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import io.github.flowrapp.model.Report;
-import io.github.flowrapp.model.value.TimesheetFilterRequest;
+import io.github.flowrapp.value.TimesheetFilterRequest;
 
 import org.jspecify.annotations.NonNull;
 

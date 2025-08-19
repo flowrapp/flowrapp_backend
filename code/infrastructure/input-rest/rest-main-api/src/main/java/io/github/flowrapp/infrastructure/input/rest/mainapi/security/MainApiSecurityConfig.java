@@ -4,7 +4,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.util.Base64;
 
-import io.github.flowrapp.model.config.JwtTokenSettings;
+import io.github.flowrapp.config.JwtTokenSettings;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.jwk.source.JWKSource;

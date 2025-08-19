@@ -2,7 +2,7 @@ package io.github.flowrapp.model;
 
 import java.time.Instant;
 
-import io.github.flowrapp.model.value.UserCreationRequest;
+import io.github.flowrapp.value.UserCreationRequest;
 
 import lombok.Builder;
 import lombok.With;

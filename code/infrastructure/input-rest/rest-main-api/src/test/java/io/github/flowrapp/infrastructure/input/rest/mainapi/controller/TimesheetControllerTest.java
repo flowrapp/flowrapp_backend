@@ -11,8 +11,8 @@ import java.util.List;
 
 import io.github.flowrapp.infrastructure.apirest.users.model.GetWeeklyHoursReport200ResponseDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.TimesheetDTOMapper;
-import io.github.flowrapp.model.value.TimesheetFilterRequest;
-import io.github.flowrapp.model.value.UserTimeReportSummary;
+import io.github.flowrapp.value.TimesheetFilterRequest;
+import io.github.flowrapp.value.UserTimeReportSummary;
 import io.github.flowrapp.port.input.TimesheetUseCase;
 
 import org.assertj.core.api.InstanceOfAssertFactories;

@@ -9,8 +9,8 @@ import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequest
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequestBusinessInnerLocationDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequestDTO;
 import io.github.flowrapp.model.Location;
-import io.github.flowrapp.model.value.BusinessCreationRequest;
-import io.github.flowrapp.model.value.UserCreationRequest;
+import io.github.flowrapp.value.BusinessCreationRequest;
+import io.github.flowrapp.value.UserCreationRequest;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

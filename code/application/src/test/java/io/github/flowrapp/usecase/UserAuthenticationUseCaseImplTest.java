@@ -8,9 +8,9 @@ import java.util.Optional;
 
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.model.value.LoginRequest;
-import io.github.flowrapp.model.value.RefreshRequest;
-import io.github.flowrapp.model.value.TokensResponse;
+import io.github.flowrapp.value.LoginRequest;
+import io.github.flowrapp.value.RefreshRequest;
+import io.github.flowrapp.value.TokensResponse;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 
