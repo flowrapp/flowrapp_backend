@@ -19,5 +19,5 @@ INSERT INTO flowrapp_management.invitations (invited, invited_by, business_id, t
 VALUES ((SELECT id FROM flowrapp_management.users WHERE mail = 'getinvite2@test.com'), 1, 2, '4d1be6d0-004e-4b6a-af56-d47a15249535', 'EMPLOYEE', 'PENDING', NOW(), NOW() + INTERVAL '7 days');
 
 -- Create business for empty results testing (business_id = 5)
-INSERT INTO flowrapp_management.business (name, owner_id, longitude, latitude, area, created_at)
-VALUES ('Empty Invitations Business', 1, 0.0, 0.0, 100.0, NOW());
+INSERT INTO flowrapp_management.business (name, owner_id, longitude, latitude, area, timezone_offset, created_at)
+VALUES ('Empty Invitations Business', 1, 0.0, 0.0, 100.0, 'Europe/Madrid', NOW());
