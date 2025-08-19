@@ -91,12 +91,12 @@ class TimesheetReportGeneratorServiceTest {
       assertThat(summary.totalOvertimeHours()).isEqualTo(BigDecimal.ZERO);
       assertThat(summary.totalAbsenceHours()).isEqualTo(BigDecimal.ZERO);
       assertThat(summary.dailyHours()).isNotNull();
-      
+
       // Verify daily hours are filled for the entire range
       var dailyHoursMap = summary.dailyHours().hours();
       assertThat(dailyHoursMap).hasSize(7); // 7 days from 15th to 21st inclusive
       assertThat(dailyHoursMap.get(reportDay)).isEqualTo(hours);
-      
+
       // Other days should have zero hours
       LocalDate current = from;
       while (!current.isAfter(to)) {
@@ -152,7 +152,7 @@ class TimesheetReportGeneratorServiceTest {
       UserTimeReportSummary summary = result.get(0);
       assertThat(summary.user()).isEqualTo(user);
       assertThat(summary.totalHours()).isEqualTo(hours1.add(hours2));
-      
+
       var dailyHoursMap = summary.dailyHours().hours();
       assertThat(dailyHoursMap.get(day1)).isEqualTo(hours1);
       assertThat(dailyHoursMap.get(day2)).isEqualTo(hours2);
@@ -204,13 +204,13 @@ class TimesheetReportGeneratorServiceTest {
 
       // Then
       assertThat(result).hasSize(2);
-      
+
       // Find summaries by user ID for easier assertion
       UserTimeReportSummary summary1 = result.stream()
           .filter(s -> s.user().id().equals(1))
           .findFirst()
           .orElseThrow();
-      
+
       UserTimeReportSummary summary2 = result.stream()
           .filter(s -> s.user().id().equals(2))
           .findFirst()
@@ -272,7 +272,7 @@ class TimesheetReportGeneratorServiceTest {
       UserTimeReportSummary summary = result.get(0);
       assertThat(summary.user()).isEqualTo(user);
       assertThat(summary.totalHours()).isEqualTo(hours1.add(hours2));
-      
+
       var dailyHoursMap = summary.dailyHours().hours();
       assertThat(dailyHoursMap.get(reportDay)).isEqualTo(hours1.add(hours2));
     }
@@ -320,13 +320,13 @@ class TimesheetReportGeneratorServiceTest {
       // Given
       LocalDate from = LocalDate.of(2024, 1, 1);
       LocalDate to = LocalDate.of(2024, 1, 31);
-      
+
       // Create users first
       List<User> users = Instancio.ofList(User.class)
           .size(100)
           .generate(field(User::id), gen -> gen.ints().range(1, 101))
           .create();
-      
+
       // Create 100 users with 31 days of reports each (3,100 reports total)
       List<Report> reports = Instancio.ofList(Report.class)
           .size(3100)
@@ -345,7 +345,7 @@ class TimesheetReportGeneratorServiceTest {
       // Then
       assertThat(result).hasSizeLessThanOrEqualTo(100); // Should have at most 100 users
       assertThat(endTime - startTime).isLessThan(1000); // Should complete within 1 second
-      
+
       // Verify all summaries have correct date range
       result.forEach(summary -> {
         assertThat(summary.start()).isEqualTo(from);
@@ -369,8 +369,7 @@ class TimesheetReportGeneratorServiceTest {
           Instancio.of(User.class).set(field(User::id), 2).create(),
           Instancio.of(User.class).set(field(User::id), 3).create(),
           Instancio.of(User.class).set(field(User::id), 4).create(),
-          Instancio.of(User.class).set(field(User::id), 5).create()
-      );
+          Instancio.of(User.class).set(field(User::id), 5).create());
 
       Business business = Instancio.of(Business.class)
           .set(field(Business::id), 1)
@@ -394,7 +393,7 @@ class TimesheetReportGeneratorServiceTest {
       // Then
       assertThat(result1).hasSize(5);
       assertThat(result2).hasSize(5);
-      
+
       // Results should be deterministic (same order)
       for (int i = 0; i < result1.size(); i++) {
         assertThat(result1.get(i).user().id()).isEqualTo(result2.get(i).user().id());

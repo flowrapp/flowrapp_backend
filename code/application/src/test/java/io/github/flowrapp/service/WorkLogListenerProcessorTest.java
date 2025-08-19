@@ -15,11 +15,11 @@ import io.github.flowrapp.model.Report;
 import io.github.flowrapp.model.Worklog;
 import io.github.flowrapp.model.value.CreateWorklogEvent;
 import io.github.flowrapp.port.output.ReportRepositoryOutput;
+
 import lombok.val;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.InjectMocks;
@@ -45,13 +45,12 @@ class WorkLogListenerProcessorTest {
     workLogListenerProcessor.listenToWorkLogEvents(event);
 
     // THEN
-    verify(reportRepositoryOutput).save(assertArg(argument ->
-        assertThat(argument)
-            .isNotNull()
-            .returns(event.getWorklog().user().id(), report -> report.user().id())
-            .returns(event.getWorklog().business().id(), report -> report.business().id())
-            .returns(event.getWorklog().getHours(), Report::hours)
-            .returns(event.getWorklog().getDay(), Report::day)));
+    verify(reportRepositoryOutput).save(assertArg(argument -> assertThat(argument)
+        .isNotNull()
+        .returns(event.getWorklog().user().id(), report -> report.user().id())
+        .returns(event.getWorklog().business().id(), report -> report.business().id())
+        .returns(event.getWorklog().getHours(), Report::hours)
+        .returns(event.getWorklog().getDay(), Report::day)));
   }
 
   @ParameterizedTest
@@ -61,19 +60,18 @@ class WorkLogListenerProcessorTest {
     val event = CreateWorklogEvent.created(this.createValidWorklog());
     when(reportRepositoryOutput.getByDay(
         event.getWorklog().user().id(), event.getWorklog().business().id(), event.getWorklog().getDay()))
-        .thenReturn(Optional.of(alreadyExists));
+            .thenReturn(Optional.of(alreadyExists));
 
     // WHEN
     workLogListenerProcessor.listenToWorkLogEvents(event);
 
     // THEN
-    verify(reportRepositoryOutput).save(assertArg(argument ->
-        assertThat(argument)
-            .isNotNull()
-            .returns(alreadyExists.user().id(), report -> report.user().id())
-            .returns(alreadyExists.business().id(), report -> report.business().id())
-            .returns(alreadyExists.hours().add(event.getWorklog().getHours()), Report::hours)
-            .returns(alreadyExists.day(), Report::day)));
+    verify(reportRepositoryOutput).save(assertArg(argument -> assertThat(argument)
+        .isNotNull()
+        .returns(alreadyExists.user().id(), report -> report.user().id())
+        .returns(alreadyExists.business().id(), report -> report.business().id())
+        .returns(alreadyExists.hours().add(event.getWorklog().getHours()), Report::hours)
+        .returns(alreadyExists.day(), Report::day)));
   }
 
   @ParameterizedTest
@@ -85,19 +83,18 @@ class WorkLogListenerProcessorTest {
 
     when(reportRepositoryOutput.getByDay(
         event.getWorklog().user().id(), event.getWorklog().business().id(), event.getWorklog().getDay()))
-        .thenReturn(Optional.of(alreadyExists));
+            .thenReturn(Optional.of(alreadyExists));
 
     // WHEN
     workLogListenerProcessor.listenToWorkLogEvents(event);
 
     // THEN
-    verify(reportRepositoryOutput).save(assertArg(argument ->
-        assertThat(argument)
-            .isNotNull()
-            .returns(alreadyExists.user().id(), report -> report.user().id())
-            .returns(alreadyExists.business().id(), report -> report.business().id())
-            .returns(alreadyExists.hours().subtract(previous.getHours()).add(worklog.getHours()), Report::hours)
-            .returns(alreadyExists.day(), Report::day)));
+    verify(reportRepositoryOutput).save(assertArg(argument -> assertThat(argument)
+        .isNotNull()
+        .returns(alreadyExists.user().id(), report -> report.user().id())
+        .returns(alreadyExists.business().id(), report -> report.business().id())
+        .returns(alreadyExists.hours().subtract(previous.getHours()).add(worklog.getHours()), Report::hours)
+        .returns(alreadyExists.day(), Report::day)));
   }
 
   @ParameterizedTest
@@ -109,7 +106,7 @@ class WorkLogListenerProcessorTest {
 
     when(reportRepositoryOutput.getByDay(
         event.getWorklog().user().id(), event.getWorklog().business().id(), event.getWorklog().getDay()))
-        .thenReturn(Optional.empty());
+            .thenReturn(Optional.empty());
 
     // WHEN
     workLogListenerProcessor.listenToWorkLogEvents(event);
@@ -127,19 +124,18 @@ class WorkLogListenerProcessorTest {
 
     when(reportRepositoryOutput.getByDay(
         event.getWorklog().user().id(), event.getWorklog().business().id(), event.getWorklog().getDay()))
-        .thenReturn(Optional.of(alreadyExists));
+            .thenReturn(Optional.of(alreadyExists));
 
     // WHEN
     workLogListenerProcessor.listenToWorkLogEvents(event);
 
     // THEN
-    verify(reportRepositoryOutput).save(assertArg(argument ->
-        assertThat(argument)
-            .isNotNull()
-            .returns(alreadyExists.user().id(), report -> report.user().id())
-            .returns(alreadyExists.business().id(), report -> report.business().id())
-            .returns(alreadyExists.hours().subtract(worklog.getHours()), Report::hours)
-            .returns(alreadyExists.day(), Report::day)));
+    verify(reportRepositoryOutput).save(assertArg(argument -> assertThat(argument)
+        .isNotNull()
+        .returns(alreadyExists.user().id(), report -> report.user().id())
+        .returns(alreadyExists.business().id(), report -> report.business().id())
+        .returns(alreadyExists.hours().subtract(worklog.getHours()), Report::hours)
+        .returns(alreadyExists.day(), Report::day)));
   }
 
   @ParameterizedTest
@@ -151,7 +147,7 @@ class WorkLogListenerProcessorTest {
 
     when(reportRepositoryOutput.getByDay(
         event.getWorklog().user().id(), event.getWorklog().business().id(), event.getWorklog().getDay()))
-        .thenReturn(Optional.empty());
+            .thenReturn(Optional.empty());
 
     // WHEN
     workLogListenerProcessor.listenToWorkLogEvents(event);

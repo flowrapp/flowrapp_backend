@@ -2,7 +2,6 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.querydsl.core.types.Predicate;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.ReportEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.ReportJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessEntityMapper;
@@ -21,6 +19,8 @@ import io.github.flowrapp.infrastructure.output.adapters.mapper.ReportEntityMapp
 import io.github.flowrapp.infrastructure.output.adapters.mapper.UserEntityMapper;
 import io.github.flowrapp.model.Report;
 import io.github.flowrapp.model.value.TimesheetFilterRequest;
+
+import com.querydsl.core.types.Predicate;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -92,15 +92,14 @@ class ReportRepositoryAdapterTest {
   @InstancioSource(samples = 20)
   void save(Report report, ReportEntity reportEntity) {
     // GIVEN
-    when(reportJpaRepository.save(assertArg(argument ->
-        assertThat(argument)
-            .isNotNull()
-            .returns(report.id(), ReportEntity::getId)
-            .returns(report.user().id(), r -> r.getUser().getId())
-            .returns(report.business().id(), r -> r.getBusiness().getId())
-            .returns(report.day(), ReportEntity::getClockDay)
-            .returns(Objects.requireNonNull(report.hours()).doubleValue(), ReportEntity::getHours))))
-        .thenReturn(reportEntity);
+    when(reportJpaRepository.save(assertArg(argument -> assertThat(argument)
+        .isNotNull()
+        .returns(report.id(), ReportEntity::getId)
+        .returns(report.user().id(), r -> r.getUser().getId())
+        .returns(report.business().id(), r -> r.getBusiness().getId())
+        .returns(report.day(), ReportEntity::getClockDay)
+        .returns(Objects.requireNonNull(report.hours()).doubleValue(), ReportEntity::getHours))))
+            .thenReturn(reportEntity);
 
     // WHEN
     var result = reportRepositoryAdapter.save(report);

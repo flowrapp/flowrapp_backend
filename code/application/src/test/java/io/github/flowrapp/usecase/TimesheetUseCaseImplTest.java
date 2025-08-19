@@ -18,11 +18,11 @@ import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.ReportRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
 import io.github.flowrapp.service.TimesheetReportGeneratorService;
+
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.InjectMocks;
@@ -96,8 +96,7 @@ class TimesheetUseCaseImplTest {
           .containsExactly(
               FunctionalError.BUSINESS_NOT_FOUND.getCode(),
               FunctionalError.BUSINESS_NOT_FOUND.getStatus(),
-              FunctionalError.BUSINESS_NOT_FOUND.getMessage()
-          );
+              FunctionalError.BUSINESS_NOT_FOUND.getMessage());
     }
 
     @ParameterizedTest
@@ -120,8 +119,7 @@ class TimesheetUseCaseImplTest {
           .containsExactly(
               FunctionalError.USER_NOT_OWNER_OF_BUSINESS.getCode(),
               FunctionalError.USER_NOT_OWNER_OF_BUSINESS.getStatus(),
-              FunctionalError.USER_NOT_OWNER_OF_BUSINESS.getMessage()
-          );
+              FunctionalError.USER_NOT_OWNER_OF_BUSINESS.getMessage());
     }
   }
 
