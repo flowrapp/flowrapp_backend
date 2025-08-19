@@ -1,5 +1,6 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.mapper;
 
+import java.time.ZoneId;
 import java.util.List;
 
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequestBusinessInnerDTO;
@@ -30,6 +31,10 @@ public interface AdminDTOMapper {
   }
 
   BusinessCreationRequest rest2domain(RegisterUserRequestBusinessInnerDTO businessCreationRequestDTO);
+
+  default ZoneId map(String timezoneOffset) {
+    return ZoneId.of(timezoneOffset);
+  }
 
   Location rest2domain(RegisterUserRequestBusinessInnerLocationDTO locationDTO);
 
