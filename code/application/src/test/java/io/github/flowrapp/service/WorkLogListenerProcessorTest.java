@@ -8,8 +8,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import io.github.flowrapp.model.Report;
@@ -172,11 +171,11 @@ class WorkLogListenerProcessorTest {
   }
 
   private Worklog createValidWorklog() {
-    var clockIn = Instancio.gen().temporal().instant().max(Instant.now())
-        .min(Instant.now().minus(24, ChronoUnit.HOURS)).get();
+    var clockIn = Instancio.gen().temporal().offsetDateTime().max(OffsetDateTime.now().minusDays(2))
+        .min(OffsetDateTime.now().minusDays(3)).get();
     return Instancio.of(Worklog.class)
         .set(field(Worklog::clockIn), clockIn)
-        .generate(field(Worklog::clockOut), gen -> gen.temporal().instant().range(clockIn, Instant.now()))
+        .generate(field(Worklog::clockOut), gen -> gen.temporal().offsetDateTime().range(clockIn, clockIn.plusDays(1)))
         .create();
   }
 

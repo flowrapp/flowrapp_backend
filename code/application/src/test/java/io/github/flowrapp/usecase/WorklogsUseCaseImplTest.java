@@ -6,15 +6,15 @@ import static org.instancio.Select.field;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.assertArg;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.Business;
@@ -25,6 +25,7 @@ import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
 import io.github.flowrapp.port.output.WorklogRepositoryOutput;
+import io.github.flowrapp.utils.DateUtils;
 import io.github.flowrapp.value.WorklogClockInRequest;
 import io.github.flowrapp.value.WorklogClockOutRequest;
 import io.github.flowrapp.value.WorklogFilteredRequest;
@@ -79,7 +80,7 @@ class WorklogsUseCaseImplTest {
     verify(worklogRepositoryOutput).save(argThat(worklog -> worklog.user().equals(businessUser.user())
         &&
         worklog.business().equals(businessUser.business()) &&
-        worklog.clockIn().equals(request.clockIn()) &&
+        worklog.clockIn().equals(request.clockIn().atZoneSameInstant(businessUser.business().timezoneOffset()).toOffsetDateTime()) &&
         worklog.clockOut() == null));
   }
 
@@ -101,10 +102,10 @@ class WorklogsUseCaseImplTest {
   void clockOut_success(WorklogClockOutRequest request, User currentUser, Worklog openWorklog) {
     // Given
     openWorklog = openWorklog.withUser(currentUser)
-        .withClockIn(Instant.now().minus(5, ChronoUnit.HOURS))
+        .withClockIn(OffsetDateTime.now().minusNanos(30))
         .withClockOut(null);
     request = request.toBuilder()
-        .clockOut(openWorklog.clockIn().plus(3, ChronoUnit.HOURS))
+        .clockOut(openWorklog.clockIn().plusNanos(30))
         .build();
 
     when(userSecurityContextHolderOutput.getCurrentUser())
@@ -121,6 +122,34 @@ class WorklogsUseCaseImplTest {
     assertThat(result)
         .isNotNull()
         .returns(currentUser.id(), worklog -> worklog.user().id());
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void clockOut_success_splitDay(WorklogClockOutRequest request, User currentUser, Worklog openWorklog) {
+    // Given
+    openWorklog = openWorklog.withUser(currentUser)
+        .withClockIn(OffsetDateTime.now().minusDays(2))
+        .withClockOut(null);
+    request = request.toBuilder()
+        .clockOut(openWorklog.clockIn().plusHours(23).plusMinutes(59))
+        .build();
+
+    when(userSecurityContextHolderOutput.getCurrentUser())
+        .thenReturn(currentUser);
+    when(worklogRepositoryOutput.findById(request.worklogId()))
+        .thenReturn(Optional.of(openWorklog));
+    when(worklogRepositoryOutput.save(argThat(argument -> Objects.equals(argument.user().id(), currentUser.id()))))
+        .then(returnsFirstArg());
+
+    // When
+    val result = worklogsUseCase.clockOut(request);
+
+    // Then
+    assertThat(result)
+        .isNotNull()
+        .returns(currentUser.id(), worklog -> worklog.user().id());
+    verify(worklogRepositoryOutput, times(2)).save(any());
   }
 
   @ParameterizedTest
@@ -165,7 +194,7 @@ class WorklogsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void clockOut_invalidWorklog(WorklogClockOutRequest request, User currentUser, Worklog openWorklog) {
     // Given
-    request = request.toBuilder().clockOut(openWorklog.clockIn().minus(3, ChronoUnit.HOURS)).build();
+    request = request.toBuilder().clockOut(openWorklog.clockIn().minusHours(3)).build();
     openWorklog = openWorklog.withUser(currentUser).withClockOut(null);
 
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
@@ -231,8 +260,8 @@ class WorklogsUseCaseImplTest {
     // Given
     var request = WorklogUpdateRequest.builder()
         .worklogId(existingWorklog.id())
-        .clockIn(Instant.now())
-        .clockOut(Instant.now().plus(3, ChronoUnit.HOURS)) // Invalid clock out
+        .clockIn(OffsetDateTime.now())
+        .clockOut(OffsetDateTime.now().plusHours(3)) // Invalid clock out
         .build();
 
     when(userSecurityContextHolderOutput.getCurrentUser())
@@ -293,18 +322,69 @@ class WorklogsUseCaseImplTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
-  void getUserWorklogs_success(WorklogFilteredRequest request, User currentUser, List<Worklog> worklogs) {
+  void getUserWorklogs_success(WorklogFilteredRequest request, User currentUser, Business business, List<Worklog> worklogs) {
     // Given
     when(userSecurityContextHolderOutput.getCurrentUser())
         .thenReturn(currentUser);
-    when(worklogRepositoryOutput.findAllFiltered(argThat(argument -> Objects.equals(argument.userId(), currentUser.id()))))
-        .thenReturn(worklogs);
+    when(businessRepositoryOutput.findById(request.businessId()))
+        .thenReturn(Optional.of(business));
+    when(worklogRepositoryOutput.findAllFiltered(assertArg(argument -> assertThat(argument)
+        .isNotNull()
+        .returns(currentUser.id(), WorklogFilteredRequest::userId)
+        .returns(request.businessId(), WorklogFilteredRequest::businessId)
+        .returns(DateUtils.toZone(business.timezoneOffset()).andThen(DateUtils.atStartOfDay).apply(request.date()),
+            WorklogFilteredRequest::from)
+        .returns(DateUtils.toZone(business.timezoneOffset()).andThen(DateUtils.atEndOfDay).apply(request.date()),
+            WorklogFilteredRequest::to)
+        .returns(request.date(), WorklogFilteredRequest::date))))
+            .thenReturn(worklogs);
 
     // When
     val result = worklogsUseCase.getUserWorklogs(request);
 
     // Then
     assertThat(result).isEqualTo(worklogs);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void getUserWorklogs_success_withNoDate(WorklogFilteredRequest request, User currentUser, Business business, List<Worklog> worklogs) {
+    // Given
+    var request2 = request.withDate(null);
+
+    when(userSecurityContextHolderOutput.getCurrentUser())
+        .thenReturn(currentUser);
+    when(businessRepositoryOutput.findById(request2.businessId()))
+        .thenReturn(Optional.of(business));
+    when(worklogRepositoryOutput.findAllFiltered(assertArg(argument -> assertThat(argument)
+        .isNotNull()
+        .returns(currentUser.id(), WorklogFilteredRequest::userId)
+        .returns(request2.businessId(), WorklogFilteredRequest::businessId)
+        .returns(DateUtils.toZone(business.timezoneOffset()).apply(request2.from()),
+            WorklogFilteredRequest::from)
+        .returns(DateUtils.toZone(business.timezoneOffset()).apply(request2.to()),
+            WorklogFilteredRequest::to))))
+                .thenReturn(worklogs);
+
+    // When
+    val result = worklogsUseCase.getUserWorklogs(request2);
+
+    // Then
+    assertThat(result).isEqualTo(worklogs);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void getUserWorklogs_businessNotFound(WorklogFilteredRequest request, User currentUser) {
+    // Given
+    when(userSecurityContextHolderOutput.getCurrentUser())
+        .thenReturn(currentUser);
+    when(businessRepositoryOutput.findById(request.businessId()))
+        .thenReturn(Optional.empty());
+
+    // When / Then
+    assertThatThrownBy(() -> worklogsUseCase.getUserWorklogs(request))
+        .isInstanceOf(FunctionalException.class);
   }
 
   @ParameterizedTest
@@ -354,11 +434,13 @@ class WorklogsUseCaseImplTest {
   }
 
   private WorklogUpdateRequest createValidWorklogUpdate() {
-    val clockIntInstant = Instant.now().minus(new Random().nextInt(1, 10), ChronoUnit.HOURS);
+    var clockIn = Instancio.gen().temporal().offsetDateTime().max(OffsetDateTime.now().minusDays(2))
+        .min(OffsetDateTime.now().minusDays(3)).get();
 
     return Instancio.of(WorklogUpdateRequest.class)
-        .set(field(WorklogUpdateRequest::clockIn), clockIntInstant)
-        .generate(field(WorklogUpdateRequest::clockOut), gen -> gen.temporal().instant().range(clockIntInstant, Instant.now()))
+        .set(field(WorklogUpdateRequest::clockIn), clockIn)
+        .generate(field(WorklogUpdateRequest::clockOut),
+            gen -> gen.temporal().offsetDateTime().range(clockIn, clockIn.plusDays(1)))
         .create();
   }
 

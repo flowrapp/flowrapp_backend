@@ -80,11 +80,11 @@ CREATE TABLE if not exists flowrapp_management.invitations
 CREATE TABLE if not exists flowrapp_management.worklogs
 (
     id          integer GENERATED ALWAYS AS IDENTITY,
-    user_id     integer   NOT NULL,
-    business_id integer   NOT NULL,
-    clocked_in  timestamp NOT NULL,
-    clocked_out timestamp,
-    created_at  timestamp NOT NULL DEFAULT NOW(),
+    user_id     integer     NOT NULL,
+    business_id integer     NOT NULL,
+    clocked_in  timestamptz NOT NULL,
+    clocked_out timestamptz,
+    created_at  timestamp   NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
     FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id)
@@ -138,7 +138,7 @@ VALUES ('test', 'test@test.com', '123456789',
         '$2a$10$8w.xERKkZZhKuCMU6K/0x.OmaEYBVqPBfGRHKHfyIEXK4P8kU43fq'); -- Password: 1234
 
 INSERT INTO flowrapp_management.business (name, owner_id, longitude, latitude, area, timezone_offset, created_at)
-VALUES ('Test Business', 1, 0.0, 0.0, 100.0, 'Europe/Madrid',NOW());
+VALUES ('Test Business', 1, 0.0, 0.0, 100.0, 'Europe/Madrid', NOW());
 
 INSERT INTO flowrapp_management.users_roles (user_id, business_id, role, invited_by, joined_at)
 VALUES (1, 1, 'OWNER', 1, NOW());

@@ -52,7 +52,7 @@ class WorklogsControllerTest {
     when(worklogUseCase.clockIn(assertArg(argument -> assertThat(argument)
         .isNotNull()
         .returns(businessId.intValue(), WorklogClockInRequest::businessId)
-        .returns(clockInRequestDTO.getClockIn().toInstant(), WorklogClockInRequest::clockIn))))
+        .returns(clockInRequestDTO.getClockIn(), WorklogClockInRequest::clockIn))))
             .thenReturn(worklog);
 
     // WHEN
@@ -66,8 +66,8 @@ class WorklogsControllerTest {
         .isNotNull()
         .returns(Long.valueOf(worklog.id()), ClockIn200ResponseDTO::getId)
         .returns(Long.valueOf(worklog.user().id()), ClockIn200ResponseDTO::getUserId)
-        .returns(worklog.clockIn().atOffset(ZoneOffset.UTC), ClockIn200ResponseDTO::getClockIn)
-        .returns(worklog.clockOut().atOffset(ZoneOffset.UTC), ClockIn200ResponseDTO::getClockOut);
+        .returns(worklog.clockIn(), ClockIn200ResponseDTO::getClockIn)
+        .returns(worklog.clockOut(), ClockIn200ResponseDTO::getClockOut);
   }
 
   @ParameterizedTest
@@ -78,7 +78,7 @@ class WorklogsControllerTest {
         .isNotNull()
         .returns(businessId.intValue(), WorklogClockOutRequest::businessId)
         .returns(worklogId.intValue(), WorklogClockOutRequest::worklogId)
-        .returns(clockOutRequestDTO.getClockOut().toInstant(), WorklogClockOutRequest::clockOut))))
+        .returns(clockOutRequestDTO.getClockOut(), WorklogClockOutRequest::clockOut))))
             .thenReturn(worklog);
 
     // WHEN
@@ -99,8 +99,8 @@ class WorklogsControllerTest {
     when(worklogUseCase.updateWorklog(assertArg(argument -> assertThat(argument)
         .isNotNull()
         .returns(worklogId.intValue(), WorklogUpdateRequest::worklogId)
-        .returns(updateWorklogRequestDTO.getClockIn().toInstant(), WorklogUpdateRequest::clockIn)
-        .returns(updateWorklogRequestDTO.getClockOut().toInstant(), WorklogUpdateRequest::clockOut))))
+        .returns(updateWorklogRequestDTO.getClockIn(), WorklogUpdateRequest::clockIn)
+        .returns(updateWorklogRequestDTO.getClockOut(), WorklogUpdateRequest::clockOut))))
             .thenReturn(worklog);
 
     // WHEN
@@ -140,9 +140,9 @@ class WorklogsControllerTest {
         .isNotNull()
         .returns(null, WorklogFilteredRequest::userId)
         .returns(businessId.intValue(), WorklogFilteredRequest::businessId)
-        .returns(from.atStartOfDay().toInstant(ZoneOffset.UTC), WorklogFilteredRequest::from)
-        .returns(to.atStartOfDay().toInstant(ZoneOffset.UTC), WorklogFilteredRequest::to)
-        .returns(date.atStartOfDay().toInstant(ZoneOffset.UTC), WorklogFilteredRequest::date))))
+        .returns(from.atStartOfDay(ZoneOffset.UTC).toOffsetDateTime(), WorklogFilteredRequest::from)
+        .returns(to.atStartOfDay(ZoneOffset.UTC).toOffsetDateTime(), WorklogFilteredRequest::to)
+        .returns(date.atStartOfDay(ZoneOffset.UTC).toOffsetDateTime(), WorklogFilteredRequest::date))))
             .thenReturn(worklogs);
 
     // WHEN
@@ -167,9 +167,9 @@ class WorklogsControllerTest {
         .isNotNull()
         .returns(userId.intValue(), WorklogFilteredRequest::userId)
         .returns(businessId.intValue(), WorklogFilteredRequest::businessId)
-        .returns(from.atStartOfDay().toInstant(ZoneOffset.UTC), WorklogFilteredRequest::from)
-        .returns(to.atStartOfDay().toInstant(ZoneOffset.UTC), WorklogFilteredRequest::to)
-        .returns(date.atStartOfDay().toInstant(ZoneOffset.UTC), WorklogFilteredRequest::date))))
+        .returns(from.atStartOfDay(ZoneOffset.UTC).toOffsetDateTime(), WorklogFilteredRequest::from)
+        .returns(to.atStartOfDay(ZoneOffset.UTC).toOffsetDateTime(), WorklogFilteredRequest::to)
+        .returns(date.atStartOfDay(ZoneOffset.UTC).toOffsetDateTime(), WorklogFilteredRequest::date))))
             .thenReturn(worklogs);
 
     // WHEN

@@ -1,8 +1,10 @@
 package io.github.flowrapp.value;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
+
+import io.github.flowrapp.utils.DateUtils;
 
 import lombok.Builder;
 import lombok.With;
@@ -12,19 +14,23 @@ import lombok.With;
 public record WorklogFilteredRequest(
     Integer userId,
     Integer businessId,
-    Instant from,
-    Instant to,
-    Instant date) {
+    OffsetDateTime from,
+    OffsetDateTime to,
+    OffsetDateTime date) {
 
-  public static long SECONDS_IN_DAY = 24 * 60 * 60L;
+  public WorklogFilteredRequest truncate(ZoneId zoneOffset) {
+    var offsetDate = date != null ? DateUtils.toZone.apply(date, zoneOffset) : null;
 
-  public WorklogFilteredRequest truncate() {
     return this.toBuilder()
-        .from(date != null ? date.truncatedTo(ChronoUnit.DAYS) : from)
+        .from(
+            Optional.ofNullable(offsetDate)
+                .map(DateUtils.atStartOfDay)
+                .orElseGet(() -> DateUtils.toZone.apply(from, zoneOffset)))
         .to(
-            Optional.ofNullable(date)
-                .map(d -> d.truncatedTo(ChronoUnit.DAYS).plusSeconds(SECONDS_IN_DAY - 1))
-                .or(() -> Optional.ofNullable(to))
+            Optional.ofNullable(offsetDate)
+                .map(DateUtils.atEndOfDay)
+                .or(() -> Optional.ofNullable(to)
+                    .map(DateUtils.toZone(zoneOffset)))
                 .orElse(null))
         .build();
   }

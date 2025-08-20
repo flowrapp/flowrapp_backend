@@ -2,7 +2,6 @@ package io.github.flowrapp.infrastructure.input.rest.mainapi.mapper;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -27,10 +26,10 @@ import org.mapstruct.ReportingPolicy;
     nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 public interface WorklogDTOMapper {
 
-  @Mapping(target = "clockIn", source = "clockInRequestDTO.clockIn", defaultExpression = "java(java.time.Instant.now())")
+  @Mapping(target = "clockIn", source = "clockInRequestDTO.clockIn", defaultExpression = "java(java.time.OffsetDateTime.now())")
   WorklogClockInRequest rest2domain(Long businessId, ClockInRequestDTO clockInRequestDTO);
 
-  @Mapping(target = "clockOut", source = "clockOutRequestDTO.clockOut", defaultExpression = "java(java.time.Instant.now())")
+  @Mapping(target = "clockOut", source = "clockOutRequestDTO.clockOut", defaultExpression = "java(java.time.OffsetDateTime.now())")
   WorklogClockOutRequest rest2domain(Long worklogId, Long businessId, ClockOutRequestDTO clockOutRequestDTO);
 
   WorklogUpdateRequest rest2domain(Long worklogId, UpdateWorklogRequestDTO updateWorklogRequestDTO);
@@ -45,16 +44,8 @@ public interface WorklogDTOMapper {
 
   List<ClockIn200ResponseDTO> domain2rest(List<Worklog> worklogs);
 
-  default Instant map(OffsetDateTime date) {
-    return date != null ? date.toInstant() : null;
-  }
-
-  default OffsetDateTime map(Instant date) {
-    return date != null ? date.atOffset(ZoneOffset.UTC) : null;
-  }
-
-  default Instant map(LocalDate value) {
-    return value != null ? value.atStartOfDay(ZoneOffset.UTC).toInstant() : null;
+  default OffsetDateTime map(LocalDate date) {
+    return date != null ? date.atStartOfDay(ZoneOffset.UTC).toOffsetDateTime() : null;
   }
 
 }

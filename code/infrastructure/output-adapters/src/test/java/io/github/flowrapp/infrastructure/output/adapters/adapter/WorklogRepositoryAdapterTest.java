@@ -15,6 +15,7 @@ import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessEntityMa
 import io.github.flowrapp.infrastructure.output.adapters.mapper.UserEntityMapper;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.WorklogEntityMapper;
 import io.github.flowrapp.model.Worklog;
+import io.github.flowrapp.utils.DateUtils;
 import io.github.flowrapp.value.WorklogFilteredRequest;
 
 import com.querydsl.core.types.OrderSpecifier;
@@ -65,8 +66,8 @@ class WorklogRepositoryAdapterTest {
         .isPresent()
         .get()
         .returns(worklogEntity.getId(), Worklog::id)
-        .returns(worklogEntity.getClockIn(), Worklog::clockIn)
-        .returns(worklogEntity.getClockOut(), Worklog::clockOut)
+        .returns(DateUtils.toZone(worklogEntity.getBusiness().getTimezoneOffset()).apply(worklogEntity.getClockIn()), Worklog::clockIn)
+        .returns(DateUtils.toZone(worklogEntity.getBusiness().getTimezoneOffset()).apply(worklogEntity.getClockOut()), Worklog::clockOut)
         .returns(worklogEntity.getCreatedAt(), Worklog::createdAt)
         .returns(worklogEntity.getUser().getId(), worklog -> worklog.user().id())
         .returns(worklogEntity.getBusiness().getId(), worklog -> worklog.business().id());

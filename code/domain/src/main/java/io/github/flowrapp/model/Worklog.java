@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 import lombok.Builder;
 import lombok.NonNull;
@@ -17,8 +18,8 @@ public record Worklog(
     Integer id,
     User user,
     Business business,
-    Instant clockIn,
-    Instant clockOut,
+    OffsetDateTime clockIn,
+    OffsetDateTime clockOut,
     Instant createdAt) {
 
   public boolean isOwner(@NonNull User user) {
@@ -29,9 +30,8 @@ public record Worklog(
     return clockIn != null
         && clockOut != null
         && clockIn.isBefore(clockOut)
-        && clockIn.isBefore(Instant.now())
-        && clockOut.isBefore(Instant.now())
-        && Duration.between(clockIn, Instant.now()).compareTo(Duration.ofDays(1)) <= 0;
+        && clockOut.isBefore(OffsetDateTime.now(business.timezoneOffset()))
+        && Duration.between(clockIn, clockOut).compareTo(Duration.ofDays(1)) <= 0;
   }
 
   public boolean isOpen() {
@@ -43,7 +43,7 @@ public record Worklog(
   }
 
   public @Nullable LocalDate getDay() {
-    return clockIn != null ? clockIn.atZone(business.timezoneOffset()).toLocalDate() : null;
+    return clockIn != null ? clockIn.atZoneSameInstant(business.timezoneOffset()).toLocalDate() : null;
   }
 
   public BigDecimal getHours() {
@@ -55,18 +55,26 @@ public record Worklog(
         .divide(BigDecimal.valueOf(3600), 2, RoundingMode.HALF_UP);
   }
 
-  public static Worklog fromBusinessUser(@NonNull BusinessUser businessUser, @NonNull Instant clockIn) {
+  public Worklog toBusinessZone() {
+    return toBuilder()
+        .clockIn(clockIn.atZoneSameInstant(business.timezoneOffset()).toOffsetDateTime())
+        .clockOut(clockOut != null ? clockOut.atZoneSameInstant(business.timezoneOffset()).toOffsetDateTime() : null)
+        .build();
+  }
+
+  public static Worklog fromBusinessUser(@NonNull BusinessUser businessUser, @NonNull OffsetDateTime clockIn) {
     return fromBusinessUser(businessUser, clockIn, null);
   }
 
-  public static Worklog fromBusinessUser(BusinessUser businessUser, Instant clockIn, Instant clockOut) {
+  public static Worklog fromBusinessUser(BusinessUser businessUser, OffsetDateTime clockIn, OffsetDateTime clockOut) {
     return Worklog.builder()
         .user(businessUser.user())
         .business(businessUser.business())
         .clockIn(clockIn)
         .clockOut(clockOut)
         .createdAt(Instant.now())
-        .build();
+        .build()
+        .toBusinessZone();
   }
 
 }
