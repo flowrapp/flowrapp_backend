@@ -96,7 +96,7 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
         .withClockOut(DateUtils.atEndOfDay.apply(worklog.clockIn())); // Set clock out at the end of day
     val second = worklog
         .withId(null) // Create a new worklog for the next day
-        .withClockIn(DateUtils.atStartOfDay.apply(worklog.clockOut().plusDays(1))) // Set clock in at the start of next day
+        .withClockIn(DateUtils.atStartOfDay.apply(worklog.clockOut())) // Set clock in at the start of next day
         .withClockOut(worklog.clockOut());
 
     return List.of(first, second);
