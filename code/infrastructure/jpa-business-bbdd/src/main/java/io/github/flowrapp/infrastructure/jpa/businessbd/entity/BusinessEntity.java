@@ -1,6 +1,7 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -37,14 +38,21 @@ public class BusinessEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "longitude")
+  @NotNull
+  @Column(name = "longitude", nullable = false)
   private Double longitude;
 
-  @Column(name = "latitude")
+  @NotNull
+  @Column(name = "latitude", nullable = false)
   private Double latitude;
 
-  @Column(name = "area")
+  @NotNull
+  @Column(name = "area", nullable = false)
   private Double area;
+
+  @NotNull
+  @Column(name = "timezone_offset", nullable = false)
+  private ZoneId timezoneOffset;
 
   @NotNull
   @ColumnDefault("now()")

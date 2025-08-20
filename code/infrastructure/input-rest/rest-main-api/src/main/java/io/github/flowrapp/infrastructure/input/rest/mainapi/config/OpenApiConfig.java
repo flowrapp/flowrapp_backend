@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Configuration class for OpenAPI documentation (Swagger).
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class OpenApiConfig {
 
   @Bean

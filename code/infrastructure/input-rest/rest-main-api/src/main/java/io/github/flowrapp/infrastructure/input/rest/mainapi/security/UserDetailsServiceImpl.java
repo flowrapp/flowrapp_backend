@@ -42,7 +42,7 @@ public class UserDetailsServiceImpl extends AbstractUserDetailsAuthenticationPro
 
   private UserDetails mapToUser(io.github.flowrapp.model.User user) {
     return User.withUsername(user.mail())
-        .password(user.passwordHash())
+        .password(user.passwordHash().get())
         .disabled(!user.enabled())
         .authorities(user.name().equalsIgnoreCase("admin")
             ? new SimpleGrantedAuthority("ADMIN")

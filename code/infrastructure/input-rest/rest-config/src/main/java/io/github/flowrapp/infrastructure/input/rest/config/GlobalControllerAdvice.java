@@ -26,7 +26,7 @@ public class GlobalControllerAdvice {
 
     return ProblemDetail.forStatusAndDetail(
         requireNonNullElse(HttpStatus.resolve(functionalEx.getStatus()), HttpStatus.I_AM_A_TEAPOT),
-        functionalEx.getMessage());
+        functionalEx.getCode() + " - " + functionalEx.getMessage());
   }
 
   @ExceptionHandler(AuthorizationDeniedException.class)

@@ -1,8 +1,9 @@
-package io.github.flowrapp.model.value;
+package io.github.flowrapp.value;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.OffsetDateTime;
 import java.util.Optional;
+
+import io.github.flowrapp.utils.DateUtils;
 
 import lombok.Builder;
 import lombok.With;
@@ -12,18 +13,19 @@ import lombok.With;
 public record WorklogFilteredRequest(
     Integer userId,
     Integer businessId,
-    Instant from,
-    Instant to,
-    Instant date) {
-
-  public static long SECONDS_IN_DAY = 24 * 60 * 60L;
+    OffsetDateTime from,
+    OffsetDateTime to,
+    OffsetDateTime date) {
 
   public WorklogFilteredRequest truncate() {
     return this.toBuilder()
-        .from(date != null ? date.truncatedTo(ChronoUnit.DAYS) : from)
+        .from(
+            Optional.ofNullable(date)
+                .map(DateUtils.atStartOfDay)
+                .orElse(from))
         .to(
             Optional.ofNullable(date)
-                .map(d -> d.truncatedTo(ChronoUnit.DAYS).plusSeconds(SECONDS_IN_DAY - 1))
+                .map(DateUtils.atEndOfDay)
                 .or(() -> Optional.ofNullable(to))
                 .orElse(null))
         .build();

@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.verify;
 
+import java.time.ZoneOffset;
+
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.AdminDTOMapper;
 import io.github.flowrapp.port.input.AdminUseCase;
@@ -36,6 +38,7 @@ class AdminControllerTest {
   @InstancioSource(samples = 20)
   void registerUser(RegisterUserRequestDTO registerUserRequestDTO) {
     // Given
+    registerUserRequestDTO.getBusiness().forEach(business -> business.setTimezoneOffset(ZoneOffset.UTC.toString()));
 
     // When
     adminController.registerUser(registerUserRequestDTO);

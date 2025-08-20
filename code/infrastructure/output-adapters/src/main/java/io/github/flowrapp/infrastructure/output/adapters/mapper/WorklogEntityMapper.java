@@ -4,11 +4,13 @@ import java.util.List;
 
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.WorklogEntity;
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.WorklogFilteredRequest;
+import io.github.flowrapp.value.WorklogFilteredRequest;
 
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants.ComponentModel;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
@@ -28,4 +30,10 @@ public interface WorklogEntityMapper {
   @Mapping(target = "clockOut", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   WorklogEntity domain2Infra(WorklogFilteredRequest worklogFilteredRequest);
+
+  @AfterMapping
+  default Worklog finaMapping(Object anySource, @MappingTarget Worklog target) {
+    return target.toBusinessZone();
+  }
+
 }

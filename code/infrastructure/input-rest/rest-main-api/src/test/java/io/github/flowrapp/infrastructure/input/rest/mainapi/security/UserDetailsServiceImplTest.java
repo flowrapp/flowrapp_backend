@@ -74,7 +74,7 @@ class UserDetailsServiceImplTest {
     assertThat(retrievedUser)
         .isNotNull()
         .extracting(User::getUsername, User::getPassword)
-        .containsExactly(user.mail(), user.passwordHash());
+        .containsExactly(user.mail(), user.passwordHash().get());
   }
 
   @ParameterizedTest

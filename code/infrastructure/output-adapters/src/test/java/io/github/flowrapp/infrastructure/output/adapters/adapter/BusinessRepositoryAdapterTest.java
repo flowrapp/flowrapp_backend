@@ -85,7 +85,7 @@ class BusinessRepositoryAdapterTest {
         .returns(businessEntity.getOwner().getName(), User::name)
         .returns(businessEntity.getOwner().getMail(), User::mail)
         .returns(businessEntity.getOwner().getPhone(), User::phone)
-        .returns(businessEntity.getOwner().getPasswordHash(), User::passwordHash)
+        .returns(businessEntity.getOwner().getPasswordHash(), user -> user.passwordHash().get())
         .returns(businessEntity.getOwner().getEnabled(), User::enabled)
         .returns(businessEntity.getOwner().getCreatedAt(), User::createdAt);
   }
@@ -112,7 +112,7 @@ class BusinessRepositoryAdapterTest {
         .returns(business.owner().name(), owner -> owner.getOwner().getName())
         .returns(business.owner().mail(), owner -> owner.getOwner().getMail())
         .returns(business.owner().phone(), owner -> owner.getOwner().getPhone())
-        .returns(business.owner().passwordHash(), owner -> owner.getOwner().getPasswordHash())
+        .returns(business.owner().passwordHash().get(), owner -> owner.getOwner().getPasswordHash())
         .returns(business.owner().enabled(), owner -> owner.getOwner().getEnabled())
         .returns(business.owner().createdAt(), owner -> owner.getOwner().getCreatedAt())));
   }

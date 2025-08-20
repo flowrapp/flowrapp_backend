@@ -1,15 +1,12 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -21,24 +18,18 @@ import lombok.Setter;
 @Table(name = "reports")
 public class ReportEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  private Integer id;
+  @EmbeddedId
+  private ReportIdEntity id;
 
-  @NotNull
+  @MapsId("userId")
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "user_id", nullable = false)
   private UserEntity user;
 
-  @NotNull
+  @MapsId("userId")
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "business_id", nullable = false)
   private BusinessEntity business;
-
-  @NotNull
-  @Column(name = "clock_day", nullable = false)
-  private LocalDate clockDay;
 
   @NotNull
   @Column(name = "hours", nullable = false)

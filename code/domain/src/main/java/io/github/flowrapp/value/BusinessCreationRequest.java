@@ -1,4 +1,6 @@
-package io.github.flowrapp.model.value;
+package io.github.flowrapp.value;
+
+import java.time.ZoneId;
 
 import io.github.flowrapp.model.Location;
 
@@ -7,5 +9,6 @@ import lombok.Builder;
 @Builder(toBuilder = true)
 public record BusinessCreationRequest(
     String name,
+    ZoneId timezoneOffset,
     Location location) {
 }

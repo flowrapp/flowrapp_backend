@@ -2,7 +2,8 @@ package io.github.flowrapp.model;
 
 import java.time.Instant;
 
-import io.github.flowrapp.model.value.UserCreationRequest;
+import io.github.flowrapp.value.SensitiveInfo;
+import io.github.flowrapp.value.UserCreationRequest;
 
 import lombok.Builder;
 import lombok.With;
@@ -16,7 +17,7 @@ public record User(
     String name,
     String mail,
     String phone,
-    String passwordHash,
+    SensitiveInfo<String> passwordHash,
     boolean enabled,
     Instant createdAt) {
 
@@ -35,7 +36,8 @@ public record User(
         .name(username)
         .mail(mail)
         .phone("") // Phone is not provided
-        .passwordHash("") // Password hash is not set
+        .passwordHash(
+            SensitiveInfo.of("")) // Password hash is not set
         .enabled(false) // Not enabled by default
         .createdAt(Instant.now())
         .build();

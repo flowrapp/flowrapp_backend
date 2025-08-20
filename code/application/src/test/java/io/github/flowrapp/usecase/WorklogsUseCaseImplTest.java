@@ -2,14 +2,16 @@ package io.github.flowrapp.usecase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.instancio.Select.field;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.assertArg;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,16 +21,18 @@ import io.github.flowrapp.model.Business;
 import io.github.flowrapp.model.BusinessUser;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.WorklogClockInRequest;
-import io.github.flowrapp.model.value.WorklogClockOutRequest;
-import io.github.flowrapp.model.value.WorklogFilteredRequest;
-import io.github.flowrapp.model.value.WorklogUpdateRequest;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
 import io.github.flowrapp.port.output.WorklogRepositoryOutput;
+import io.github.flowrapp.utils.DateUtils;
+import io.github.flowrapp.value.WorklogClockInRequest;
+import io.github.flowrapp.value.WorklogClockOutRequest;
+import io.github.flowrapp.value.WorklogFilteredRequest;
+import io.github.flowrapp.value.WorklogUpdateRequest;
 
 import lombok.val;
+import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -76,7 +80,7 @@ class WorklogsUseCaseImplTest {
     verify(worklogRepositoryOutput).save(argThat(worklog -> worklog.user().equals(businessUser.user())
         &&
         worklog.business().equals(businessUser.business()) &&
-        worklog.clockIn().equals(request.clockIn()) &&
+        worklog.clockIn().equals(request.clockIn().atZoneSameInstant(businessUser.business().timezoneOffset()).toOffsetDateTime()) &&
         worklog.clockOut() == null));
   }
 
@@ -97,8 +101,12 @@ class WorklogsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void clockOut_success(WorklogClockOutRequest request, User currentUser, Worklog openWorklog) {
     // Given
-    openWorklog = openWorklog.withUser(currentUser).withClockOut(null);
-    request = request.toBuilder().clockOut(openWorklog.clockIn().plus(3, ChronoUnit.HOURS)).build();
+    openWorklog = openWorklog.withUser(currentUser)
+        .withClockIn(OffsetDateTime.now().minusNanos(30))
+        .withClockOut(null);
+    request = request.toBuilder()
+        .clockOut(openWorklog.clockIn().plusNanos(30))
+        .build();
 
     when(userSecurityContextHolderOutput.getCurrentUser())
         .thenReturn(currentUser);
@@ -114,6 +122,34 @@ class WorklogsUseCaseImplTest {
     assertThat(result)
         .isNotNull()
         .returns(currentUser.id(), worklog -> worklog.user().id());
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void clockOut_success_splitDay(WorklogClockOutRequest request, User currentUser, Worklog openWorklog) {
+    // Given
+    openWorklog = openWorklog.withUser(currentUser)
+        .withClockIn(OffsetDateTime.now().minusDays(2))
+        .withClockOut(null);
+    request = request.toBuilder()
+        .clockOut(openWorklog.clockIn().plusHours(23).plusMinutes(59))
+        .build();
+
+    when(userSecurityContextHolderOutput.getCurrentUser())
+        .thenReturn(currentUser);
+    when(worklogRepositoryOutput.findById(request.worklogId()))
+        .thenReturn(Optional.of(openWorklog));
+    when(worklogRepositoryOutput.save(argThat(argument -> Objects.equals(argument.user().id(), currentUser.id()))))
+        .then(returnsFirstArg());
+
+    // When
+    val result = worklogsUseCase.clockOut(request);
+
+    // Then
+    assertThat(result)
+        .isNotNull()
+        .returns(currentUser.id(), worklog -> worklog.user().id());
+    verify(worklogRepositoryOutput, times(2)).save(any());
   }
 
   @ParameterizedTest
@@ -158,7 +194,7 @@ class WorklogsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void clockOut_invalidWorklog(WorklogClockOutRequest request, User currentUser, Worklog openWorklog) {
     // Given
-    request = request.toBuilder().clockOut(openWorklog.clockIn().minus(3, ChronoUnit.HOURS)).build();
+    request = request.toBuilder().clockOut(openWorklog.clockIn().minusHours(3)).build();
     openWorklog = openWorklog.withUser(currentUser).withClockOut(null);
 
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
@@ -172,9 +208,9 @@ class WorklogsUseCaseImplTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
-  void updateWorklog_success(WorklogUpdateRequest request, User currentUser, Worklog existingWorklog) {
+  void updateWorklog_success(User currentUser, Worklog existingWorklog) {
     // Given
-    request = request.toBuilder().clockOut(request.clockIn().plus(3, ChronoUnit.HOURS)).build();
+    var request = this.createValidWorklogUpdate();
     var existingWorklog2 = existingWorklog.withUser(currentUser);
 
     when(userSecurityContextHolderOutput.getCurrentUser())
@@ -190,7 +226,7 @@ class WorklogsUseCaseImplTest {
     // Then
     assertThat(result)
         .isNotNull()
-        .returns(existingWorklog.id(), Worklog::id);
+        .returns(existingWorklog2.id(), Worklog::id);
     verify(applicationEventPublisher).publishEvent(any());
   }
 
@@ -224,14 +260,33 @@ class WorklogsUseCaseImplTest {
     // Given
     var request = WorklogUpdateRequest.builder()
         .worklogId(existingWorklog.id())
-        .clockIn(Instant.now())
-        .clockOut(Instant.now().plus(3, ChronoUnit.HOURS)) // Invalid clock out
+        .clockIn(OffsetDateTime.now())
+        .clockOut(OffsetDateTime.now().plusHours(3)) // Invalid clock out
         .build();
 
     when(userSecurityContextHolderOutput.getCurrentUser())
         .thenReturn(currentUser);
     when(worklogRepositoryOutput.findById(request.worklogId()))
         .thenReturn(Optional.of(existingWorklog));
+
+    // When / Then
+    assertThatThrownBy(() -> worklogsUseCase.updateWorklog(request))
+        .isInstanceOf(FunctionalException.class);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void updateWorklog_doesOverlap(User currentUser, Worklog existingWorklog) {
+    // Given
+    var request = this.createValidWorklogUpdate();
+    var existingWorklog2 = existingWorklog.withUser(currentUser);
+
+    when(userSecurityContextHolderOutput.getCurrentUser())
+        .thenReturn(currentUser);
+    when(worklogRepositoryOutput.findById(request.worklogId()))
+        .thenReturn(Optional.of(existingWorklog2));
+    when(worklogRepositoryOutput.doesOverlap(argThat(argument -> Objects.equals(argument.id(), existingWorklog2.id()))))
+        .thenReturn(true);
 
     // When / Then
     assertThatThrownBy(() -> worklogsUseCase.updateWorklog(request))
@@ -286,15 +341,44 @@ class WorklogsUseCaseImplTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
-  void getUserWorklogs_success(WorklogFilteredRequest request, User currentUser, List<Worklog> worklogs) {
+  void getUserWorklogs_success(WorklogFilteredRequest request, User currentUser, Business business, List<Worklog> worklogs) {
     // Given
     when(userSecurityContextHolderOutput.getCurrentUser())
         .thenReturn(currentUser);
-    when(worklogRepositoryOutput.findAllFiltered(argThat(argument -> Objects.equals(argument.userId(), currentUser.id()))))
-        .thenReturn(worklogs);
+    when(worklogRepositoryOutput.findAllFiltered(assertArg(argument -> assertThat(argument)
+        .isNotNull()
+        .returns(currentUser.id(), WorklogFilteredRequest::userId)
+        .returns(request.businessId(), WorklogFilteredRequest::businessId)
+        .returns(DateUtils.atStartOfDay.apply(request.date()), WorklogFilteredRequest::from)
+        .returns(DateUtils.atEndOfDay.apply(request.date()), WorklogFilteredRequest::to)
+        .returns(request.date(), WorklogFilteredRequest::date))))
+            .thenReturn(worklogs);
 
     // When
     val result = worklogsUseCase.getUserWorklogs(request);
+
+    // Then
+    assertThat(result).isEqualTo(worklogs);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void getUserWorklogs_success_withNoDate(WorklogFilteredRequest request, User currentUser, Business business, List<Worklog> worklogs) {
+    // Given
+    var request2 = request.withDate(null);
+
+    when(userSecurityContextHolderOutput.getCurrentUser())
+        .thenReturn(currentUser);
+    when(worklogRepositoryOutput.findAllFiltered(assertArg(argument -> assertThat(argument)
+        .isNotNull()
+        .returns(currentUser.id(), WorklogFilteredRequest::userId)
+        .returns(request2.businessId(), WorklogFilteredRequest::businessId)
+        .returns(request2.from(), WorklogFilteredRequest::from)
+        .returns(request2.to(), WorklogFilteredRequest::to))))
+            .thenReturn(worklogs);
+
+    // When
+    val result = worklogsUseCase.getUserWorklogs(request2);
 
     // Then
     assertThat(result).isEqualTo(worklogs);
@@ -344,6 +428,17 @@ class WorklogsUseCaseImplTest {
     // When / Then
     assertThatThrownBy(() -> worklogsUseCase.getBusinessWorklogs(request))
         .isInstanceOf(FunctionalException.class);
+  }
+
+  private WorklogUpdateRequest createValidWorklogUpdate() {
+    var clockIn = Instancio.gen().temporal().offsetDateTime().max(OffsetDateTime.now().minusDays(2))
+        .min(OffsetDateTime.now().minusDays(3)).get();
+
+    return Instancio.of(WorklogUpdateRequest.class)
+        .set(field(WorklogUpdateRequest::clockIn), clockIn)
+        .generate(field(WorklogUpdateRequest::clockOut),
+            gen -> gen.temporal().offsetDateTime().range(clockIn, clockIn.plusDays(1)))
+        .create();
   }
 
 }
