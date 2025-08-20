@@ -15,7 +15,7 @@
   <description>Main Api Module.</description>
 
   <properties>
-    <openapi-spec.url>https://raw.githubusercontent.com/flowrapp/openapi-specs/refs/heads/feature/BTS-19_business/api/main-api/rest/open-api-rest.yml
+    <openapi-spec.url>https://raw.githubusercontent.com/flowrapp/openapi-specs/refs/tags/v0.0.5/api/main-api/rest/open-api-rest.yml
     </openapi-spec.url>
   </properties>
 
