@@ -80,7 +80,7 @@ class WorklogsUseCaseImplTest {
     verify(worklogRepositoryOutput).save(argThat(worklog -> worklog.user().equals(businessUser.user())
         &&
         worklog.business().equals(businessUser.business()) &&
-        worklog.clockIn().equals(request.clockIn().atZoneSameInstant(businessUser.business().timezoneOffset()).toOffsetDateTime()) &&
+        worklog.clockIn().equals(request.clockIn().atZoneSameInstant(businessUser.business().zone()).toOffsetDateTime()) &&
         worklog.clockOut() == null));
   }
 

@@ -38,7 +38,7 @@ class AdminControllerTest {
   @InstancioSource(samples = 20)
   void registerUser(RegisterUserRequestDTO registerUserRequestDTO) {
     // Given
-    registerUserRequestDTO.getBusiness().forEach(business -> business.setTimezoneOffset(ZoneOffset.UTC.toString()));
+    registerUserRequestDTO.getBusiness().forEach(business -> business.zone(ZoneOffset.UTC.toString()));
 
     // When
     adminController.registerUser(registerUserRequestDTO);

@@ -14,7 +14,7 @@ public record Business(
     String name,
     User owner,
     Location location,
-    ZoneId timezoneOffset,
+    ZoneId zone,
     Instant createdAt) {
 
   public boolean isOwner(User currentUser) {
@@ -33,7 +33,7 @@ public record Business(
         .name(businessCreationRequest.name())
         .location(businessCreationRequest.location())
         .owner(owner)
-        .timezoneOffset(businessCreationRequest.timezoneOffset())
+        .zone(businessCreationRequest.zone())
         .createdAt(Instant.now())
         .build();
   }

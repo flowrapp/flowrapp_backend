@@ -52,7 +52,7 @@ public class BusinessEntity {
 
   @NotNull
   @Column(name = "timezone_offset", nullable = false)
-  private ZoneId timezoneOffset;
+  private ZoneId zone;
 
   @NotNull
   @ColumnDefault("now()")
