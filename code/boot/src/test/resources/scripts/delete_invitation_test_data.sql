@@ -1,8 +1,8 @@
 -- Test data for delete invitation scenarios
 
 -- Create business for delete testing (business_id = 3)
-INSERT INTO flowrapp_management.business (name, owner_id, longitude, latitude, area, created_at)
-VALUES ('Delete Invitation Business', 1, 0.0, 0.0, 100.0, NOW());
+INSERT INTO flowrapp_management.business (name, owner_id, longitude, latitude, area, timezone_offset, created_at)
+VALUES ('Delete Invitation Business', 1, 0.0, 0.0, 100.0, 'Europe/Madrid', NOW());
 
 -- Create user for delete invitation testing (user_id = 5)
 INSERT INTO flowrapp_management.users (name, mail, phone, password_hash)

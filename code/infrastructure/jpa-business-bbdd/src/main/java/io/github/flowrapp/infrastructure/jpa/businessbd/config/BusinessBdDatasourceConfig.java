@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Configuration for the Neon Azure PostgreSQL datasource. This configuration sets up the datasource, entity manager factory, and
  * transaction manager.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableTransactionManagement
 @EnableJpaRepositories(
     entityManagerFactoryRef = "businessBdEntityManagerFactory",

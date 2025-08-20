@@ -5,8 +5,8 @@ import java.util.UUID;
 
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.InvitationStatus;
-import io.github.flowrapp.model.value.InvitationCreationRequest;
-import io.github.flowrapp.model.value.InvitationRegistrationRequest;
+import io.github.flowrapp.value.InvitationCreationRequest;
+import io.github.flowrapp.value.InvitationRegistrationRequest;
 
 public interface InvitationsUseCase {
 

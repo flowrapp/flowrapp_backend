@@ -1,4 +1,4 @@
-package io.github.flowrapp.model.config;
+package io.github.flowrapp.config;
 
 import lombok.experimental.UtilityClass;
 

@@ -22,14 +22,14 @@ import io.github.flowrapp.model.BusinessUser;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.InvitationStatus;
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.model.value.InvitationCreationRequest;
-import io.github.flowrapp.model.value.InvitationRegistrationRequest;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
+import io.github.flowrapp.value.InvitationCreationRequest;
+import io.github.flowrapp.value.InvitationRegistrationRequest;
 
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;

@@ -3,10 +3,10 @@ package io.github.flowrapp.port.input;
 import java.util.List;
 
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.WorklogClockInRequest;
-import io.github.flowrapp.model.value.WorklogClockOutRequest;
-import io.github.flowrapp.model.value.WorklogFilteredRequest;
-import io.github.flowrapp.model.value.WorklogUpdateRequest;
+import io.github.flowrapp.value.WorklogClockInRequest;
+import io.github.flowrapp.value.WorklogClockOutRequest;
+import io.github.flowrapp.value.WorklogFilteredRequest;
+import io.github.flowrapp.value.WorklogUpdateRequest;
 
 public interface WorklogUseCase {
 

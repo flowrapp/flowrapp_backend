@@ -15,11 +15,11 @@ import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessEntityMa
 import io.github.flowrapp.infrastructure.output.adapters.mapper.UserEntityMapper;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.WorklogEntityMapper;
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.WorklogFilteredRequest;
+import io.github.flowrapp.utils.DateUtils;
+import io.github.flowrapp.value.WorklogFilteredRequest;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
-import lombok.val;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,15 +58,15 @@ class WorklogRepositoryAdapterTest {
         .thenReturn(Optional.of(worklogEntity));
 
     // When
-    val result = worklogRepositoryAdapter.findById(worklogId);
+    var result = worklogRepositoryAdapter.findById(worklogId);
 
     // Then
     assertThat(result)
         .isPresent()
         .get()
         .returns(worklogEntity.getId(), Worklog::id)
-        .returns(worklogEntity.getClockIn(), Worklog::clockIn)
-        .returns(worklogEntity.getClockOut(), Worklog::clockOut)
+        .returns(DateUtils.toZoneFun(worklogEntity.getBusiness().getTimezoneOffset()).apply(worklogEntity.getClockIn()), Worklog::clockIn)
+        .returns(DateUtils.toZoneFun(worklogEntity.getBusiness().getTimezoneOffset()).apply(worklogEntity.getClockOut()), Worklog::clockOut)
         .returns(worklogEntity.getCreatedAt(), Worklog::createdAt)
         .returns(worklogEntity.getUser().getId(), worklog -> worklog.user().id())
         .returns(worklogEntity.getBusiness().getId(), worklog -> worklog.business().id());
@@ -80,13 +80,28 @@ class WorklogRepositoryAdapterTest {
         .thenReturn(worklogEntities);
 
     // When
-    val result = worklogRepositoryAdapter.findAllFiltered(worklogFilteredRequest);
+    var result = worklogRepositoryAdapter.findAllFiltered(worklogFilteredRequest);
 
     // Then
     assertThat(result)
         .isNotNull()
         .isNotEmpty()
         .hasSize(worklogEntities.size());
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void doesOverlap(Worklog worklog, boolean doesOverlap) {
+    // Given
+    when(worklogJpaRepository.exists(any(Predicate.class)))
+        .thenReturn(doesOverlap);
+
+    // When
+    var result = worklogRepositoryAdapter.doesOverlap(worklog);
+
+    // Then
+    assertThat(result)
+        .isEqualTo(doesOverlap);
   }
 
   @ParameterizedTest
@@ -104,7 +119,7 @@ class WorklogRepositoryAdapterTest {
             .thenReturn(worklogEntity);
 
     // When
-    val result = worklogRepositoryAdapter.save(worklogReq);
+    var result = worklogRepositoryAdapter.save(worklogReq);
 
     // Then
     assertThat(result)

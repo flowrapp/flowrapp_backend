@@ -15,11 +15,15 @@
   <description>Main Api Module.</description>
 
   <properties>
-    <openapi-spec.url>https://raw.githubusercontent.com/flowrapp/openapi-specs/refs/tags/v0.0.4/api/main-api/rest/open-api-rest.yml
+    <openapi-spec.url>https://raw.githubusercontent.com/flowrapp/openapi-specs/refs/tags/v0.0.5/api/main-api/rest/open-api-rest.yml
     </openapi-spec.url>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.threeten</groupId>
+      <artifactId>threeten-extra</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>

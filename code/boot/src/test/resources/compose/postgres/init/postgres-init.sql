@@ -35,13 +35,14 @@ CREATE TABLE if not exists flowrapp_management.users
 
 CREATE TABLE if not exists flowrapp_management.business
 (
-    id         integer GENERATED ALWAYS AS IDENTITY,
-    name       varchar(255) NOT NULL,
-    owner_id   integer      NOT NULL,
-    longitude  double precision,
-    latitude   double precision,
-    area       double precision,
-    created_at timestamp  NOT NULL DEFAULT NOW(),
+    id              integer GENERATED ALWAYS AS IDENTITY,
+    name            varchar(255)     NOT NULL,
+    owner_id        integer          NOT NULL,
+    longitude       double precision NOT NULL,
+    latitude        double precision NOT NULL,
+    area            double precision NOT NULL,
+    timezone_offset varchar(50)      NOT NULL,
+    created_at      timestamp        NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id),
     FOREIGN KEY (owner_id) REFERENCES flowrapp_management.users
 );
@@ -52,7 +53,7 @@ CREATE TABLE if not exists flowrapp_management.users_roles
     business_id integer     NOT NULL,
     role        varchar(50) NOT NULL,
     invited_by  integer,
-    joined_at   timestamp NOT NULL DEFAULT NOW(),
+    joined_at   timestamp   NOT NULL DEFAULT NOW(),
     PRIMARY KEY (user_id, business_id),
     FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
     FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id),
@@ -67,8 +68,8 @@ CREATE TABLE if not exists flowrapp_management.invitations
     business_id integer     NOT NULL,
     token       uuid        NOT NULL DEFAULT gen_random_uuid(),
     role        varchar(50) NOT NULL,
-    created_at  timestamp NOT NULL DEFAULT NOW(),
-    expires_at  timestamp NOT NULL DEFAULT NOW() + INTERVAL '7 days',
+    created_at  timestamp   NOT NULL DEFAULT NOW(),
+    expires_at  timestamp   NOT NULL DEFAULT NOW() + INTERVAL '7 days',
     status      varchar(20) NOT NULL DEFAULT 'PENDING',
     PRIMARY KEY (id),
     FOREIGN KEY (invited) REFERENCES flowrapp_management.users (id),
@@ -81,9 +82,9 @@ CREATE TABLE if not exists flowrapp_management.worklogs
     id          integer GENERATED ALWAYS AS IDENTITY,
     user_id     integer     NOT NULL,
     business_id integer     NOT NULL,
-    clocked_in  timestamp NOT NULL,
-    clocked_out timestamp,
-    created_at  timestamp NOT NULL DEFAULT NOW(),
+    clocked_in  timestamptz NOT NULL,
+    clocked_out timestamptz,
+    created_at  timestamp   NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
     FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id)
@@ -91,12 +92,11 @@ CREATE TABLE if not exists flowrapp_management.worklogs
 
 CREATE TABLE if not exists flowrapp_management.reports
 (
-    id          integer GENERATED ALWAYS AS IDENTITY,
     user_id     integer          NOT NULL,
     business_id integer          NOT NULL,
     clock_day   DATE             NOT NULL,
     hours       double precision NOT NULL,
-    PRIMARY KEY (id),
+    PRIMARY KEY (user_id, business_id, clock_day),
     FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
     FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id)
 );
@@ -108,7 +108,7 @@ CREATE TABLE if not exists flowrapp_management.push_tokens
     token      uuid         NOT NULL,
     device_id  varchar(255) NOT NULL,
     platform   varchar(50)  NOT NULL,
-    created_at timestamp  NOT NULL DEFAULT NOW(),
+    created_at timestamp    NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id)
 );
@@ -137,8 +137,8 @@ INSERT INTO flowrapp_management.users (name, mail, phone, password_hash)
 VALUES ('test', 'test@test.com', '123456789',
         '$2a$10$8w.xERKkZZhKuCMU6K/0x.OmaEYBVqPBfGRHKHfyIEXK4P8kU43fq'); -- Password: 1234
 
-INSERT INTO flowrapp_management.business (name, owner_id, longitude, latitude, area, created_at)
-VALUES ('Test Business', 1, 0.0, 0.0, 100.0, NOW());
+INSERT INTO flowrapp_management.business (name, owner_id, longitude, latitude, area, timezone_offset, created_at)
+VALUES ('Test Business', 1, 0.0, 0.0, 100.0, 'Europe/Madrid', NOW());
 
 INSERT INTO flowrapp_management.users_roles (user_id, business_id, role, invited_by, joined_at)
 VALUES (1, 1, 'OWNER', 1, NOW());

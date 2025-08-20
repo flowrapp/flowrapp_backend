@@ -1,20 +1,24 @@
 package io.github.flowrapp.usecase;
 
+import static java.util.Comparator.comparing;
+import static java.util.function.BinaryOperator.maxBy;
+
 import java.util.List;
 
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.Worklog;
-import io.github.flowrapp.model.value.UpdateWorklogEvent;
-import io.github.flowrapp.model.value.WorklogClockInRequest;
-import io.github.flowrapp.model.value.WorklogClockOutRequest;
-import io.github.flowrapp.model.value.WorklogFilteredRequest;
-import io.github.flowrapp.model.value.WorklogUpdateRequest;
 import io.github.flowrapp.port.input.WorklogUseCase;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
 import io.github.flowrapp.port.output.WorklogRepositoryOutput;
+import io.github.flowrapp.utils.DateUtils;
+import io.github.flowrapp.value.CreateWorklogEvent;
+import io.github.flowrapp.value.WorklogClockInRequest;
+import io.github.flowrapp.value.WorklogClockOutRequest;
+import io.github.flowrapp.value.WorklogFilteredRequest;
+import io.github.flowrapp.value.WorklogUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,17 +72,44 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
       throw new FunctionalException(FunctionalError.WORKLOG_CLOSED);
     }
 
-    val updatedWorklog = worklog.withClockOut(request.clockOut());
+    val updatedWorklog = worklog.withClockOut(request.clockOut()).toBusinessZone();
     if (!updatedWorklog.isValid()) {
       log.warn("Worklog {} is not valid after clocking out", request.worklogId());
       throw new FunctionalException(FunctionalError.WORKLOG_NOT_VALID);
     }
 
-    log.debug("User {} is clockOut {} for worklog {}", currentUser.mail(), request.clockOut(), request.worklogId());
-    worklogRepositoryOutput.save(updatedWorklog);
+    this.checkOverlap(updatedWorklog);
 
-    applicationEventPublisher.publishEvent(UpdateWorklogEvent.of(updatedWorklog)); // Publish event for further processing
-    return updatedWorklog;
+    return this.splitWorklogByDay(updatedWorklog).stream() // Split by day, and return last clocked out worklog
+        .map(this::saveClockOutWorklog)
+        .reduce(maxBy(comparing(Worklog::clockOut)))
+        .orElse(worklog); // Should not happen, but just in case
+  }
+
+  private List<Worklog> splitWorklogByDay(Worklog worklog) {
+    if (worklog.clockIn().getDayOfWeek() == worklog.clockOut().getDayOfWeek())
+      return List.of(worklog); // No need to split if it's the same day
+
+    log.debug("Splitting worklog {} by day", worklog);
+
+    val first = worklog
+        .withClockOut(DateUtils.atEndOfDay.apply(worklog.clockIn())); // Set clock out at the end of day
+    val second = worklog
+        .withId(null) // Create a new worklog for the next day
+        .withClockIn(DateUtils.atStartOfDay.apply(worklog.clockOut())) // Set clock in at the start of next day
+        .withClockOut(worklog.clockOut());
+
+    return List.of(first, second);
+  }
+
+  private Worklog saveClockOutWorklog(Worklog worklog) {
+    log.debug("User {} is clockOut {} for worklog {}", worklog.user().mail(), worklog.clockOut(), worklog);
+    worklog = worklogRepositoryOutput.save(worklog);
+
+    applicationEventPublisher.publishEvent(
+        CreateWorklogEvent.created(worklog)); // Publish event for further processing
+
+    return worklog;
   }
 
   @Override
@@ -97,17 +128,28 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
     val updatedWorklog = worklog.toBuilder()
         .clockIn(request.clockIn() != null ? request.clockIn() : worklog.clockIn())
         .clockOut(request.clockOut() != null ? request.clockOut() : worklog.clockOut())
-        .build();
+        .build()
+        .toBusinessZone();
 
     if (!updatedWorklog.isValid()) {
       log.warn("Worklog {} is not valid after update", request.worklogId());
       throw new FunctionalException(FunctionalError.WORKLOG_NOT_VALID);
     }
 
+    this.checkOverlap(updatedWorklog);
+
     worklogRepositoryOutput.save(updatedWorklog);
-    applicationEventPublisher.publishEvent(UpdateWorklogEvent.of(updatedWorklog)); // Publish event for further processing
+    applicationEventPublisher.publishEvent(
+        CreateWorklogEvent.updated(updatedWorklog, worklog)); // Publish event for further processing
 
     return updatedWorklog;
+  }
+
+  private void checkOverlap(Worklog worklog) {
+    if (worklogRepositoryOutput.doesOverlap(worklog)) {
+      log.warn("Worklog {} overlaps with existing worklogs", worklog.id());
+      throw new FunctionalException(FunctionalError.WORKLOG_OVERLAP);
+    }
   }
 
   @Override
@@ -131,8 +173,11 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
     log.debug("Retrieving user worklogs with filter: {}", worklogFilteredRequest);
 
     val currentUser = userSecurityContextHolderOutput.getCurrentUser();
+
     return worklogRepositoryOutput.findAllFiltered(
-        worklogFilteredRequest.truncate().withUserId(currentUser.id()));
+        worklogFilteredRequest
+            .truncate()
+            .withUserId(currentUser.id()));
   }
 
   @Override
@@ -148,7 +193,8 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
       throw new FunctionalException(FunctionalError.USER_NOT_OWNER_OF_BUSINESS);
     }
 
-    return worklogRepositoryOutput.findAllFiltered(worklogFilteredRequest.truncate());
+    return worklogRepositoryOutput.findAllFiltered(
+        worklogFilteredRequest.truncate());
   }
 
 }
