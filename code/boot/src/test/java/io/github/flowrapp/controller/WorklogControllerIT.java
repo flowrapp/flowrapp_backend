@@ -120,7 +120,8 @@ class WorklogControllerIT {
 
     // Step 2: Clock-out now (duration > 1 day, should fail)
     val clockOutRequest = new ClockOutRequestDTO()
-        .clockOut(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusMinutes(1)); // Just before current time to ensure it's valid timestamp
+        .clockOut(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusMinutes(1)); // Just before current time to ensure it's valid
+                                                                                   // timestamp
 
     val clockOutResponse = testRestTemplate.exchange(
         put("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/" + worklogId + "/clock-out")
