@@ -8,7 +8,7 @@ import io.github.flowrapp.config.InitDatabase;
 import io.github.flowrapp.infrastructure.jpa.businessbd.config.BusinessBdDatasourceConfig;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.UserJpaRepository;
-import io.github.flowrapp.model.config.Constants;
+import io.github.flowrapp.config.Constants;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
