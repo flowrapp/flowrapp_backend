@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.flowrapp.Application;
 import io.github.flowrapp.DatabaseData;
+import io.github.flowrapp.config.Constants;
 import io.github.flowrapp.config.InitDatabase;
 import io.github.flowrapp.infrastructure.jpa.businessbd.config.BusinessBdDatasourceConfig;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity;
@@ -51,6 +52,38 @@ class UserJpaRepositoryIT {
     assertThat(users)
         .isNotNull()
         .isNotEmpty();
+  }
+
+  @Test
+  void findAllUsersOwnedBusiness() {
+    // GIVEN
+
+    // WHEN
+    var ownedBusinesses = userJpaRepositoryIT.findByMail(Constants.ADMIN_USER_MAIL)
+        .orElseThrow()
+        .getOwnedBusinesses();
+
+    // THEN
+    assertThat(ownedBusinesses)
+        .isNotNull()
+        .isNotEmpty()
+        .hasSize(1);
+  }
+
+  @Test
+  void findAllUsersBusinessMemberships() {
+    // GIVEN
+
+    // WHEN
+    var businessMemberships = userJpaRepositoryIT.findByMail(Constants.ADMIN_USER_MAIL)
+        .orElseThrow()
+        .getBusinessMemberships();
+
+    // THEN
+    assertThat(businessMemberships)
+        .isNotNull()
+        .isNotEmpty()
+        .hasSize(1);
   }
 
 }

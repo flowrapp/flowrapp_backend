@@ -52,7 +52,7 @@ public class BusinessEntity {
 
   @NotNull
   @Column(name = "timezone_offset", nullable = false)
-  private ZoneId timezoneOffset;
+  private ZoneId zone;
 
   @NotNull
   @ColumnDefault("now()")
@@ -65,6 +65,9 @@ public class BusinessEntity {
 
   @OneToMany(mappedBy = "business")
   private Set<BusinessUserEntity> members = new LinkedHashSet<>();
+
+  @OneToMany(mappedBy = "business")
+  private Set<InvitationEntity> invitations = new LinkedHashSet<>();
 
   @Override
   public final boolean equals(Object o) {

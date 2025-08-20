@@ -1,11 +1,14 @@
 package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
+import java.util.List;
 import java.util.Optional;
 
+import io.github.flowrapp.infrastructure.jpa.businessbd.entity.QBusinessUserEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.BusinessUserJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessUserEntityMapper;
 import io.github.flowrapp.model.BusinessUser;
 import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
+import io.github.flowrapp.value.BusinessFilterRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +24,29 @@ public class BusinessUserRepositoryAdapter implements BusinessUserRepositoryOutp
 
   private final BusinessUserEntityMapper businessUserEntityMapper;
 
+  private static final QBusinessUserEntity qBusinessUser = QBusinessUserEntity.businessUserEntity;
+
   @Override
   public Optional<BusinessUser> getByUserAndBusinessId(Integer userId, Integer businessId) {
     return businessUserJpaRepository.findByUser_IdAndBusiness_Id(userId, businessId)
         .map(businessUserEntityMapper::infra2domain);
+  }
+
+  @Override
+  public List<BusinessUser> findByUser(Integer id) {
+    return businessUserEntityMapper.infra2domain(
+        businessUserJpaRepository.findByUser_Id(id));
+  }
+
+  @Override
+  public List<BusinessUser> findByFilter(BusinessFilterRequest filter) {
+    val predicated = qBusinessUser.isNotNull()
+        .and(filter.businessId() != null ? qBusinessUser.business.id.eq(filter.businessId()) : null)
+        .and(filter.userId() != null ? qBusinessUser.user.id.eq(filter.userId()) : null)
+        .and(filter.role() != null ? qBusinessUser.role.eq(filter.role().name()) : null);
+
+    return businessUserEntityMapper.infra2domain(
+        businessUserJpaRepository.findAll(predicated));
   }
 
   @Override

@@ -1,5 +1,7 @@
 package io.github.flowrapp.infrastructure.output.adapters.mapper;
 
+import java.util.List;
+
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.BusinessUserEntity;
 import io.github.flowrapp.model.BusinessUser;
 
@@ -18,5 +20,7 @@ public interface BusinessUserEntityMapper {
   BusinessUserEntity domain2Infra(BusinessUser businessUser);
 
   BusinessUser infra2domain(BusinessUserEntity businessUserEntity);
+
+  List<BusinessUser> infra2domain(Iterable<BusinessUserEntity> businessUserEntities);
 
 }

@@ -9,6 +9,6 @@ import lombok.Builder;
 @Builder(toBuilder = true)
 public record BusinessCreationRequest(
     String name,
-    ZoneId timezoneOffset,
+    ZoneId zone,
     Location location) {
 }

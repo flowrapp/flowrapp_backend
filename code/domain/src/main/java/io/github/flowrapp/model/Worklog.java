@@ -30,7 +30,7 @@ public record Worklog(
     return clockIn != null
         && clockOut != null
         && clockIn.isBefore(clockOut)
-        && clockOut.isBefore(OffsetDateTime.now(business.timezoneOffset()))
+        && clockOut.isBefore(OffsetDateTime.now(business.zone()))
         && Duration.between(clockIn, clockOut).compareTo(Duration.ofDays(1)) <= 0;
   }
 
@@ -43,7 +43,7 @@ public record Worklog(
   }
 
   public @Nullable LocalDate getDay() {
-    return clockIn != null ? clockIn.atZoneSameInstant(business.timezoneOffset()).toLocalDate() : null;
+    return clockIn != null ? clockIn.atZoneSameInstant(business.zone()).toLocalDate() : null;
   }
 
   public BigDecimal getHours() {
@@ -57,8 +57,8 @@ public record Worklog(
 
   public Worklog toBusinessZone() {
     return toBuilder()
-        .clockIn(clockIn.atZoneSameInstant(business.timezoneOffset()).toOffsetDateTime())
-        .clockOut(clockOut != null ? clockOut.atZoneSameInstant(business.timezoneOffset()).toOffsetDateTime() : null)
+        .clockIn(clockIn.atZoneSameInstant(business.zone()).toOffsetDateTime())
+        .clockOut(clockOut != null ? clockOut.atZoneSameInstant(business.zone()).toOffsetDateTime() : null)
         .build();
   }
 

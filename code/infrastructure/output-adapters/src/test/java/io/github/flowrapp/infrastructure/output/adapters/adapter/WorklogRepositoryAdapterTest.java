@@ -65,8 +65,8 @@ class WorklogRepositoryAdapterTest {
         .isPresent()
         .get()
         .returns(worklogEntity.getId(), Worklog::id)
-        .returns(DateUtils.toZoneFun(worklogEntity.getBusiness().getTimezoneOffset()).apply(worklogEntity.getClockIn()), Worklog::clockIn)
-        .returns(DateUtils.toZoneFun(worklogEntity.getBusiness().getTimezoneOffset()).apply(worklogEntity.getClockOut()), Worklog::clockOut)
+        .returns(DateUtils.toZoneFun(worklogEntity.getBusiness().getZone()).apply(worklogEntity.getClockIn()), Worklog::clockIn)
+        .returns(DateUtils.toZoneFun(worklogEntity.getBusiness().getZone()).apply(worklogEntity.getClockOut()), Worklog::clockOut)
         .returns(worklogEntity.getCreatedAt(), Worklog::createdAt)
         .returns(worklogEntity.getUser().getId(), worklog -> worklog.user().id())
         .returns(worklogEntity.getBusiness().getId(), worklog -> worklog.business().id());
