@@ -1,16 +1,78 @@
-.git/
+# Ignore Git files
+.git
 .gitignore
-.env
-.env.*
-README.md
-code/boot/target/
-**/.classpath
-**/.project
-**/.settings/
-**/test/
-.DS_Store
-*.md
+.gitattributes
+
+# Ignore IDE files
+.vscode/
 .idea/
 *.iml
-mvnw
-mvnw.cmd
+*.iws
+*.ipr
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+*~
+
+# Ignore Maven target directories (they will be built inside Docker)
+code/target/
+code/*/target/
+code/*/*/target/
+code/*/*/*/target/
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Ignore test resources that aren't needed for build
+code/boot/src/test/resources/compose/
+code/*/src/test/resources/compose/
+
+# Ignore documentation and README files
+README.md
+*.md
+docs/
+documentation/
+
+# Ignore CI/CD files
+.github/
+.gitlab-ci.yml
+Jenkinsfile
+.travis.yml
+.circleci/
+
+# Ignore development environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+docker-compose.yml
+docker-compose.*.yml
+
+# Ignore Python virtual environments (if any)
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore Node.js files (if any frontend assets)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore backup and temporary files
+*.bak
+*.backup
+*.swp
+*.swo
+
+# Ignore local configuration files
+*.local
+local.*
