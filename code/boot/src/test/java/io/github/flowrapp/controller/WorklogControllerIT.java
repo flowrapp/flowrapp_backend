@@ -9,6 +9,7 @@ import static org.springframework.http.RequestEntity.post;
 import static org.springframework.http.RequestEntity.put;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 import io.github.flowrapp.Application;
 import io.github.flowrapp.config.InitDatabase;
@@ -53,7 +54,7 @@ class WorklogControllerIT {
     // Clock-in doesn't validate timestamp - it accepts future timestamps
     // The validation happens during clock-out
     val clockInRequest = new ClockInRequestDTO()
-        .clockIn(OffsetDateTime.now().plusHours(1));
+        .clockIn(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).plusHours(1));
 
     val response = testRestTemplate.exchange(
         post("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/clock-in")
@@ -75,7 +76,7 @@ class WorklogControllerIT {
   void testClockOutAfterCurrentTimestamp_shouldReturn400() {
     // Step 1: Clock-in with past timestamp
     val clockInRequest = new ClockInRequestDTO()
-        .clockIn(OffsetDateTime.now().minusHours(2));
+        .clockIn(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusHours(2));
 
     val clockInResponse = testRestTemplate.exchange(
         post("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/clock-in")
@@ -89,7 +90,7 @@ class WorklogControllerIT {
 
     // Step 2: Clock-out with future timestamp (should fail)
     val clockOutRequest = new ClockOutRequestDTO()
-        .clockOut(OffsetDateTime.now().plusHours(1));
+        .clockOut(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).plusHours(1));
 
     val clockOutResponse = testRestTemplate.exchange(
         put("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/" + worklogId + "/clock-out")
@@ -105,7 +106,7 @@ class WorklogControllerIT {
   void testClockOutWithDurationMoreThanOneDay_shouldReturn400() {
     // Step 1: Clock-in 25 hours ago
     val clockInRequest = new ClockInRequestDTO()
-        .clockIn(OffsetDateTime.now().minusHours(25));
+        .clockIn(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusHours(25));
 
     val clockInResponse = testRestTemplate.exchange(
         post("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/clock-in")
@@ -119,7 +120,7 @@ class WorklogControllerIT {
 
     // Step 2: Clock-out now (duration > 1 day, should fail)
     val clockOutRequest = new ClockOutRequestDTO()
-        .clockOut(OffsetDateTime.now().minusMinutes(1)); // Just before current time to ensure it's valid timestamp
+        .clockOut(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusMinutes(1)); // Just before current time to ensure it's valid timestamp
 
     val clockOutResponse = testRestTemplate.exchange(
         put("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/" + worklogId + "/clock-out")
@@ -134,7 +135,7 @@ class WorklogControllerIT {
   @Test
   void testSuccessfulClockInAndClockOut_shouldCreateReportRecord() throws InterruptedException {
     // Step 1: Clock-in with past timestamp
-    val clockInTime = OffsetDateTime.now().minusHours(8);
+    val clockInTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusHours(8);
     val clockInRequest = new ClockInRequestDTO()
         .clockIn(clockInTime);
 
@@ -149,7 +150,7 @@ class WorklogControllerIT {
     val worklogId = clockInResponse.getBody().getId();
 
     // Step 2: Clock-out with valid timestamp
-    val clockOutTime = OffsetDateTime.now().minusMinutes(1);
+    val clockOutTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusMinutes(1);
     val clockOutRequest = new ClockOutRequestDTO()
         .clockOut(clockOutTime);
 
@@ -186,7 +187,7 @@ class WorklogControllerIT {
   @Test
   void testCrossDayWorklog_shouldCreateTwoWorklogsAndTwoReports() throws InterruptedException {
     // Step 1: Clock-in late at night (yesterday 23:30)
-    val clockInTime = OffsetDateTime.now()
+    val clockInTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid"))
         .minusDays(1)
         .withHour(23)
         .withMinute(30)
@@ -207,7 +208,7 @@ class WorklogControllerIT {
     val originalWorklogId = clockInResponse.getBody().getId();
 
     // Step 2: Clock-out early morning (today 07:30)
-    val clockOutTime = OffsetDateTime.now()
+    val clockOutTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid"))
         .withHour(7)
         .withMinute(30)
         .withSecond(0)
