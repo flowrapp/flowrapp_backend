@@ -47,10 +47,12 @@ public class WorklogRepositoryAdapter implements WorklogRepositoryOutput {
   @Override
   public boolean doesOverlap(Worklog worklog) {
     val predicate = qWorklog.isNotNull()
+        .and(worklog.id() != null ? qWorklog.id.eq(worklog.id()).not() : null) // Exclude the current worklog if it has an ID
         .and(qWorklog.user.id.eq(worklog.user().id()))
         .and(qWorklog.business.id.eq(worklog.business().id()))
         .and(qWorklog.clockIn.goe(worklog.clockIn()))
-        .and(qWorklog.clockIn.loe(worklog.clockOut()));
+        .and(qWorklog.clockIn.loe(worklog.clockOut()))
+        .and(qWorklog.clockOut.isNotNull()); // Only match closed worklogs
 
     return worklogJpaRepository.exists(predicate);
   }

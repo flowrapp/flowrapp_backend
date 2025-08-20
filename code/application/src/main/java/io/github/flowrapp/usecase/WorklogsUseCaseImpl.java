@@ -173,12 +173,10 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
     log.debug("Retrieving user worklogs with filter: {}", worklogFilteredRequest);
 
     val currentUser = userSecurityContextHolderOutput.getCurrentUser();
-    val business = businessRepositoryOutput.findById(worklogFilteredRequest.businessId())
-        .orElseThrow(() -> new FunctionalException(FunctionalError.BUSINESS_NOT_FOUND));
 
     return worklogRepositoryOutput.findAllFiltered(
         worklogFilteredRequest
-            .truncate(business.timezoneOffset())
+            .truncate()
             .withUserId(currentUser.id()));
   }
 
@@ -196,7 +194,7 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
     }
 
     return worklogRepositoryOutput.findAllFiltered(
-        worklogFilteredRequest.truncate(business.timezoneOffset()));
+        worklogFilteredRequest.truncate());
   }
 
 }

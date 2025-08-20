@@ -345,16 +345,12 @@ class WorklogsUseCaseImplTest {
     // Given
     when(userSecurityContextHolderOutput.getCurrentUser())
         .thenReturn(currentUser);
-    when(businessRepositoryOutput.findById(request.businessId()))
-        .thenReturn(Optional.of(business));
     when(worklogRepositoryOutput.findAllFiltered(assertArg(argument -> assertThat(argument)
         .isNotNull()
         .returns(currentUser.id(), WorklogFilteredRequest::userId)
         .returns(request.businessId(), WorklogFilteredRequest::businessId)
-        .returns(DateUtils.toZone(business.timezoneOffset()).andThen(DateUtils.atStartOfDay).apply(request.date()),
-            WorklogFilteredRequest::from)
-        .returns(DateUtils.toZone(business.timezoneOffset()).andThen(DateUtils.atEndOfDay).apply(request.date()),
-            WorklogFilteredRequest::to)
+        .returns(DateUtils.atStartOfDay.apply(request.date()), WorklogFilteredRequest::from)
+        .returns(DateUtils.atEndOfDay.apply(request.date()), WorklogFilteredRequest::to)
         .returns(request.date(), WorklogFilteredRequest::date))))
             .thenReturn(worklogs);
 
@@ -373,37 +369,19 @@ class WorklogsUseCaseImplTest {
 
     when(userSecurityContextHolderOutput.getCurrentUser())
         .thenReturn(currentUser);
-    when(businessRepositoryOutput.findById(request2.businessId()))
-        .thenReturn(Optional.of(business));
     when(worklogRepositoryOutput.findAllFiltered(assertArg(argument -> assertThat(argument)
         .isNotNull()
         .returns(currentUser.id(), WorklogFilteredRequest::userId)
         .returns(request2.businessId(), WorklogFilteredRequest::businessId)
-        .returns(DateUtils.toZone(business.timezoneOffset()).apply(request2.from()),
-            WorklogFilteredRequest::from)
-        .returns(DateUtils.toZone(business.timezoneOffset()).apply(request2.to()),
-            WorklogFilteredRequest::to))))
-                .thenReturn(worklogs);
+        .returns(request2.from(), WorklogFilteredRequest::from)
+        .returns(request2.to(), WorklogFilteredRequest::to))))
+            .thenReturn(worklogs);
 
     // When
     val result = worklogsUseCase.getUserWorklogs(request2);
 
     // Then
     assertThat(result).isEqualTo(worklogs);
-  }
-
-  @ParameterizedTest
-  @InstancioSource(samples = 20)
-  void getUserWorklogs_businessNotFound(WorklogFilteredRequest request, User currentUser) {
-    // Given
-    when(userSecurityContextHolderOutput.getCurrentUser())
-        .thenReturn(currentUser);
-    when(businessRepositoryOutput.findById(request.businessId()))
-        .thenReturn(Optional.empty());
-
-    // When / Then
-    assertThatThrownBy(() -> worklogsUseCase.getUserWorklogs(request))
-        .isInstanceOf(FunctionalException.class);
   }
 
   @ParameterizedTest

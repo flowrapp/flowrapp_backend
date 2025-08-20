@@ -1,7 +1,6 @@
 package io.github.flowrapp.value;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.util.Optional;
 
 import io.github.flowrapp.utils.DateUtils;
@@ -18,19 +17,16 @@ public record WorklogFilteredRequest(
     OffsetDateTime to,
     OffsetDateTime date) {
 
-  public WorklogFilteredRequest truncate(ZoneId zoneOffset) {
-    var offsetDate = date != null ? DateUtils.toZone.apply(date, zoneOffset) : null;
-
+  public WorklogFilteredRequest truncate() {
     return this.toBuilder()
         .from(
-            Optional.ofNullable(offsetDate)
+            Optional.ofNullable(date)
                 .map(DateUtils.atStartOfDay)
-                .orElseGet(() -> DateUtils.toZone.apply(from, zoneOffset)))
+                .orElse(from))
         .to(
-            Optional.ofNullable(offsetDate)
+            Optional.ofNullable(date)
                 .map(DateUtils.atEndOfDay)
-                .or(() -> Optional.ofNullable(to)
-                    .map(DateUtils.toZone(zoneOffset)))
+                .or(() -> Optional.ofNullable(to))
                 .orElse(null))
         .build();
   }
