@@ -1,5 +1,7 @@
 package io.github.flowrapp.infrastructure.output.adapters.mapper;
 
+import java.util.List;
+
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.BusinessEntity;
 import io.github.flowrapp.model.Business;
 
@@ -24,5 +26,7 @@ public interface BusinessEntityMapper {
   @Mapping(target = "location.longitude", source = "longitude")
   @Mapping(target = "location.area", source = "area")
   Business infra2domain(BusinessEntity businessEntity);
+
+  List<Business> infra2domain(List<BusinessEntity> businessEntities);
 
 }

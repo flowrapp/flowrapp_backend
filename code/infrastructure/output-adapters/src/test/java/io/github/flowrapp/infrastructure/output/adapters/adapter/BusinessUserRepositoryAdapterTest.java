@@ -2,10 +2,12 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.BusinessEntity;
@@ -19,7 +21,9 @@ import io.github.flowrapp.model.Business;
 import io.github.flowrapp.model.BusinessUser;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.model.UserRole;
+import io.github.flowrapp.value.BusinessFilterRequest;
 
+import com.querydsl.core.types.Predicate;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
@@ -67,6 +71,41 @@ class BusinessUserRepositoryAdapterTest {
     assertThat(result)
         .isNotNull()
         .isPresent();
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void getByUser(Integer userId) {
+    // Given
+    var businessUserEntity = generateBusinessUser();
+    when(businessUserJpaRepository.findByUser_Id(userId))
+        .thenReturn(List.of(businessUserEntity));
+
+    // When
+    var result = businessUserRepositoryAdapter.findByUser(userId);
+
+    // Then
+    assertThat(result)
+        .isNotNull()
+        .hasSize(1);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void getByFilter(Integer userId, Integer businessId, UserRole role) {
+    // Given
+    var businessUserEntity = generateBusinessUser();
+
+    when(businessUserJpaRepository.findAll((Predicate) any()))
+        .thenReturn(List.of(businessUserEntity));
+
+    // When
+    var result = businessUserRepositoryAdapter.findByFilter(new BusinessFilterRequest(userId, businessId, role));
+
+    // Then
+    assertThat(result)
+        .isNotNull()
+        .hasSize(1);
   }
 
   @ParameterizedTest

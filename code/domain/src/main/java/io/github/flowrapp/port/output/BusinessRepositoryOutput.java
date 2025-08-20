@@ -11,4 +11,5 @@ public interface BusinessRepositoryOutput {
   Optional<Business> findByName(String name);
 
   Business save(Business newBusiness);
+
 }

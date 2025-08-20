@@ -6,6 +6,9 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.RequestEntity.post;
 
+import java.util.Collections;
+import java.util.List;
+
 import io.github.flowrapp.Application;
 import io.github.flowrapp.DatabaseData;
 import io.github.flowrapp.config.InitDatabase;
@@ -28,9 +31,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.util.Collections;
-import java.util.List;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Application.class)
 @ActiveProfiles("test")
@@ -80,15 +80,14 @@ class AdminControllerIT {
             .header(AUTHORIZATION, basicAuth(DatabaseData.ADMIN_MAIL, DatabaseData.ADMIN_PASSWORD))
             .contentType(MediaType.APPLICATION_JSON)
             .body(requestDTO),
-        Void.class
-    );
+        Void.class);
 
     // Then
     assertThat(response.getStatusCode()).isEqualTo(CREATED);
 
     // Verify user was created
     List<UserEntity> users = userJpaRepository.findAll();
-    assertThat(users).hasSize((int)initialUserCount + 1);
+    assertThat(users).hasSize((int) initialUserCount + 1);
 
     UserEntity createdUser = userJpaRepository.findByMail("newuser@test.com").orElse(null);
     assertThat(createdUser).isNotNull();
@@ -96,7 +95,7 @@ class AdminControllerIT {
 
     // Verify business was created
     List<BusinessEntity> businesses = businessJpaRepository.findAll();
-    assertThat(businesses).hasSize((int)initialBusinessCount + 1);
+    assertThat(businesses).hasSize((int) initialBusinessCount + 1);
 
     BusinessEntity createdBusiness = businessJpaRepository.findByName("Test Company").orElse(null);
     assertThat(createdBusiness).isNotNull();
@@ -108,7 +107,7 @@ class AdminControllerIT {
 
     // Verify invitation was created
     List<InvitationEntity> invitations = invitationJpaRepository.findAll();
-    assertThat(invitations).hasSize((int)initialInvitationCount + 1);
+    assertThat(invitations).hasSize((int) initialInvitationCount + 1);
 
     InvitationEntity createdInvitation = invitationJpaRepository.findAllByInvited_IdAndStatus(createdUser.getId(), "PENDING")
         .stream()

@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface BusinessJpaRepository extends JpaRepository<BusinessEntity, Integer> {
 
   Optional<BusinessEntity> findByName(String name);
+
 }
