@@ -276,6 +276,25 @@ class WorklogsUseCaseImplTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
+  void updateWorklog_doesOverlap(User currentUser, Worklog existingWorklog) {
+    // Given
+    var request = this.createValidWorklogUpdate();
+    var existingWorklog2 = existingWorklog.withUser(currentUser);
+
+    when(userSecurityContextHolderOutput.getCurrentUser())
+        .thenReturn(currentUser);
+    when(worklogRepositoryOutput.findById(request.worklogId()))
+        .thenReturn(Optional.of(existingWorklog2));
+    when(worklogRepositoryOutput.doesOverlap(argThat(argument -> Objects.equals(argument.id(), existingWorklog2.id()))))
+        .thenReturn(true);
+
+    // When / Then
+    assertThatThrownBy(() -> worklogsUseCase.updateWorklog(request))
+        .isInstanceOf(FunctionalException.class);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
   void getById_success(Integer worklogId, User currentUser, Worklog worklog) {
     // Given
     worklog = worklog.withUser(currentUser);

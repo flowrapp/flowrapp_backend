@@ -32,6 +32,7 @@ public enum FunctionalError {
   WORKLOG_NOT_VALID(1019, 400, "worklog is not valid"),
   USER_NOT_OWNER_OF_BUSINESS(1020, 403, "user is not the owner of business"),
   ZONE_ID_NOT_FOUND(1021, 400, "zone id not found"),
+  WORKLOG_OVERLAP(1022, 409, "worklog overlaps with existing worklog"),
   ;
 
   private final int code;

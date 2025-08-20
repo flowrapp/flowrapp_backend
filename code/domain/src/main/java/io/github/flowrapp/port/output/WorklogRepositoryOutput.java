@@ -12,6 +12,8 @@ public interface WorklogRepositoryOutput {
 
   List<Worklog> findAllFiltered(WorklogFilteredRequest worklogFilteredRequest);
 
+  boolean doesOverlap(Worklog worklog);
+
   Worklog save(Worklog worklog);
 
 }

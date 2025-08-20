@@ -78,6 +78,8 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
       throw new FunctionalException(FunctionalError.WORKLOG_NOT_VALID);
     }
 
+    this.checkOverlap(updatedWorklog);
+
     return this.splitWorklogByDay(updatedWorklog).stream() // Split by day, and return last clocked out worklog
         .map(this::saveClockOutWorklog)
         .reduce(maxBy(comparing(Worklog::clockOut)))
@@ -134,11 +136,20 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
       throw new FunctionalException(FunctionalError.WORKLOG_NOT_VALID);
     }
 
+    this.checkOverlap(updatedWorklog);
+
     worklogRepositoryOutput.save(updatedWorklog);
     applicationEventPublisher.publishEvent(
         CreateWorklogEvent.updated(updatedWorklog, worklog)); // Publish event for further processing
 
     return updatedWorklog;
+  }
+
+  private void checkOverlap(Worklog worklog) {
+    if (worklogRepositoryOutput.doesOverlap(worklog)) {
+      log.warn("Worklog {} overlaps with existing worklogs", worklog.id());
+      throw new FunctionalException(FunctionalError.WORKLOG_OVERLAP);
+    }
   }
 
   @Override

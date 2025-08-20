@@ -92,6 +92,21 @@ class WorklogRepositoryAdapterTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
+  void doesOverlap(Worklog worklog, boolean doesOverlap) {
+    // Given
+    when(worklogJpaRepository.exists(any(Predicate.class)))
+        .thenReturn(doesOverlap);
+
+    // When
+    val result = worklogRepositoryAdapter.doesOverlap(worklog);
+
+    // Then
+    assertThat(result)
+        .isEqualTo(doesOverlap);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
   void save(Worklog worklogReq, WorklogEntity worklogEntity) {
     // Given
     when(worklogJpaRepository.save(assertArg(argument -> assertThat(argument)
