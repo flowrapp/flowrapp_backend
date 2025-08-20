@@ -1,0 +1,15 @@
+---
+version: 2
+
+updates:
+  # Fwk Java (WSC/WEB)
+  - package-ecosystem: "maven"
+    rebase-strategy: "disabled"
+    directory: "/code"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "02:00"
+      timezone: UTC
+    labels:
+      - kind/dependency

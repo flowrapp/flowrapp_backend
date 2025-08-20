@@ -1,0 +1,45 @@
+name: Integration Tests
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    env:
+      NEON_AZURE_USERNAME: postgres
+      NEON_AZURE_PASSWORD: postgres
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Create .env file
+        run: |
+          mkdir -p code/boot/src/test/resources/compose
+          cat > code/boot/src/test/resources/compose/.env << EOF
+          NEON_AZURE_USERNAME=${{ env.NEON_AZURE_USERNAME }}
+          NEON_AZURE_PASSWORD=${{ env.NEON_AZURE_PASSWORD }}
+          EOF
+
+      - name: Set up Docker Compose
+        uses: ndeloof/install-compose-action@v0.0.1
+
+      - name: Start Docker services
+        run: cd code && mvn -X -e docker-compose:up
+
+      - name: Run Integration Tests
+        run: cd code && mvn -X -e test -Dtest=**/*IT.java -Dsurefire.failIfNoSpecifiedTests=false
+
+      - name: Stop Docker services
+        if: always()
+        run: cd code && mvn -X -e docker-compose:down

@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    neon-azure:
+      jdbcUrl: jdbc:postgresql://localhost:32010/flowrapp
+      username: ${NEON_AZURE_USERNAME:postgres}
+      password: ${NEON_AZURE_PASSWORD:postgres}
+
+
+app:
+  security:
+    jwt:
+      access-token:
+        secret-key: ${ACCES_TOKEN_SECRET_KEY:JQuYOcxbwbIBkH0gpLw5uRtv4uTBNdO86zfFr+L+2D0=}  # Secret key for JWT (only for testing)
+        expiration-time: 600  # 10 minutes
+      refresh-token:
+        secret-key: ${REFRESH_TOKEN_SECRET_KEY:yLpm36E92Jfi3/KmhUSROELmVXAhIcjGYdbC/AG4qJM=}  # Secret key for JWT (only for testing)
+        expiration-time: 259200  # 3 days

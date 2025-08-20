@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: flowrapp
+
+  mvc:
+    problemdetails:
+      enabled: true
+
+  threads:
+    virtual:
+      enabled: false # Enable for virtual threads
+
+  # Datasource Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: ${SCHEMA:flowrapp_management}
+  datasource:
+    neon-azure:
+      driverClassName: org.postgresql.Driver
+  docker:
+    compose:
+      file: code/boot/src/test/resources/compose/docker-compose.yml
+      enabled: false
+
+# Swagger OpenAPI Configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    disable-swagger-default-url: true
+  packages-to-scan: io.github.flowrapp.infrastructure.input.rest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [ "health", "prometheus" ]
+
+server:
+  servlet:
+    context-path: /flowrapp
+  port: 8080
