@@ -20,7 +20,7 @@ public class DateUtils {
       .atOffset(dateTime.getOffset())
       .minusNanos(1);
 
-  public static UnaryOperator<OffsetDateTime> toZone(ZoneId zoneId) {
+  public static UnaryOperator<OffsetDateTime> toZoneFun(ZoneId zoneId) {
     return offsetDateTime -> toZone.apply(offsetDateTime, zoneId);
   }
 
