@@ -34,7 +34,9 @@ import org.springframework.test.context.ActiveProfiles;
 class WorklogControllerIT {
 
   private static final String ADMIN_EMAIL = "admin@admin.com";
+
   private static final String ADMIN_PASSWORD = "1234";
+
   private static final Long BUSINESS_ID = 1L;
 
   @Autowired
@@ -227,8 +229,9 @@ class WorklogControllerIT {
     val allWorklogs = worklogJpaRepository.findAll();
     val crossDayWorklogs = allWorklogs.stream()
         .filter(w -> w.getUser().getId().equals(1) && w.getBusiness().getId().equals(1))
-        .filter(w -> w.getClockIn().toLocalDate().equals(clockInTime.toLocalDate()) ||
-                     w.getClockIn().toLocalDate().equals(clockOutTime.toLocalDate()))
+        .filter(w -> w.getClockIn().toLocalDate().equals(clockInTime.toLocalDate())
+            ||
+            w.getClockIn().toLocalDate().equals(clockOutTime.toLocalDate()))
         .toList();
 
     assertThat(crossDayWorklogs).hasSize(2);
