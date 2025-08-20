@@ -14,7 +14,7 @@ import org.hibernate.Hibernate;
 @Getter
 @Setter
 @Embeddable
-public class ReportId implements Serializable {
+public class ReportIdEntity implements Serializable {
   private static final long serialVersionUID = 4268134098785297417L;
 
   @NotNull
@@ -37,7 +37,7 @@ public class ReportId implements Serializable {
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
       return false;
     }
-    ReportId entity = (ReportId) o;
+    ReportIdEntity entity = (ReportIdEntity) o;
     return Objects.equals(this.businessId, entity.businessId)
         &&
         Objects.equals(this.clockDay, entity.clockDay) &&

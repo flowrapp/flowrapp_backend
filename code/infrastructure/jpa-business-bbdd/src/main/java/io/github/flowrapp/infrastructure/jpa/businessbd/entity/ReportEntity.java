@@ -19,7 +19,7 @@ import lombok.Setter;
 public class ReportEntity {
 
   @EmbeddedId
-  private ReportId id;
+  private ReportIdEntity id;
 
   @MapsId("userId")
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
