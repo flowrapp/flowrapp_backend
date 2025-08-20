@@ -16,4 +16,8 @@ public class DatabaseData {
 
   public static final String BUSINESS_NAME = "Test Business";
 
+  public static final String ADMIN_MAIL = "admin@admin.com";
+
+  public static final String ADMIN_PASSWORD = "1234";
+
 }
