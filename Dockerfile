@@ -2,13 +2,11 @@
 FROM ghcr.io/graalvm/native-image-community:21 AS native-build
 
 # Install required packages for native compilation
-RUN microdnf install -y findutils && microdnf clean all
+RUN microdnf install -y findutils maven && microdnf clean all
 
 WORKDIR /app
 
-# Copy Maven wrapper and pom files for dependency caching
-COPY code/.mvn/ ./.mvn/
-COPY code/mvnw ./
+# Copy pom files for dependency caching
 COPY code/pom.xml .
 COPY code/boot/pom.xml ./boot/
 COPY code/domain/pom.xml ./domain/
@@ -21,14 +19,14 @@ COPY code/infrastructure/output-adapters/pom.xml ./infrastructure/output-adapter
 COPY code/infrastructure/jpa-business-bbdd/pom.xml ./infrastructure/jpa-business-bbdd/
 
 # Download dependencies (this layer can be cached)
-RUN chmod +x ./mvnw && ./mvnw dependency:go-offline -B
+RUN mvn dependency:go-offline -B
 
 # Copy source code
 COPY code .
 
 # Build native executable
 # Note: This requires significant memory (8GB+ recommended)
-RUN ./mvnw clean package -Pnative -DskipTests -B
+RUN mvn clean package -Pnative -DskipTests -B
 
 # Runtime stage - ultra minimal
 FROM debian:bookworm-slim AS runtime
