@@ -134,7 +134,7 @@
                 <buildArg>-H:+EnableWildcardExpansion</buildArg>
                 <!-- Optimize for size and startup time -->
                 <buildArg>-O2</buildArg>
-                <buildArg>--gc=G1</buildArg>
+                <buildArg>--gc=serial</buildArg>
                 <!-- Enable monitoring and management features -->
                 <buildArg>-H:+AllowVMInspection</buildArg>
               </buildArgs>
