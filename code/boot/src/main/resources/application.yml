@@ -25,6 +25,37 @@ spring:
       file: code/boot/src/test/resources/compose/docker-compose.yml
       enabled: false
 
+  # OAuth2 Client Configuration
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${OAUTH2_GITHUB_CLIENT_ID}
+            client-secret: ${OAUTH2_GITHUB_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            scope:
+              - read:user
+              - user:email
+          google:
+            client-id: ${OAUTH_GOOGLE_CLIENT_ID}
+            client-secret: ${OAUTH_GOOGLE_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            scope:
+              - profile
+              - email
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: id
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v2/userinfo
+            user-name-attribute: id
+
 # Swagger OpenAPI Configuration
 springdoc:
   api-docs:
