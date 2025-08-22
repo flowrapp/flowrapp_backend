@@ -22,7 +22,7 @@ public class AdminController implements AdminApi {
 
   private final AdminDTOMapper adminDTOMapper;
 
-  @PreAuthorize("hasAnyAuthority('ADMIN')")
+  @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN')")
   @Override
   public ResponseEntity<Void> registerUser(RegisterUserRequestDTO registerUserRequestDTO) {
     adminUseCase.createUser(

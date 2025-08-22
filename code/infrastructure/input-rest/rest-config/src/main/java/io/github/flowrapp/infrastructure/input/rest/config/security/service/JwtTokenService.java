@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class JwtTokenService {
 
+  private static final String DEFAULT_AUTHORITY_CLAIM_NAME = "scope";
+
   private final JwtEncoder jwtAccessEncoder;
 
   private final JwtDecoder jwtAccessDecoder;
@@ -77,6 +79,8 @@ public class JwtTokenService {
         .subject(user.id().toString())
         .claim(ClaimConstants.CLAIM_KEY_USER_NAME, user.name())
         .claim(ClaimConstants.CLAIM_KEY_USER_MAIL, user.mail())
+        .claim(DEFAULT_AUTHORITY_CLAIM_NAME,
+            user.name().equalsIgnoreCase("admin") ? "ADMIN" : "USER")
         .build();
 
     val headers = JwtEncoderParameters.from(
