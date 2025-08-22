@@ -179,7 +179,7 @@ public class GitHubOAuthService {
       }
 
       // Fallback to first email if no primary/verified found
-      if (emails.size() > 0) {
+      if (!emails.isEmpty()) {
         return Optional.of(emails.get(0).get("email").asText());
       }
 
