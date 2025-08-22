@@ -7,22 +7,20 @@ import java.util.Optional;
 import io.github.flowrapp.infrastructure.input.rest.config.security.value.GitHubUserInfo;
 import io.github.flowrapp.value.OAuth2UserInfo;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.GHEmail;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
  * Service for validating GitHub OAuth2 access tokens and retrieving user information. Uses the GitHub API to validate tokens and fetch user
  * details including email addresses.
  */
+@Slf4j
 @Service
 public class GitHubOAuthService {
-
-  private static final Logger logger = LoggerFactory.getLogger(GitHubOAuthService.class);
 
   /**
    * Validates a GitHub access token and retrieves user information.
@@ -50,14 +48,14 @@ public class GitHubOAuthService {
           user.getName() != null ? user.getName() : user.getLogin(),
           user.getAvatarUrl());
 
-      logger.debug("Successfully validated GitHub token for user: {}", user.getLogin());
+      log.debug("Successfully validated GitHub token for user: {}", user.getLogin());
       return Optional.of(userInfo);
 
     } catch (IOException e) {
-      logger.warn("Failed to validate GitHub access token: {}", e.getMessage());
+      log.warn("Failed to validate GitHub access token: {}", e.getMessage());
       return Optional.empty();
     } catch (Exception e) {
-      logger.error("Unexpected error validating GitHub access token", e);
+      log.error("Unexpected error validating GitHub access token", e);
       return Optional.empty();
     }
   }
@@ -98,14 +96,14 @@ public class GitHubOAuthService {
       }
 
     } catch (IOException e) {
-      logger.debug("Could not retrieve emails from GitHub API, trying public email: {}", e.getMessage());
+      log.debug("Could not retrieve emails from GitHub API, trying public email: {}", e.getMessage());
     }
 
     try {
       // Fallback to public email if email API is not accessible
       return user.getEmail();
     } catch (IOException e) {
-      logger.warn("Could not retrieve public email from GitHub: {}", e.getMessage());
+      log.warn("Could not retrieve public email from GitHub: {}", e.getMessage());
       return null;
     }
   }

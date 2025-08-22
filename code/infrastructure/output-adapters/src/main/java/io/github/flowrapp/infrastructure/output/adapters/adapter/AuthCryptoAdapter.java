@@ -26,7 +26,8 @@ public class AuthCryptoAdapter implements AuthCryptoPort {
 
   @Override
   public String randomPassword() {
-    return RandomStringUtils.secure().next(10, true, true);
+    // 16 chars, include letters, digits, and symbols
+    return RandomStringUtils.secure().next(16, 33, 126, true, true);
   }
 
   @Override

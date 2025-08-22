@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import io.github.flowrapp.value.OAuth2UserInfo;
 
-public interface OauthServiceOutput {
+public interface OAuthServiceOutput {
 
   /**
    * Retrieves user information from an OAuth2 token.

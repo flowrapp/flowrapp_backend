@@ -7,7 +7,7 @@ import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.input.UserAuthenticationUseCase;
 import io.github.flowrapp.port.output.AuthCryptoPort;
-import io.github.flowrapp.port.output.OauthServiceOutput;
+import io.github.flowrapp.port.output.OAuthServiceOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.value.LoginRequest;
 import io.github.flowrapp.value.OAuth2UserInfo;
@@ -29,7 +29,7 @@ public class UserAuthenticationUseCaseImpl implements UserAuthenticationUseCase 
 
   private final AuthCryptoPort authCryptoPort;
 
-  private final OauthServiceOutput oauthServiceOutput;
+  private final OAuthServiceOutput oauthServiceOutput;
 
   @Override
   public Optional<User> retrieveUserByMail(@NonNull String email) {
@@ -73,7 +73,7 @@ public class UserAuthenticationUseCaseImpl implements UserAuthenticationUseCase 
         .orElseGet(() -> {
           log.debug("Creating new user from OAuth2 info: {}", oAuth2UserInfo);
           return userRepositoryOutput.save(
-              User.fromOauthInfo(oAuth2UserInfo)); // Create new user if not exists
+              User.fromOauth2Info(oAuth2UserInfo)); // Create new user if not exists
         });
 
     // Generate tokens for the user

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import io.github.flowrapp.infrastructure.input.rest.config.security.service.GitHubOAuthService;
 import io.github.flowrapp.infrastructure.input.rest.config.security.service.GoogleOAuthService;
-import io.github.flowrapp.port.output.OauthServiceOutput;
+import io.github.flowrapp.port.output.OAuthServiceOutput;
 import io.github.flowrapp.value.OAuth2UserInfo;
 import io.github.flowrapp.value.OAuth2UserInfo.Provider;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OauthServiceAdapter implements OauthServiceOutput {
+public class OAuthServiceAdapter implements OAuthServiceOutput {
 
   private final GitHubOAuthService gitHubOAuthService;
 

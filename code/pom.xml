@@ -45,7 +45,7 @@
     <threeten.version>1.8.0</threeten.version>
     <swagger.version>2.8.9</swagger.version>
     <openapiSwaggerJackson.version>0.2.6</openapiSwaggerJackson.version>
-    <google-api-client.version>2.2.0</google-api-client.version>
+    <google-api-client.version>1.37.1</google-api-client.version>
     <github-api.version>1.318</github-api.version>
 
     <!-- Plugin versions -->
@@ -141,8 +141,8 @@
       </dependency>
       <!-- Google API Client for OAuth2 -->
       <dependency>
-        <groupId>com.google.api-client</groupId>
-        <artifactId>google-api-client</artifactId>
+        <groupId>com.google.auth</groupId>
+        <artifactId>google-auth-library-oauth2-http</artifactId>
         <version>${google-api-client.version}</version>
       </dependency>
       <!-- GitHub API -->

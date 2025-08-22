@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl extends AbstractUserDetailsAuthenticationProvider {
+public class UserDetailsAuthenticationProviderImpl extends AbstractUserDetailsAuthenticationProvider {
 
   private final UserAuthenticationUseCase userAuthenticationUseCase;
 

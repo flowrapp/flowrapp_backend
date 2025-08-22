@@ -25,7 +25,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
-class UserDetailsServiceImplTest {
+class UserDetailsAuthenticationProviderImplTest {
 
   @Mock
   private UserAuthenticationUseCase userAuthenticationUseCase;
@@ -34,7 +34,7 @@ class UserDetailsServiceImplTest {
   private PasswordEncoder passwordEncoder;
 
   @InjectMocks
-  private UserDetailsServiceImpl userDetailsService;
+  private UserDetailsAuthenticationProviderImpl userDetailsService;
 
   @ParameterizedTest
   @InstancioSource(samples = 20)

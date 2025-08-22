@@ -44,7 +44,7 @@ public record User(
         .build();
   }
 
-  public static @NonNull User fromOauthInfo(@NonNull OAuth2UserInfo oAuth2UserInfo) {
+  public static @NonNull User fromOauth2Info(@NonNull OAuth2UserInfo oAuth2UserInfo) {
     return User.builder()
         .name(oAuth2UserInfo.getName())
         .mail(oAuth2UserInfo.getEmail())
