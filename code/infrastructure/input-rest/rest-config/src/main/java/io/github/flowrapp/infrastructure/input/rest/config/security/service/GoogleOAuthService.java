@@ -32,7 +32,7 @@ public class GoogleOAuthService {
 
   private final ObjectMapper objectMapper;
 
-  public GoogleOAuthService(@Value("${spring.security.oauth2.client.registration.google.client-id}") String clientId) {
+  public GoogleOAuthService(@Value("${app.security.oauth2.client.registration.google.client-id}") String clientId) {
     this.clientId = clientId;
     this.httpClient = HttpClient.newBuilder()
         .connectTimeout(Duration.ofSeconds(10))

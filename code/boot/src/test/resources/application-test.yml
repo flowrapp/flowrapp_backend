@@ -15,3 +15,11 @@ app:
       refresh-token:
         secret-key: ${REFRESH_TOKEN_SECRET_KEY:yLpm36E92Jfi3/KmhUSROELmVXAhIcjGYdbC/AG4qJM=}  # Secret key for JWT (only for testing)
         expiration-time: 259200  # 3 days
+
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: 123
+          google:
+            client-id: apps.googleusercontent.com

@@ -37,7 +37,6 @@ public class MainApiSecurityConfig {
         .cors(AbstractHttpConfigurer::disable) // No CORS
         .httpBasic(withDefaults()) // Enable HTTP Basic Authentication
         .oauth2ResourceServer(it -> it.jwt(withDefaults())) // Enable Bearer Auth
-        .oauth2Client(withDefaults()) // Enable OAuth2 Client for callback endpoints
         // No Session pls
         .sessionManagement(it -> it.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .securityMatcher("/api/**")
