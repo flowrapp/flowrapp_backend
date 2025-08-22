@@ -11,9 +11,9 @@ import io.github.flowrapp.infrastructure.input.rest.config.security.service.GitH
 import io.github.flowrapp.infrastructure.input.rest.config.security.service.GoogleOAuthService;
 import io.github.flowrapp.value.OAuth2UserInfo;
 import io.github.flowrapp.value.OAuth2UserInfo.Provider;
+
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.InjectMocks;
