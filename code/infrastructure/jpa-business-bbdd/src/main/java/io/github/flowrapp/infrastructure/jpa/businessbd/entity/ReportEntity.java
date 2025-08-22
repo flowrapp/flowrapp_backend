@@ -26,7 +26,7 @@ public class ReportEntity {
   @JoinColumn(name = "user_id", nullable = false)
   private UserEntity user;
 
-  @MapsId("userId")
+  @MapsId("businessId")
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "business_id", nullable = false)
   private BusinessEntity business;

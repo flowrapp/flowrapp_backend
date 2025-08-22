@@ -281,5 +281,45 @@
     "name": "java.time.Instant",
     "allPublicMethods": true,
     "allDeclaredConstructors": true
+  },
+  {
+    "name": "java.time.LocalDate",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.type.descriptor.java.LocalDateJavaType",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.repository.core.support.DefaultRepositoryMetadata",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.jpa.repository.support.JpaRepositoryFactory",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "jakarta.persistence.Embeddable",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "jakarta.persistence.EmbeddedId",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "jakarta.persistence.MapsId",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
   }
 ]

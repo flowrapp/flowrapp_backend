@@ -25,7 +25,8 @@ RUN mvn dependency:go-offline -B
 COPY code .
 
 # Build native executable
-# Note: This requires significant memory (8GB+ recommended)
+    # Note: This requires significant memory (16GB+ recommended)
+    ENV JAVA_TOOL_OPTIONS="-Xmx16g"
 RUN mvn clean package -Pnative -DskipTests -B
 
 # Runtime stage - ultra minimal
