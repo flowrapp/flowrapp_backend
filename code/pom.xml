@@ -139,12 +139,6 @@
         <artifactId>jackson-databind-nullable</artifactId>
         <version>${openapiSwaggerJackson.version}</version> <!-- Check for latest version -->
       </dependency>
-      <!-- GitHub API -->
-      <dependency>
-        <groupId>org.kohsuke</groupId>
-        <artifactId>github-api</artifactId>
-        <version>${github-api.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
