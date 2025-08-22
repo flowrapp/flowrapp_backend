@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.input.rest.mainapi.security;
+package io.github.flowrapp.infrastructure.input.rest.config.security;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 

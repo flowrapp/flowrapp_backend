@@ -1,0 +1,34 @@
+package io.github.flowrapp.infrastructure.output.adapters.adapter;
+
+import java.util.Optional;
+
+import io.github.flowrapp.infrastructure.input.rest.config.security.service.GitHubOAuthService;
+import io.github.flowrapp.infrastructure.input.rest.config.security.service.GoogleOAuthService;
+import io.github.flowrapp.port.output.OauthServiceOutput;
+import io.github.flowrapp.value.OAuth2UserInfo;
+import io.github.flowrapp.value.OAuth2UserInfo.Provider;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class OauthServiceAdapter implements OauthServiceOutput {
+
+  private final GitHubOAuthService gitHubOAuthService;
+
+  private final GoogleOAuthService googleOAuthService;
+
+  @Override
+  public Optional<OAuth2UserInfo> getUserFromToken(String token, Provider provider) {
+    log.debug("Getting user from token: {}", token);
+
+    return switch (provider) {
+      case GITHUB -> gitHubOAuthService.validateTokenAndGetUser(token);
+      case GOOGLE -> googleOAuthService.validateTokenAndGetUser(token);
+    };
+  }
+
+}

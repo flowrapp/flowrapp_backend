@@ -7,8 +7,10 @@ import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.input.UserAuthenticationUseCase;
 import io.github.flowrapp.port.output.AuthCryptoPort;
+import io.github.flowrapp.port.output.OauthServiceOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.value.LoginRequest;
+import io.github.flowrapp.value.OAuth2UserInfo;
 import io.github.flowrapp.value.RefreshRequest;
 import io.github.flowrapp.value.TokensResponse;
 
@@ -26,6 +28,8 @@ public class UserAuthenticationUseCaseImpl implements UserAuthenticationUseCase 
   private final UserRepositoryOutput userRepositoryOutput;
 
   private final AuthCryptoPort authCryptoPort;
+
+  private final OauthServiceOutput oauthServiceOutput;
 
   @Override
   public Optional<User> retrieveUserByMail(@NonNull String email) {
@@ -55,6 +59,25 @@ public class UserAuthenticationUseCaseImpl implements UserAuthenticationUseCase 
         .orElseThrow(() -> new FunctionalException(FunctionalError.USER_NOT_FOUND));
 
     log.debug("Successfully refreshing token for user: {}", user.mail());
+    return authCryptoPort.createTokens(user);
+  }
+
+  @Override
+  public @NonNull TokensResponse loginOauth2User(@NonNull String code, OAuth2UserInfo.Provider provider) {
+    log.debug("OAuth2 login for user: {} from provider: {}", code, provider);
+
+    val oAuth2UserInfo = oauthServiceOutput.getUserFromToken(code, provider)
+        .orElseThrow(() -> new FunctionalException(FunctionalError.OAUTH2_INVALID_TOKEN));
+
+    val user = userRepositoryOutput.findUserByEmail(oAuth2UserInfo.getEmail())
+        .orElseGet(() -> {
+          log.debug("Creating new user from OAuth2 info: {}", oAuth2UserInfo);
+          return userRepositoryOutput.save(
+              User.fromOauthInfo(oAuth2UserInfo)); // Create new user if not exists
+        });
+
+    // Generate tokens for the user
+    log.debug("Creating access token for OAuth2 user: {}", user.mail());
     return authCryptoPort.createTokens(user);
   }
 

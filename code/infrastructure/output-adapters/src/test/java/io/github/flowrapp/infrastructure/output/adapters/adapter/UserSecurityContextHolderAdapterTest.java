@@ -6,8 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import io.github.flowrapp.infrastructure.input.rest.mainapi.security.ClaimConstants;
-
+import io.github.flowrapp.infrastructure.input.rest.config.security.value.ClaimConstants;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.Test;

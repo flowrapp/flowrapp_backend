@@ -33,7 +33,7 @@ public enum FunctionalError {
   USER_NOT_OWNER_OF_BUSINESS(1020, 403, "user is not the owner of business"),
   ZONE_ID_NOT_FOUND(1021, 400, "zone id not found"),
   WORKLOG_OVERLAP(1022, 409, "worklog overlaps with existing worklog"),
-  ;
+  OAUTH2_INVALID_TOKEN(1023, 401, "oauth2 token is invalid"),;
 
   private final int code;
 

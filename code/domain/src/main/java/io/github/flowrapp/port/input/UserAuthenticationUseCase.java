@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.value.LoginRequest;
+import io.github.flowrapp.value.OAuth2UserInfo;
 import io.github.flowrapp.value.RefreshRequest;
 import io.github.flowrapp.value.TokensResponse;
 
@@ -18,5 +19,8 @@ public interface UserAuthenticationUseCase {
 
   @NonNull
   TokensResponse refreshTokens(@NonNull RefreshRequest request);
+
+  @NonNull
+  TokensResponse loginOauth2User(@NonNull String code, OAuth2UserInfo.Provider provider);
 
 }

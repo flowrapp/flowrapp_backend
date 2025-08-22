@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.input.rest.mainapi.security;
+package io.github.flowrapp.infrastructure.input.rest.config.security.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
