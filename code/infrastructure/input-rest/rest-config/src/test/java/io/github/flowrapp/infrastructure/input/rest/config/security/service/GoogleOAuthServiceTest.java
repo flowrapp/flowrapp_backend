@@ -16,7 +16,6 @@ import io.github.flowrapp.infrastructure.input.rest.config.security.value.Google
 import io.github.flowrapp.value.OAuth2UserInfo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.instancio.junit.InstancioExtension;
@@ -33,6 +32,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 class GoogleOAuthServiceTest {
 
   private static final String TEST_CLIENT_ID = "test-client-id.apps.googleusercontent.com";
+
   private static final String VALID_ISSUER = "https://accounts.google.com";
 
   @Mock
@@ -53,7 +53,8 @@ class GoogleOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_SuccessfulValidation_CompleteUserData(String idToken, String userId, String email, String name, String pictureUrl) throws Exception {
+  void validateTokenAndGetUser_SuccessfulValidation_CompleteUserData(String idToken, String userId, String email, String name,
+      String pictureUrl) throws Exception {
     // GIVEN
     HttpResponse<String> mockResponse = createMockHttpResponse(200, "valid-json");
     when(httpClient.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
@@ -78,7 +79,8 @@ class GoogleOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_SuccessfulValidation_FallbackToGivenAndFamilyName(String idToken, String userId, String email, String givenName, String familyName, String pictureUrl) throws Exception {
+  void validateTokenAndGetUser_SuccessfulValidation_FallbackToGivenAndFamilyName(String idToken, String userId, String email,
+      String givenName, String familyName, String pictureUrl) throws Exception {
     // GIVEN
     HttpResponse<String> mockResponse = createMockHttpResponse(200, "valid-json");
     when(httpClient.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
@@ -98,7 +100,8 @@ class GoogleOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_SuccessfulValidation_FallbackToGivenNameOnly(String idToken, String userId, String email, String givenName, String pictureUrl) throws Exception {
+  void validateTokenAndGetUser_SuccessfulValidation_FallbackToGivenNameOnly(String idToken, String userId, String email, String givenName,
+      String pictureUrl) throws Exception {
     // GIVEN
     HttpResponse<String> mockResponse = createMockHttpResponse(200, "valid-json");
     when(httpClient.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
@@ -118,7 +121,8 @@ class GoogleOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_SuccessfulValidation_FallbackToDefaultName(String idToken, String userId, String email, String pictureUrl) throws Exception {
+  void validateTokenAndGetUser_SuccessfulValidation_FallbackToDefaultName(String idToken, String userId, String email, String pictureUrl)
+      throws Exception {
     // GIVEN
     HttpResponse<String> mockResponse = createMockHttpResponse(200, "valid-json");
     when(httpClient.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
@@ -138,7 +142,8 @@ class GoogleOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_InvalidAudience_ReturnsEmpty(String idToken, String userId, String email, String name, String pictureUrl) throws Exception {
+  void validateTokenAndGetUser_InvalidAudience_ReturnsEmpty(String idToken, String userId, String email, String name, String pictureUrl)
+      throws Exception {
     // GIVEN
     HttpResponse<String> mockResponse = createMockHttpResponse(200, "valid-json");
     when(httpClient.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
@@ -157,7 +162,8 @@ class GoogleOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_InvalidIssuer_ReturnsEmpty(String idToken, String userId, String email, String name, String pictureUrl) throws Exception {
+  void validateTokenAndGetUser_InvalidIssuer_ReturnsEmpty(String idToken, String userId, String email, String name, String pictureUrl)
+      throws Exception {
     // GIVEN
     HttpResponse<String> mockResponse = createMockHttpResponse(200, "valid-json");
     when(httpClient.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
@@ -292,7 +298,8 @@ class GoogleOAuthServiceTest {
     return jsonNode;
   }
 
-  private ObjectNode createTokenInfoResponseWithoutName(String userId, String email, String givenName, String familyName, String pictureUrl) {
+  private ObjectNode createTokenInfoResponseWithoutName(String userId, String email, String givenName, String familyName,
+      String pictureUrl) {
     ObjectMapper mapper = new ObjectMapper();
     ObjectNode jsonNode = mapper.createObjectNode();
     jsonNode.put("sub", userId);

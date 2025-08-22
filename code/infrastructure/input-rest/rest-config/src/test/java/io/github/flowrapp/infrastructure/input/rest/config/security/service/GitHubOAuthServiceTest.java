@@ -1,7 +1,6 @@
 package io.github.flowrapp.infrastructure.input.rest.config.security.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
@@ -40,7 +39,8 @@ class GitHubOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_SuccessfulValidation_WithPrimaryEmail(String accessToken, long userId, String email, String name, String login, String avatarUrl) throws Exception {
+  void validateTokenAndGetUser_SuccessfulValidation_WithPrimaryEmail(String accessToken, long userId, String email, String name,
+      String login, String avatarUrl) throws Exception {
     // GIVEN
     GitHub mockGitHub = mock(GitHub.class);
     GHMyself mockMyself = mock(GHMyself.class);
@@ -55,7 +55,6 @@ class GitHubOAuthServiceTest {
     when(mockGitHub.getMyself()).thenReturn(mockMyself);
     when(mockEmail.isPrimary()).thenReturn(true);
     when(mockEmail.getEmail()).thenReturn(email);
-
 
     try (MockedStatic<GitHubBuilder> mockedBuilder = mockStatic(GitHubBuilder.class)) {
       GitHubBuilder mockBuilder = mock(GitHubBuilder.class);
@@ -80,7 +79,8 @@ class GitHubOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_SuccessfulValidation_WithVerifiedEmailFallback(String accessToken, long userId, String email, String name, String login, String avatarUrl) throws Exception {
+  void validateTokenAndGetUser_SuccessfulValidation_WithVerifiedEmailFallback(String accessToken, long userId, String email, String name,
+      String login, String avatarUrl) throws Exception {
     // GIVEN
     GitHub mockGitHub = mock(GitHub.class);
     GHMyself mockMyself = mock(GHMyself.class);
@@ -122,7 +122,8 @@ class GitHubOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_SuccessfulValidation_WithFirstEmailFallback(String accessToken, long userId, String email, String name, String login, String avatarUrl) throws Exception {
+  void validateTokenAndGetUser_SuccessfulValidation_WithFirstEmailFallback(String accessToken, long userId, String email, String name,
+      String login, String avatarUrl) throws Exception {
     // GIVEN
     GitHub mockGitHub = mock(GitHub.class);
     GHMyself mockMyself = mock(GHMyself.class);
@@ -159,7 +160,8 @@ class GitHubOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_SuccessfulValidation_WithPublicEmailFallback(String accessToken, long userId, String email, String name, String login, String avatarUrl) throws Exception {
+  void validateTokenAndGetUser_SuccessfulValidation_WithPublicEmailFallback(String accessToken, long userId, String email, String name,
+      String login, String avatarUrl) throws Exception {
     // GIVEN
     GitHub mockGitHub = mock(GitHub.class);
     GHMyself mockMyself = mock(GHMyself.class);
@@ -190,7 +192,8 @@ class GitHubOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_SuccessfulValidation_WithNoEmail(String accessToken, long userId, String name, String login, String avatarUrl) throws Exception {
+  void validateTokenAndGetUser_SuccessfulValidation_WithNoEmail(String accessToken, long userId, String name, String login,
+      String avatarUrl) throws Exception {
     // GIVEN
     GitHub mockGitHub = mock(GitHub.class);
     GHMyself mockMyself = mock(GHMyself.class);
@@ -199,7 +202,7 @@ class GitHubOAuthServiceTest {
     when(mockMyself.getName()).thenReturn(name);
     when(mockMyself.getLogin()).thenReturn(login);
     when(mockMyself.getAvatarUrl()).thenReturn(avatarUrl);
-    
+
     // All email retrieval fails
     when(mockMyself.getEmails2()).thenThrow(new IOException("Email API not accessible"));
     when(mockMyself.getEmail()).thenThrow(new IOException("Public email not accessible"));
@@ -224,7 +227,8 @@ class GitHubOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_SuccessfulValidation_WithNullNameFallbackToLogin(String accessToken, long userId, String login, String avatarUrl) throws Exception {
+  void validateTokenAndGetUser_SuccessfulValidation_WithNullNameFallbackToLogin(String accessToken, long userId, String login,
+      String avatarUrl) throws Exception {
     // GIVEN
     GitHub mockGitHub = mock(GitHub.class);
     GHMyself mockMyself = mock(GHMyself.class);
@@ -233,7 +237,7 @@ class GitHubOAuthServiceTest {
     when(mockMyself.getName()).thenReturn(null); // Null name
     when(mockMyself.getLogin()).thenReturn(login);
     when(mockMyself.getAvatarUrl()).thenReturn(avatarUrl);
-    
+
     // Email API fails
     when(mockMyself.getEmails2()).thenThrow(new IOException("Email API not accessible"));
     when(mockMyself.getEmail()).thenThrow(new IOException("Public email not accessible"));
@@ -257,7 +261,8 @@ class GitHubOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_SuccessfulValidation_WithEmptyEmailList(String accessToken, long userId, String name, String login, String avatarUrl, String publicEmail) throws Exception {
+  void validateTokenAndGetUser_SuccessfulValidation_WithEmptyEmailList(String accessToken, long userId, String name, String login,
+      String avatarUrl, String publicEmail) throws Exception {
     // GIVEN
     GitHub mockGitHub = mock(GitHub.class);
     GHMyself mockMyself = mock(GHMyself.class);
@@ -266,7 +271,7 @@ class GitHubOAuthServiceTest {
     when(mockMyself.getName()).thenReturn(name);
     when(mockMyself.getLogin()).thenReturn(login);
     when(mockMyself.getAvatarUrl()).thenReturn(avatarUrl);
-    
+
     // Empty email list
     when(mockMyself.getEmails2()).thenReturn(Collections.emptyList());
     // Fallback to public email
@@ -312,7 +317,7 @@ class GitHubOAuthServiceTest {
   void validateTokenAndGetUser_GitHubAPIException_ReturnsEmpty(String accessToken) throws Exception {
     // GIVEN
     GitHub mockGitHub = mock(GitHub.class);
-    
+
     when(mockGitHub.getMyself()).thenThrow(new IOException("GitHub API error"));
 
     try (MockedStatic<GitHubBuilder> mockedBuilder = mockStatic(GitHubBuilder.class)) {
