@@ -2,6 +2,7 @@ package io.github.flowrapp.model;
 
 import java.time.Instant;
 
+import io.github.flowrapp.value.OAuth2UserInfo;
 import io.github.flowrapp.value.SensitiveInfo;
 import io.github.flowrapp.value.UserCreationRequest;
 
@@ -43,4 +44,14 @@ public record User(
         .build();
   }
 
+  public static @NonNull User fromOauth2Info(@NonNull OAuth2UserInfo oAuth2UserInfo) {
+    return User.builder()
+        .name(oAuth2UserInfo.getName())
+        .mail(oAuth2UserInfo.getEmail())
+        .phone("")
+        .passwordHash(SensitiveInfo.empty()) // No password for OAuth users
+        .enabled(true) // OAuth users are enabled by default
+        .createdAt(Instant.now())
+        .build();
+  }
 }

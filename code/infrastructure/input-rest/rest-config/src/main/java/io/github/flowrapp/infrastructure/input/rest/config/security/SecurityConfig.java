@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.input.rest.config;
+package io.github.flowrapp.infrastructure.input.rest.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.input.rest.mainapi.security;
+package io.github.flowrapp.infrastructure.input.rest.config.security;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -29,7 +29,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class MainApiSecurityConfig {
 
   @Bean
-  public SecurityFilterChain mainApisecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+  public SecurityFilterChain mainApiSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
     return httpSecurity
         .formLogin(AbstractHttpConfigurer::disable) // No Form Login
         .logout(AbstractHttpConfigurer::disable) // No Logout
@@ -44,7 +44,7 @@ public class MainApiSecurityConfig {
             .requestMatchers("/api/v1/ping").permitAll()
             .requestMatchers("/api/v1/auth/**").permitAll()
             .requestMatchers("/api/v1/invitations/register").permitAll()
-            .requestMatchers("/api/**").authenticated())
+            .anyRequest().authenticated())
         .build();
   }
 

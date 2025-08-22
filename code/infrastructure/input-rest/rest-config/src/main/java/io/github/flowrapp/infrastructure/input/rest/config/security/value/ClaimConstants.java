@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.input.rest.mainapi.security;
+package io.github.flowrapp.infrastructure.input.rest.config.security.value;
 
 import lombok.experimental.UtilityClass;
 

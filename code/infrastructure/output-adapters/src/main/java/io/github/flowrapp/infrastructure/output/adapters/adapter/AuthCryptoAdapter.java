@@ -2,8 +2,8 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import java.util.Optional;
 
-import io.github.flowrapp.infrastructure.input.rest.mainapi.security.ClaimConstants;
-import io.github.flowrapp.infrastructure.input.rest.mainapi.security.JwtTokenService;
+import io.github.flowrapp.infrastructure.input.rest.config.security.service.JwtTokenService;
+import io.github.flowrapp.infrastructure.input.rest.config.security.value.ClaimConstants;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.value.TokensResponse;
@@ -26,7 +26,8 @@ public class AuthCryptoAdapter implements AuthCryptoPort {
 
   @Override
   public String randomPassword() {
-    return RandomStringUtils.secure().next(10, true, true);
+    // 16 chars, include letters, digits, and symbols
+    return RandomStringUtils.secure().next(16, 33, 126, true, true);
   }
 
   @Override

@@ -1,4 +1,4 @@
-package io.github.flowrapp.infrastructure.input.rest.mainapi.security;
+package io.github.flowrapp.infrastructure.input.rest.config.security.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -25,7 +25,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
-class UserDetailsServiceImplTest {
+class UserDetailsAuthenticationProviderImplTest {
 
   @Mock
   private UserAuthenticationUseCase userAuthenticationUseCase;
@@ -34,7 +34,7 @@ class UserDetailsServiceImplTest {
   private PasswordEncoder passwordEncoder;
 
   @InjectMocks
-  private UserDetailsServiceImpl userDetailsService;
+  private UserDetailsAuthenticationProviderImpl userDetailsService;
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
