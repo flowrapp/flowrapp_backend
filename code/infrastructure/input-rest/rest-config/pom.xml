@@ -17,10 +17,6 @@
   <dependencies>
     <!-- Oauth2 client apis -->
     <dependency>
-      <groupId>com.google.auth</groupId>
-      <artifactId>google-auth-library-oauth2-http</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.kohsuke</groupId>
       <artifactId>github-api</artifactId>
     </dependency>

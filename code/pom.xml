@@ -139,12 +139,6 @@
         <artifactId>jackson-databind-nullable</artifactId>
         <version>${openapiSwaggerJackson.version}</version> <!-- Check for latest version -->
       </dependency>
-      <!-- Google API Client for OAuth2 -->
-      <dependency>
-        <groupId>com.google.auth</groupId>
-        <artifactId>google-auth-library-oauth2-http</artifactId>
-        <version>${google-api-client.version}</version>
-      </dependency>
       <!-- GitHub API -->
       <dependency>
         <groupId>org.kohsuke</groupId>

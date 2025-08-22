@@ -3,9 +3,11 @@ package io.github.flowrapp.infrastructure.input.rest.mainapi.controller;
 import io.github.flowrapp.infrastructure.apirest.users.api.AuthenticationApi;
 import io.github.flowrapp.infrastructure.apirest.users.model.Login200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.LoginRequestDTO;
+import io.github.flowrapp.infrastructure.apirest.users.model.OauthGithubRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RefreshTokenRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.AuthDTOMapper;
 import io.github.flowrapp.port.input.UserAuthenticationUseCase;
+import io.github.flowrapp.value.OAuth2UserInfo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,4 +42,17 @@ public class AuthenticationController implements AuthenticationApi {
         authDTOMapper.domain2rest(response));
   }
 
+  @Override
+  public ResponseEntity<Login200ResponseDTO> oauthGithub(OauthGithubRequestDTO oauthGithubRequestDTO) {
+    return ResponseEntity.ok(
+        authDTOMapper.domain2rest(
+            userAuthenticationUseCase.loginOauth2User(oauthGithubRequestDTO.getCredential(), OAuth2UserInfo.Provider.GITHUB)));
+  }
+
+  @Override
+  public ResponseEntity<Login200ResponseDTO> oauthGoogle(OauthGithubRequestDTO oauthGithubRequestDTO) {
+    return ResponseEntity.ok(
+        authDTOMapper.domain2rest(
+            userAuthenticationUseCase.loginOauth2User(oauthGithubRequestDTO.getCredential(), OAuth2UserInfo.Provider.GOOGLE)));
+  }
 }

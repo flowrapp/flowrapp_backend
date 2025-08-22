@@ -64,7 +64,7 @@ public class UserAuthenticationUseCaseImpl implements UserAuthenticationUseCase 
 
   @Override
   public @NonNull TokensResponse loginOauth2User(@NonNull String code, OAuth2UserInfo.Provider provider) {
-    log.debug("OAuth2 login for user: {} from provider: {}", code, provider);
+    log.debug("OAuth2 login for user from provider: {}", provider);
 
     val oAuth2UserInfo = oauthServiceOutput.getUserFromToken(code, provider)
         .orElseThrow(() -> new FunctionalException(FunctionalError.OAUTH2_INVALID_TOKEN));

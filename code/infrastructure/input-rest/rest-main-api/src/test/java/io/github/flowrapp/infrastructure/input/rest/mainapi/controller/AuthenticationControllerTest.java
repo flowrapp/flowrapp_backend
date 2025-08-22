@@ -7,9 +7,12 @@ import static org.springframework.http.HttpStatus.OK;
 
 import io.github.flowrapp.infrastructure.apirest.users.model.Login200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.LoginRequestDTO;
+import io.github.flowrapp.infrastructure.apirest.users.model.OauthGithubRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RefreshTokenRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.AuthDTOMapper;
 import io.github.flowrapp.port.input.UserAuthenticationUseCase;
+import io.github.flowrapp.value.OAuth2UserInfo;
+import io.github.flowrapp.value.OAuth2UserInfo.Provider;
 import io.github.flowrapp.value.TokensResponse;
 
 import org.instancio.junit.InstancioExtension;
@@ -76,4 +79,45 @@ class AuthenticationControllerTest {
         .returns(tokensResponse.accessToken(), Login200ResponseDTO::getAccessToken)
         .returns(tokensResponse.refreshToken(), Login200ResponseDTO::getRefreshToken);
   }
+
+  @ParameterizedTest
+  @InstancioSource
+  void oauthGithub(OauthGithubRequestDTO request, TokensResponse tokensResponse) {
+    // GIVEN
+    when(userAuthenticationUseCase.loginOauth2User(request.getCredential(), OAuth2UserInfo.Provider.GITHUB))
+        .thenReturn(tokensResponse);
+
+    // WHEN
+    var response = authenticationController.oauthGithub(request);
+
+    // THEN
+    assertThat(response)
+        .isNotNull()
+        .returns(OK, ResponseEntity::getStatusCode)
+        .extracting(ResponseEntity::getBody)
+        .isNotNull()
+        .returns(tokensResponse.accessToken(), Login200ResponseDTO::getAccessToken)
+        .returns(tokensResponse.refreshToken(), Login200ResponseDTO::getRefreshToken);
+  }
+
+  @ParameterizedTest
+  @InstancioSource
+  void oauthGoogle(OauthGithubRequestDTO request, TokensResponse tokensResponse) {
+    // GIVEN
+    when(userAuthenticationUseCase.loginOauth2User(request.getCredential(), Provider.GOOGLE))
+        .thenReturn(tokensResponse);
+
+    // WHEN
+    var response = authenticationController.oauthGoogle(request);
+
+    // THEN
+    assertThat(response)
+        .isNotNull()
+        .returns(OK, ResponseEntity::getStatusCode)
+        .extracting(ResponseEntity::getBody)
+        .isNotNull()
+        .returns(tokensResponse.accessToken(), Login200ResponseDTO::getAccessToken)
+        .returns(tokensResponse.refreshToken(), Login200ResponseDTO::getRefreshToken);
+  }
+
 }
