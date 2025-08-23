@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import com.querydsl.core.types.Predicate;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.InvitationEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessEntityMapper;
@@ -24,6 +23,7 @@ import io.github.flowrapp.model.BusinessUserRole;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.InvitationStatus;
 
+import com.querydsl.core.types.Predicate;
 import lombok.val;
 import org.apache.commons.lang3.RandomUtils;
 import org.instancio.Instancio;
