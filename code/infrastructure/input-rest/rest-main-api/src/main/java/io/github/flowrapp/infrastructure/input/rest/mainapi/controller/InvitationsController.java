@@ -65,14 +65,14 @@ public class InvitationsController implements InvitationsApi {
   public ResponseEntity<List<GetBusinessInvitations200ResponseInnerDTO>> getBusinessInvitations(Integer businessId, String status) {
     return ResponseEntity.ok(
         invitationsDTOMapper.domain2rest(
-            invitationsUseCase.getBusinessInvitations(businessId, InvitationStatus.valueOf(status))));
+            invitationsUseCase.getBusinessInvitations(businessId, status == null ? null : InvitationStatus.valueOf(status))));
   }
 
   @Override
   public ResponseEntity<List<GetBusinessInvitations200ResponseInnerDTO>> getUserInvitations(String status) {
     return ResponseEntity.ok(
         invitationsDTOMapper.domain2rest(
-            invitationsUseCase.getUserInvitations(InvitationStatus.valueOf(status))));
+            invitationsUseCase.getUserInvitations(status == null ? null : InvitationStatus.valueOf(status))));
   }
 
 }

@@ -18,5 +18,5 @@ public interface InvitationEntityMapper {
 
   Invitation infra2domain(InvitationEntity invitationEntity);
 
-  List<Invitation> infra2domain(List<InvitationEntity> invitationEntities);
+  List<Invitation> infra2domain(Iterable<InvitationEntity> invitationEntities);
 }
