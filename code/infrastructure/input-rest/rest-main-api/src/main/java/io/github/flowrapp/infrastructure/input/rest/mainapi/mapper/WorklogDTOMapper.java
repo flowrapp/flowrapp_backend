@@ -1,7 +1,5 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.mapper;
 
-import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
-
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -22,7 +20,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValueMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, componentModel = SPRING,
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
     nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 public interface WorklogDTOMapper {
 

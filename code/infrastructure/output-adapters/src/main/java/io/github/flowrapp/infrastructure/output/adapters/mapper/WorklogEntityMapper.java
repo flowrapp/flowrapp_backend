@@ -9,7 +9,6 @@ import io.github.flowrapp.value.WorklogFilteredRequest;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 

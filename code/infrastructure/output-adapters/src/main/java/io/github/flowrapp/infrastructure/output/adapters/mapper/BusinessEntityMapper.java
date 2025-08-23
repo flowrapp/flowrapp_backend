@@ -7,11 +7,10 @@ import io.github.flowrapp.model.Business;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
-   
+
     uses = {UserEntityMapper.class})
 public interface BusinessEntityMapper {
 

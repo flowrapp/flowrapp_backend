@@ -17,7 +17,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, componentModel = "spring")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface AdminDTOMapper {
 
   @Mapping(target = "business", source = "business", qualifiedByName = "businessListToSinglesDomain")

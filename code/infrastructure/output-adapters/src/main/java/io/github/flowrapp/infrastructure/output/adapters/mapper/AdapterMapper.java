@@ -4,9 +4,9 @@ import io.github.flowrapp.infrastructure.jpa.businessbd.entity.MockUserEntity;
 import io.github.flowrapp.model.MockUser;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface AdapterMapper {
 
   MockUser jpa2domain(MockUserEntity mockUserEntity);

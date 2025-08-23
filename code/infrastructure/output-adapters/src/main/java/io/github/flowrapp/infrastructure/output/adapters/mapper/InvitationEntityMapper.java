@@ -6,11 +6,10 @@ import io.github.flowrapp.infrastructure.jpa.businessbd.entity.InvitationEntity;
 import io.github.flowrapp.model.Invitation;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
-   
+
     uses = {UserEntityMapper.class, BusinessEntityMapper.class})
 public interface InvitationEntityMapper {
 

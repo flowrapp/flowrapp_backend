@@ -1,7 +1,5 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.mapper;
 
-import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
-
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -18,7 +16,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, componentModel = SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface InvitationsDTOMapper {
 
   @Mapping(target = "email", source = "invited.mail")
