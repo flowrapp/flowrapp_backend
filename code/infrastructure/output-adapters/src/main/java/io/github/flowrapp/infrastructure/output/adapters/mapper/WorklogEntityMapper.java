@@ -9,12 +9,11 @@ import io.github.flowrapp.value.WorklogFilteredRequest;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
-    componentModel = ComponentModel.SPRING, uses = {UserEntityMapper.class, BusinessEntityMapper.class})
+    uses = {UserEntityMapper.class, BusinessEntityMapper.class})
 public interface WorklogEntityMapper {
 
   WorklogEntity domain2Infra(Worklog worklog);

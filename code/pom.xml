@@ -40,6 +40,7 @@
     <!-- Dependencies versions -->
     <instancio.version>5.5.1</instancio.version>
     <org.mapstruct.version>1.6.3</org.mapstruct.version>
+    <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     <jspecify.version>1.0.0</jspecify.version>
     <apache-commons.version>4.5.0</apache-commons.version>
     <threeten.version>1.8.0</threeten.version>
@@ -118,9 +119,9 @@
         <version>${instancio.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-collections4</artifactId>
-        <version>${apache-commons.version}</version>
+        <groupId>io.github.openfeign.querydsl</groupId>
+        <artifactId>querydsl-jpa</artifactId>
+        <version>7.0</version>
       </dependency>
       <!-- Date and time utilities -->
       <dependency>
@@ -243,6 +244,11 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven.compiler.plugin.version}</version>
         <configuration>
+          <compilerArgs>
+          <!-- This arg ensures that mapstruct generate a Spring -->
+          <!-- Bean out of every mapper implementation -->
+          <compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
+        </compilerArgs>
           <annotationProcessorPaths>
             <path>
               <groupId>org.mapstruct</groupId>
@@ -254,9 +260,48 @@
               <artifactId>lombok</artifactId>
               <version>${lombok.version}</version>
             </path>
+            <!-- This is needed when using Lombok 1.8.16 and above -->
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok-mapstruct-binding</artifactId>
+              <version>${lombok-mapstruct-binding.version}</version>
+            </path>
+            <path>
+              <groupId>jakarta.persistence</groupId>
+              <artifactId>jakarta.persistence-api</artifactId>
+              <version>${jakarta-persistence.version}</version>
+            </path>
+            <dependency>
+              <groupId>io.github.openfeign.querydsl</groupId>
+              <artifactId>querydsl-apt</artifactId>
+              <version>7.0</version>
+              <classifier>jakarta</classifier>
+            </dependency>
           </annotationProcessorPaths>
         </configuration>
       </plugin>
+
+      <!-- Add generate sources to show in the IDE -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-classes</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/annotations</source>
+                <source>${project.build.directory}/generated-sources/event</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
@@ -288,6 +333,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>com.dkanejs.maven.plugins</groupId>
         <artifactId>docker-compose-maven-plugin</artifactId>

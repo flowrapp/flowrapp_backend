@@ -15,7 +15,7 @@ public interface InvitationRepositoryOutput {
 
   Optional<Invitation> findByToken(@NonNull UUID token);
 
-  List<Invitation> findByBusinessIdAndStatus(@NonNull Integer businessId, @NonNull InvitationStatus status);
+  List<Invitation> findByBusinessIdAndStatus(@NonNull Integer businessId, InvitationStatus status);
 
   List<Invitation> findByUserAndStatus(Integer id, InvitationStatus invitationStatus);
 

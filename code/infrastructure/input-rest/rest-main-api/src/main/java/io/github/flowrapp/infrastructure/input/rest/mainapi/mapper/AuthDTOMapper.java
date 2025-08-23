@@ -10,7 +10,7 @@ import io.github.flowrapp.value.TokensResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, componentModel = "spring")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface AuthDTOMapper {
 
   LoginRequest rest2domain(LoginRequestDTO loginRequestDTO);

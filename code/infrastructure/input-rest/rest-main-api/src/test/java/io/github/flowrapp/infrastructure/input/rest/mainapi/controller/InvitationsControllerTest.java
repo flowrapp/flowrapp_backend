@@ -1,6 +1,7 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,6 +34,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
 class InvitationsControllerTest {
@@ -162,6 +164,37 @@ class InvitationsControllerTest {
         .isInstanceOf(List.class)
         .asInstanceOf(InstanceOfAssertFactories.list(Invitation.class))
         .hasSize(invitationList.size());
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void getUserInvitations_nullStatus(List<Invitation> invitationList) {
+    // GIVEN
+    when(invitationsUseCase.getUserInvitations(null))
+        .thenReturn(invitationList);
+
+    // WHEN
+    var response = invitationsController.getUserInvitations(null);
+
+    // THEN
+    assertThat(response)
+        .isNotNull()
+        .returns(OK, ResponseEntity::getStatusCode)
+        .extracting(ResponseEntity::getBody)
+        .isNotNull()
+        .isInstanceOf(List.class)
+        .asInstanceOf(InstanceOfAssertFactories.list(Invitation.class))
+        .hasSize(invitationList.size());
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 1)
+  void getUserInvitations_invalidThrowsException() {
+    // GIVEN
+
+    // WHEN & THEN
+    assertThatThrownBy(() -> invitationsController.getUserInvitations(""))
+        .isInstanceOf(ResponseStatusException.class);
   }
 
 }
