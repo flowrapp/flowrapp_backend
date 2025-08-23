@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import com.querydsl.core.types.Predicate;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.InvitationEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessEntityMapper;
@@ -135,7 +137,7 @@ class InvitationRepositoryAdapterTest {
         .mapToObj(unused -> this.generateInvitationEntity())
         .toList();
 
-    when(invitationJpaRepository.findAllByBusiness_IdAndStatus(businessId, status.name()))
+    when(invitationJpaRepository.findAll(any(Predicate.class)))
         .thenReturn(invitationList);
 
     // When

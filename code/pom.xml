@@ -123,10 +123,6 @@
         <artifactId>commons-collections4</artifactId>
         <version>${apache-commons.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.hibernate.orm</groupId>
-        <artifactId>hibernate-jpamodelgen</artifactId>
-      </dependency>
       <!-- Date and time utilities -->
       <dependency>
         <groupId>org.threeten</groupId>
@@ -259,12 +255,6 @@
               <artifactId>mapstruct-processor</artifactId>
               <version>${org.mapstruct.version}</version>
             </path>
-            <dependency>
-              <groupId>com.querydsl</groupId>
-              <artifactId>querydsl-apt</artifactId>
-              <version>5.1.0</version>
-              <classifier>jakarta</classifier>
-            </dependency>
             <path>
               <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
