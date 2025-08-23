@@ -27,15 +27,7 @@
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-jpa</artifactId>
-      <version>5.1.0</version>
       <classifier>jakarta</classifier>
-    </dependency>
-    <dependency>
-      <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-apt</artifactId>
-      <version>5.1.0</version>
-      <classifier>jakarta</classifier>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -57,27 +49,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.mysema.maven</groupId>
-        <artifactId>apt-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>process</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/generated-sources/querydls</outputDirectory>
-              <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
 
 </project>

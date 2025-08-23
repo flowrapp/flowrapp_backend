@@ -119,9 +119,10 @@
         <version>${instancio.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-collections4</artifactId>
-        <version>${apache-commons.version}</version>
+        <groupId>com.querydsl</groupId>
+        <artifactId>querydsl-jpa</artifactId>
+        <version>${querydsl.version}</version>
+        <classifier>jakarta</classifier>
       </dependency>
       <!-- Date and time utilities -->
       <dependency>
@@ -266,6 +267,17 @@
               <artifactId>lombok-mapstruct-binding</artifactId>
               <version>${lombok-mapstruct-binding.version}</version>
             </path>
+            <path>
+              <groupId>jakarta.persistence</groupId>
+              <artifactId>jakarta.persistence-api</artifactId>
+              <version>${jakarta-persistence.version}</version>
+            </path>
+            <dependency>
+              <groupId>com.querydsl</groupId>
+              <artifactId>querydsl-apt</artifactId>
+              <version>${querydsl.version}</version>
+              <classifier>jakarta</classifier>
+            </dependency>
           </annotationProcessorPaths>
         </configuration>
       </plugin>
