@@ -5,6 +5,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import java.util.Base64;
 
 import io.github.flowrapp.config.JwtTokenSettings;
+import io.github.flowrapp.infrastructure.input.rest.config.security.value.ClaimConstants;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -12,6 +13,8 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -22,7 +25,9 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 
 @Configuration(proxyBeanMethods = false)
 @EnableMethodSecurity
@@ -52,6 +57,27 @@ public class MainApiSecurityConfig {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  /**
+   * Password checker that uses the HaveIBeenPwned REST API to check if a password has been compromised. By default, this bean is not
+   * active. It can be activated by setting the profile "secure".
+   */
+  @Bean
+  @Profile("secure")
+  public CompromisedPasswordChecker haveIBeenPwnedRestApiPasswordChecker() {
+    return new HaveIBeenPwnedRestApiPasswordChecker();
+  }
+
+  /**
+   * Converter for the JWT authorities claim. This is used to extract the roles from the JWT token inside JwtAuthenticationProvider.
+   */
+  @Bean
+  public JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter() {
+    var converter = new JwtGrantedAuthoritiesConverter();
+    converter.setAuthoritiesClaimName(ClaimConstants.CLAIM_KEY_NAME);
+    converter.setAuthorityPrefix("");
+    return converter;
   }
 
   /** JWT source acts as a holder for the access secretKey */

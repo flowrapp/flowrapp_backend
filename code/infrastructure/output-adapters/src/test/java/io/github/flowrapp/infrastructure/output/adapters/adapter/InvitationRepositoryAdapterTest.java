@@ -18,9 +18,9 @@ import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpa
 import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessEntityMapper;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.InvitationEntityMapper;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.UserEntityMapper;
+import io.github.flowrapp.model.BusinessUserRole;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.InvitationStatus;
-import io.github.flowrapp.model.UserRole;
 
 import lombok.val;
 import org.apache.commons.lang3.RandomUtils;
@@ -185,7 +185,7 @@ class InvitationRepositoryAdapterTest {
 
   private InvitationEntity generateInvitationEntity() {
     return Instancio.of(InvitationEntity.class)
-        .generate(field(InvitationEntity::getRole), gen -> gen.oneOf(UserRole.values()).asString())
+        .generate(field(InvitationEntity::getRole), gen -> gen.oneOf(BusinessUserRole.values()).asString())
         .generate(field(InvitationEntity::getStatus), gen -> gen.oneOf(InvitationStatus.values()).asString())
         .create();
   }

@@ -12,7 +12,7 @@ import io.github.flowrapp.infrastructure.apirest.users.model.GetBusinessUsers200
 import io.github.flowrapp.infrastructure.apirest.users.model.GetUserBusinesses200ResponseInnerDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.BusinessDTOMapper;
 import io.github.flowrapp.model.BusinessUser;
-import io.github.flowrapp.model.UserRole;
+import io.github.flowrapp.model.BusinessUserRole;
 import io.github.flowrapp.port.input.BusinessUseCase;
 import io.github.flowrapp.value.BusinessFilterRequest;
 
@@ -42,7 +42,7 @@ class BusinessControllerTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
-  void getBusinessUsers(Integer businessId, UserRole role, BusinessUser businessUser) {
+  void getBusinessUsers(Integer businessId, BusinessUserRole role, BusinessUser businessUser) {
     // GIVEN
     when(businessUseCase.getBusinessUsers(assertArg(filter -> assertThat(filter)
         .isNotNull()

@@ -19,6 +19,7 @@ public record User(
     String mail,
     String phone,
     SensitiveInfo<String> passwordHash,
+    UserRole role,
     boolean enabled,
     Instant createdAt) {
 
@@ -40,6 +41,7 @@ public record User(
         .passwordHash(
             SensitiveInfo.of("")) // Password hash is not set
         .enabled(false) // Not enabled by default
+        .role(UserRole.USER)
         .createdAt(Instant.now())
         .build();
   }
@@ -51,6 +53,7 @@ public record User(
         .phone("")
         .passwordHash(SensitiveInfo.empty()) // No password for OAuth users
         .enabled(true) // OAuth users are enabled by default
+        .role(UserRole.USER)
         .createdAt(Instant.now())
         .build();
   }

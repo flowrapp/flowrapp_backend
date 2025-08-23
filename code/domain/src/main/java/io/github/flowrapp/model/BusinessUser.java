@@ -8,7 +8,7 @@ import lombok.Builder;
 public record BusinessUser(
     User user,
     Business business,
-    UserRole role,
+    BusinessUserRole role,
     User invitedBy,
     Instant joinedAt) {
 

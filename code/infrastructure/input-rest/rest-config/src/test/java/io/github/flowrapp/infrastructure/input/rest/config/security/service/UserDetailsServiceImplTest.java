@@ -62,7 +62,7 @@ class UserDetailsServiceImplTest {
     assertThat(retrievedUser.getAuthorities())
         .isNotEmpty()
         .extracting(GrantedAuthority::getAuthority)
-        .containsExactly("SCOPE_ADMIN");
+        .containsExactly(user.role().name());
   }
 
   @ParameterizedTest

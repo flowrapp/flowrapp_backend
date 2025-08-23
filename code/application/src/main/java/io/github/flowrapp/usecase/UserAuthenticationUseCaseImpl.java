@@ -12,6 +12,7 @@ import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.value.LoginRequest;
 import io.github.flowrapp.value.OAuth2UserInfo;
 import io.github.flowrapp.value.RefreshRequest;
+import io.github.flowrapp.value.SensitiveInfo;
 import io.github.flowrapp.value.TokensResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,13 @@ public class UserAuthenticationUseCaseImpl implements UserAuthenticationUseCase 
   @Override
   public Optional<User> retrieveUserByMail(@NonNull String email) {
     return userRepositoryOutput.findUserByEmail(email);
+  }
+
+  @Override
+  public Optional<User> updateUserPasswordHash(String mail, @NonNull String password) {
+    return userRepositoryOutput.findUserByEmail(mail)
+        .map(user -> user.withPasswordHash(SensitiveInfo.of(password)))
+        .map(userRepositoryOutput::save);
   }
 
   @Override

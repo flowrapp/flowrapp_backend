@@ -5,9 +5,9 @@ import static io.github.flowrapp.config.Constants.ADMIN_USER_MAIL;
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.Business;
+import io.github.flowrapp.model.BusinessUserRole;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.model.UserRole;
 import io.github.flowrapp.port.input.AdminUseCase;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
@@ -77,7 +77,7 @@ public class AdminUseCaseImpl implements AdminUseCase {
     log.debug("Creating invitation for user {} to business {}", user.mail(), newBusiness.name());
 
     return invitationRepositoryOutput.save(
-        Invitation.create(user, newBusiness, adminUser, UserRole.OWNER));
+        Invitation.create(user, newBusiness, adminUser, BusinessUserRole.OWNER));
   }
 
 }
