@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
@@ -75,6 +76,33 @@ class UserDetailsServiceImplTest {
     // WHEN & THEN
     assertThrows(UsernameNotFoundException.class,
         () -> userDetailsService.loadUserByUsername(username));
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void updatePassword(User details, String password, io.github.flowrapp.model.User user) {
+    // GIVEN
+    when(userAuthenticationUseCase.updateUserPasswordHash(details.getUsername(), password))
+        .thenReturn(Optional.of(user));
+
+    // WHEN
+    var updatedUser = userDetailsService.updatePassword(details, password);
+
+    // THEN
+    assertThat(updatedUser)
+        .isNotNull()
+        .returns(user.passwordHash().get(), UserDetails::getPassword);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void updatePasswordThrowsException(User details, String password) {
+    // GIVEN
+    when(userAuthenticationUseCase.updateUserPasswordHash(details.getUsername(), password))
+        .thenReturn(Optional.empty());
+
+    // WHEN & THEN
+    assertThrows(UsernameNotFoundException.class, () -> userDetailsService.updatePassword(details, password));
   }
 
 }

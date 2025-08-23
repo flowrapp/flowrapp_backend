@@ -38,9 +38,9 @@ public class UserAuthenticationUseCaseImpl implements UserAuthenticationUseCase 
   }
 
   @Override
-  public Optional<User> updateUserPasswordHash(String mail, @NonNull String password) {
+  public Optional<User> updateUserPasswordHash(String mail, @NonNull String hashedPassword) {
     return userRepositoryOutput.findUserByEmail(mail)
-        .map(user -> user.withPasswordHash(SensitiveInfo.of(password)))
+        .map(user -> user.withPasswordHash(SensitiveInfo.of(hashedPassword)))
         .map(userRepositoryOutput::save);
   }
 

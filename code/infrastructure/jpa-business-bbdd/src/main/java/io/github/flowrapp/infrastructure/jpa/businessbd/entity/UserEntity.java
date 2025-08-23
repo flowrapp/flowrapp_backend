@@ -54,7 +54,7 @@ public class UserEntity {
   private Boolean enabled;
 
   @NotNull
-  @ColumnDefault("false")
+  @ColumnDefault("'USER'")
   @Column(name = "role", nullable = false)
   @Enumerated(EnumType.STRING)
   private UserEntityRole role;
