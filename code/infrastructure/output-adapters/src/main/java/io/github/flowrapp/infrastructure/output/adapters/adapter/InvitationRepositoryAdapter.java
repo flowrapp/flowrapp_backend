@@ -52,7 +52,7 @@ public class InvitationRepositoryAdapter implements InvitationRepositoryOutput {
 
   @Override
   public List<Invitation> findByUserAndStatus(Integer id, InvitationStatus status) {
-    var filter = invitationEntity.id.eq(id)
+    var filter = invitationEntity.invited.id.eq(id)
         .and(status == null ? null : invitationEntity.status.eq(status.name()));
 
     return invitationEntityMapper.infra2domain(
