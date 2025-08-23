@@ -158,7 +158,7 @@ class InvitationRepositoryAdapterTest {
         .mapToObj(unused -> this.generateInvitationEntity())
         .toList();
 
-    when(invitationJpaRepository.findAllByInvited_IdAndStatus(userId, status.name()))
+    when(invitationJpaRepository.findAll(any(Predicate.class)))
         .thenReturn(invitationList);
 
     // When
