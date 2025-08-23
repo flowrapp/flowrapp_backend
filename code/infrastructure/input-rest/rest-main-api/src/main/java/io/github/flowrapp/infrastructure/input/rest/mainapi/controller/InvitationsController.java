@@ -1,5 +1,6 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.controller;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController
@@ -65,14 +67,26 @@ public class InvitationsController implements InvitationsApi {
   public ResponseEntity<List<GetBusinessInvitations200ResponseInnerDTO>> getBusinessInvitations(Integer businessId, String status) {
     return ResponseEntity.ok(
         invitationsDTOMapper.domain2rest(
-            invitationsUseCase.getBusinessInvitations(businessId, status == null ? null : InvitationStatus.valueOf(status))));
+            invitationsUseCase.getBusinessInvitations(businessId, this.parseInvitationStatus(status))));
   }
 
   @Override
   public ResponseEntity<List<GetBusinessInvitations200ResponseInnerDTO>> getUserInvitations(String status) {
     return ResponseEntity.ok(
         invitationsDTOMapper.domain2rest(
-            invitationsUseCase.getUserInvitations(status == null ? null : InvitationStatus.valueOf(status))));
+            invitationsUseCase.getUserInvitations(this.parseInvitationStatus(status))));
+  }
+
+  private InvitationStatus parseInvitationStatus(String status) {
+    if (status == null) {
+      return null;
+    }
+
+    try {
+      return InvitationStatus.valueOf(status.toUpperCase());
+    } catch (IllegalArgumentException ex) {
+      throw new ResponseStatusException(BAD_REQUEST, "Invalid status: " + status);
+    }
   }
 
 }
