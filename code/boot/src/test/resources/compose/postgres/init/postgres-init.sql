@@ -28,6 +28,7 @@ CREATE TABLE if not exists flowrapp_management.users
     mail          varchar(320) NOT NULL,
     phone         varchar(15),
     password_hash text         NOT NULL,
+    role          varchar(50)  NOT NULL DEFAULT 'USER',
     enabled       boolean      NOT NULL DEFAULT true,
     created_at    timestamp    NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id)
@@ -130,9 +131,9 @@ CREATE INDEX IF NOT EXISTS idx_users_roles_business_id ON flowrapp_management.us
 INSERT INTO flowrapp_management.mockusers (dni, name)
 VALUES ('21242', 'divios');
 
-INSERT INTO flowrapp_management.users (name, mail, phone, password_hash)
+INSERT INTO flowrapp_management.users (name, mail, phone, password_hash, role)
 VALUES ('admin', 'admin@admin.com', '123456789',
-        '$2a$10$8w.xERKkZZhKuCMU6K/0x.OmaEYBVqPBfGRHKHfyIEXK4P8kU43fq'); -- Password: adminadmin
+        '$2a$10$8w.xERKkZZhKuCMU6K/0x.OmaEYBVqPBfGRHKHfyIEXK4P8kU43fq', 'ADMIN'); -- Password: adminadmin
 INSERT INTO flowrapp_management.users (name, mail, phone, password_hash)
 VALUES ('test', 'test@test.com', '123456789',
         '$2a$10$8w.xERKkZZhKuCMU6K/0x.OmaEYBVqPBfGRHKHfyIEXK4P8kU43fq'); -- Password: 1234

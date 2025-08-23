@@ -12,7 +12,9 @@ import org.jspecify.annotations.NonNull;
 
 public interface UserAuthenticationUseCase {
 
-  Optional<User> retrieveUserByMail(@NonNull String email);
+  Optional<User> retrieveUserByMail(@NonNull String mail);
+
+  Optional<User> updateUserPasswordHash(String mail, @NonNull String hashedPassword);
 
   @NonNull
   TokensResponse loginUser(@NonNull LoginRequest request);

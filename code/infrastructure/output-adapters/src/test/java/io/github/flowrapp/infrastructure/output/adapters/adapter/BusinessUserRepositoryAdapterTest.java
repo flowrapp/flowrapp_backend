@@ -19,8 +19,8 @@ import io.github.flowrapp.infrastructure.output.adapters.mapper.BusinessUserEnti
 import io.github.flowrapp.infrastructure.output.adapters.mapper.UserEntityMapper;
 import io.github.flowrapp.model.Business;
 import io.github.flowrapp.model.BusinessUser;
+import io.github.flowrapp.model.BusinessUserRole;
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.model.UserRole;
 import io.github.flowrapp.value.BusinessFilterRequest;
 
 import com.querydsl.core.types.Predicate;
@@ -92,7 +92,7 @@ class BusinessUserRepositoryAdapterTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
-  void getByFilter(Integer userId, Integer businessId, UserRole role) {
+  void getByFilter(Integer userId, Integer businessId, BusinessUserRole role) {
     // Given
     var businessUserEntity = generateBusinessUser();
 
@@ -156,7 +156,7 @@ class BusinessUserRepositoryAdapterTest {
 
   private BusinessUserEntity generateBusinessUser() {
     return Instancio.of(BusinessUserEntity.class)
-        .generate(field(BusinessUserEntity::getRole), gen -> gen.oneOf(UserRole.values()).asString())
+        .generate(field(BusinessUserEntity::getRole), gen -> gen.oneOf(BusinessUserRole.values()).asString())
         .create();
   }
 

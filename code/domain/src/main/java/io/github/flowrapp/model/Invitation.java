@@ -17,7 +17,7 @@ public record Invitation(
     User invitedBy,
     Business business,
     UUID token,
-    UserRole role,
+    BusinessUserRole role,
     Instant createdAt,
     Instant expiresAt,
     InvitationStatus status) {
@@ -42,7 +42,7 @@ public record Invitation(
   }
 
   /** Creates a new invitation for a user to join a business. */
-  public static Invitation create(User invited, Business business, User invitedBy, UserRole role) {
+  public static Invitation create(User invited, Business business, User invitedBy, BusinessUserRole role) {
     return Invitation.builder()
         .invited(invited)
         .business(business)

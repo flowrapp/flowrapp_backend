@@ -2,6 +2,7 @@ package io.github.flowrapp.usecase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ import io.github.flowrapp.value.TokensResponse;
 
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.InjectMocks;
@@ -58,6 +60,24 @@ class UserAuthenticationUseCaseImplTest {
         .isPresent()
         .get()
         .isEqualTo(user);
+  }
+
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void updateUserPasswordHash(String mail, @NonNull String password, User user) {
+    // GIVEN
+    when(userRepositoryOutput.findUserByEmail(mail))
+        .thenReturn(Optional.of(user));
+    when(userRepositoryOutput.save(argThat(argument -> argument.passwordHash().value().equals(password))))
+        .then(returnsFirstArg());
+
+    // WHEN
+    Optional<User> result = userAuthenticationUseCase.updateUserPasswordHash(mail, password);
+
+    // THEN
+    assertThat(result)
+        .isNotNull()
+        .isPresent();
   }
 
   @ParameterizedTest

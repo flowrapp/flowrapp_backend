@@ -77,6 +77,7 @@ public class JwtTokenService {
         .subject(user.id().toString())
         .claim(ClaimConstants.CLAIM_KEY_USER_NAME, user.name())
         .claim(ClaimConstants.CLAIM_KEY_USER_MAIL, user.mail())
+        .claim(ClaimConstants.CLAIM_KEY_NAME, user.role().name())
         .build();
 
     val headers = JwtEncoderParameters.from(

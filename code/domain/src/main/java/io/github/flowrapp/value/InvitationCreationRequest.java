@@ -1,6 +1,6 @@
 package io.github.flowrapp.value;
 
-import io.github.flowrapp.model.UserRole;
+import io.github.flowrapp.model.BusinessUserRole;
 
 import lombok.Builder;
 
@@ -8,5 +8,5 @@ import lombok.Builder;
 public record InvitationCreationRequest(
     Integer businessId,
     String email,
-    UserRole role) {
+    BusinessUserRole role) {
 }
