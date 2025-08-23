@@ -14,7 +14,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
-    componentModel = ComponentModel.SPRING, uses = {UserEntityMapper.class, BusinessEntityMapper.class})
+    uses = {UserEntityMapper.class, BusinessEntityMapper.class})
 public interface WorklogEntityMapper {
 
   WorklogEntity domain2Infra(Worklog worklog);

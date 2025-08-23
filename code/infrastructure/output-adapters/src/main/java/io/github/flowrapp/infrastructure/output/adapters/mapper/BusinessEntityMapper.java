@@ -11,7 +11,7 @@ import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
-    componentModel = ComponentModel.SPRING,
+   
     uses = {UserEntityMapper.class})
 public interface BusinessEntityMapper {
 
