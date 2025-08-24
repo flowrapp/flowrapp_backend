@@ -36,6 +36,15 @@ app:
           google:
             client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
 
+# Mail Configuration
+simplejavamail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_PASSWORD}
+  transportstrategy: SMTP_TLS
+
 # Swagger OpenAPI Configuration
 springdoc:
   api-docs:

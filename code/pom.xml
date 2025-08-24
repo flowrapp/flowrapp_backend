@@ -107,6 +107,11 @@
         <artifactId>jpa-business-bbdd</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>io.github.flowrapp</groupId>
+        <artifactId>thymeleaf-mail</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
       <!-- Others -->
       <dependency>

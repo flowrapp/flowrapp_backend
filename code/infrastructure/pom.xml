@@ -18,6 +18,7 @@
     <module>output-adapters</module>
     <module>jpa-business-bbdd</module>
     <module>input-rest</module>
+    <module>thymeleaf-mail</module>
   </modules>
 
 </project>

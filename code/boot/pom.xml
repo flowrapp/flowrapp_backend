@@ -39,6 +39,10 @@
       <groupId>io.github.flowrapp</groupId>
       <artifactId>jpa-business-bbdd</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.github.flowrapp</groupId>
+      <artifactId>thymeleaf-mail</artifactId>
+    </dependency>
 
     <!-- External dependencies -->
     <dependency>
