@@ -55,7 +55,7 @@
     <maven.failsafe.plugin.version>3.5.3</maven.failsafe.plugin.version>
     <spotless.version>2.46.1</spotless.version>
     <jacoco.plugin.version>0.8.13</jacoco.plugin.version>
-    <openapiGenerator.version>7.14.0</openapiGenerator.version>
+    <openapiGenerator.version>7.15.0</openapiGenerator.version>
   </properties>
 
   <dependencyManagement>
