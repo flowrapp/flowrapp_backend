@@ -105,7 +105,7 @@ class WorklogsUseCaseImplTest {
         .withClockIn(OffsetDateTime.now().minusNanos(30))
         .withClockOut(null);
     request = request.toBuilder()
-        .clockOut(openWorklog.clockIn().plusNanos(30))
+        .clockOut(openWorklog.clockIn().plusNanos(20))
         .build();
 
     when(userSecurityContextHolderOutput.getCurrentUser())
