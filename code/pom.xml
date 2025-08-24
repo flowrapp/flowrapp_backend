@@ -352,7 +352,7 @@
 
   <profiles>
     <profile>
-      <id>IT</id>
+      <id>local</id>
       <build>
         <plugins>
           <plugin>
