@@ -17,7 +17,7 @@ public interface InvitationRepositoryOutput {
 
   List<Invitation> findByBusinessIdAndStatus(@NonNull Integer businessId, InvitationStatus status);
 
-  List<Invitation> findByUserAndStatus(Integer id, InvitationStatus invitationStatus);
+  List<Invitation> findByUserAndStatus(Integer invitedId, InvitationStatus invitationStatus);
 
   boolean userIsAlreadyInvitedToBusiness(Integer invitedUserId, Integer businessId);
 

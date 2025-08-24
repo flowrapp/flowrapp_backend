@@ -118,11 +118,6 @@
         <artifactId>instancio-junit</artifactId>
         <version>${instancio.version}</version>
       </dependency>
-      <dependency>
-        <groupId>io.github.openfeign.querydsl</groupId>
-        <artifactId>querydsl-jpa</artifactId>
-        <version>7.0</version>
-      </dependency>
       <!-- Date and time utilities -->
       <dependency>
         <groupId>org.threeten</groupId>
@@ -148,6 +143,12 @@
       <groupId>org.jspecify</groupId>
       <artifactId>jspecify</artifactId>
       <version>${jspecify.version}</version>
+    </dependency>
+    <!-- It seems Intellij need this to freaking process mapstruct correctly (only on Mac xd) -->
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct-processor</artifactId>
+      <version>${org.mapstruct.version}</version>
     </dependency>
   </dependencies>
 
@@ -245,11 +246,6 @@
               <artifactId>lombok-mapstruct-binding</artifactId>
               <version>${lombok-mapstruct-binding.version}</version>
             </path>
-            <path>
-              <groupId>jakarta.persistence</groupId>
-              <artifactId>jakarta.persistence-api</artifactId>
-              <version>${jakarta-persistence.version}</version>
-            </path>
           </annotationProcessorPaths>
         </configuration>
       </plugin>
@@ -337,6 +333,38 @@
                   <goal>integration-test</goal>
                   <goal>verify</goal>
                 </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>coverage</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>prepare-agent</id>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>report</id>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+                <configuration>
+                  <formats>
+                    <format>XML</format>
+                  </formats>
+                </configuration>
               </execution>
             </executions>
           </plugin>

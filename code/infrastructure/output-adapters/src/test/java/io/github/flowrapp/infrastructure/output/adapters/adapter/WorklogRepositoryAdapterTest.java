@@ -1,6 +1,7 @@
 package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -26,6 +27,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.jpa.domain.Specification;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
 class WorklogRepositoryAdapterTest {
@@ -73,7 +75,7 @@ class WorklogRepositoryAdapterTest {
   @InstancioSource(samples = 1)
   void findAllFiltered(WorklogFilteredRequest worklogFilteredRequest, List<WorklogEntity> worklogEntities) {
     // Given
-    when(worklogJpaRepository.findAll())
+    when(worklogJpaRepository.findAll(any(Specification.class)))
         .thenReturn(worklogEntities);
 
     // When
@@ -90,15 +92,15 @@ class WorklogRepositoryAdapterTest {
   @InstancioSource(samples = 20)
   void doesOverlap(Worklog worklog, boolean doesOverlap) {
     // Given
-    // when(worklogJpaRepository.exists(any(Predicate.class)))
-    // .thenReturn(doesOverlap);
+    when(worklogJpaRepository.exists(any(Specification.class)))
+        .thenReturn(doesOverlap);
 
     // When
     var result = worklogRepositoryAdapter.doesOverlap(worklog);
 
     // Then
-    // assertThat(result)
-    // .isEqualTo(doesOverlap);
+    assertThat(result)
+        .isEqualTo(doesOverlap);
   }
 
   @ParameterizedTest

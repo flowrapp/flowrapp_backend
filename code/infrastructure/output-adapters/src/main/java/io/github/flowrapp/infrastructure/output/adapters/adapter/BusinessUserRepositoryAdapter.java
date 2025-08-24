@@ -12,6 +12,7 @@ import io.github.flowrapp.value.BusinessFilterRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -37,8 +38,11 @@ public class BusinessUserRepositoryAdapter implements BusinessUserRepositoryOutp
 
   @Override
   public List<BusinessUser> findByFilter(BusinessFilterRequest filter) {
+    var example = Example.of(
+        businessUserEntityMapper.filter2example(filter));
+
     return businessUserEntityMapper.infra2domain(
-        businessUserJpaRepository.findAll());
+        businessUserJpaRepository.findAll(example));
   }
 
   @Override

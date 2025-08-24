@@ -2,6 +2,7 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -32,6 +33,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Example;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
 class BusinessUserRepositoryAdapterTest {
@@ -94,11 +96,12 @@ class BusinessUserRepositoryAdapterTest {
     // Given
     var businessUserEntity = generateBusinessUser();
 
-    when(businessUserJpaRepository.findAll())
+    when(businessUserJpaRepository.findAll(any(Example.class)))
         .thenReturn(List.of(businessUserEntity));
 
     // When
-    var result = businessUserRepositoryAdapter.findByFilter(new BusinessFilterRequest(userId, businessId, role));
+    var result = businessUserRepositoryAdapter.findByFilter(
+        new BusinessFilterRequest(userId, businessId, role));
 
     // Then
     assertThat(result)

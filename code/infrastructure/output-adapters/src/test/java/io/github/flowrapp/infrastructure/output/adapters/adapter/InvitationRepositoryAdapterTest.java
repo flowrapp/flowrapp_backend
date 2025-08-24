@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -34,6 +35,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Example;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
 class InvitationRepositoryAdapterTest {
@@ -135,7 +137,7 @@ class InvitationRepositoryAdapterTest {
         .mapToObj(unused -> this.generateInvitationEntity())
         .toList();
 
-    when(invitationJpaRepository.findAll())
+    when(invitationJpaRepository.findAll(any(Example.class)))
         .thenReturn(invitationList);
 
     // When
@@ -156,7 +158,7 @@ class InvitationRepositoryAdapterTest {
         .mapToObj(unused -> this.generateInvitationEntity())
         .toList();
 
-    when(invitationJpaRepository.findAll())
+    when(invitationJpaRepository.findAll(any(Example.class)))
         .thenReturn(invitationList);
 
     // When

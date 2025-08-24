@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.jspecify.annotations.NonNull;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,14 +41,20 @@ public class InvitationRepositoryAdapter implements InvitationRepositoryOutput {
 
   @Override
   public List<Invitation> findByBusinessIdAndStatus(@NonNull Integer businessId, InvitationStatus status) {
+    var example = Example.of(
+        invitationEntityMapper.filter2example(null, businessId, status));
+
     return invitationEntityMapper.infra2domain(
-        invitationJpaRepository.findAll());
+        invitationJpaRepository.findAll(example));
   }
 
   @Override
-  public List<Invitation> findByUserAndStatus(Integer id, InvitationStatus status) {
+  public List<Invitation> findByUserAndStatus(Integer invitedId, InvitationStatus status) {
+    var example = Example.of(
+        invitationEntityMapper.filter2example(invitedId, null, status));
+
     return invitationEntityMapper.infra2domain(
-        invitationJpaRepository.findAll());
+        invitationJpaRepository.findAll(example));
   }
 
   @Override
