@@ -1,7 +1,6 @@
 package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -20,7 +19,6 @@ import io.github.flowrapp.infrastructure.output.adapters.mapper.UserEntityMapper
 import io.github.flowrapp.model.Report;
 import io.github.flowrapp.value.TimesheetFilterRequest;
 
-import com.querydsl.core.types.Predicate;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,7 +53,7 @@ class ReportRepositoryAdapterTest {
   @InstancioSource(samples = 20)
   void findAll(TimesheetFilterRequest filter, ReportEntity reportEntity) {
     // GIVEN
-    when(reportJpaRepository.findAll((Predicate) any()))
+    when(reportJpaRepository.findAll())
         .thenReturn(List.of(reportEntity));
 
     // WHEN
@@ -71,7 +69,7 @@ class ReportRepositoryAdapterTest {
   @InstancioSource(samples = 20)
   void getByDay(Integer userId, Integer businessId, LocalDate day, ReportEntity reportEntity) {
     // GIVEN
-    when(reportJpaRepository.findOne((Predicate) any()))
+    when(reportJpaRepository.findById(userId))
         .thenReturn(Optional.of(reportEntity));
 
     // WHEN

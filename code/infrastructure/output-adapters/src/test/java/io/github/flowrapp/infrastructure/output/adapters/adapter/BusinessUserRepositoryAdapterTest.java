@@ -2,7 +2,6 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -23,7 +22,6 @@ import io.github.flowrapp.model.BusinessUserRole;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.value.BusinessFilterRequest;
 
-import com.querydsl.core.types.Predicate;
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
@@ -96,7 +94,7 @@ class BusinessUserRepositoryAdapterTest {
     // Given
     var businessUserEntity = generateBusinessUser();
 
-    when(businessUserJpaRepository.findAll((Predicate) any()))
+    when(businessUserJpaRepository.findAll())
         .thenReturn(List.of(businessUserEntity));
 
     // When

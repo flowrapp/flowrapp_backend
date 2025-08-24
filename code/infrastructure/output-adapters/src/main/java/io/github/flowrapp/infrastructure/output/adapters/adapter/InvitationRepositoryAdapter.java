@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import io.github.flowrapp.infrastructure.jpa.businessbd.entity.QInvitationEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
 import io.github.flowrapp.infrastructure.output.adapters.mapper.InvitationEntityMapper;
 import io.github.flowrapp.model.Invitation;
@@ -22,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class InvitationRepositoryAdapter implements InvitationRepositoryOutput {
-
-  private static final QInvitationEntity invitationEntity = QInvitationEntity.invitationEntity;
 
   private final InvitationJpaRepository invitationJpaRepository;
 
@@ -43,20 +40,14 @@ public class InvitationRepositoryAdapter implements InvitationRepositoryOutput {
 
   @Override
   public List<Invitation> findByBusinessIdAndStatus(@NonNull Integer businessId, InvitationStatus status) {
-    var filter = invitationEntity.business.id.eq(businessId)
-        .and(status == null ? null : invitationEntity.status.eq(status.name()));
-
     return invitationEntityMapper.infra2domain(
-        invitationJpaRepository.findAll(filter));
+        invitationJpaRepository.findAll());
   }
 
   @Override
   public List<Invitation> findByUserAndStatus(Integer id, InvitationStatus status) {
-    var filter = invitationEntity.invited.id.eq(id)
-        .and(status == null ? null : invitationEntity.status.eq(status.name()));
-
     return invitationEntityMapper.infra2domain(
-        invitationJpaRepository.findAll(filter));
+        invitationJpaRepository.findAll());
   }
 
   @Override

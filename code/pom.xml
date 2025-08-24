@@ -39,7 +39,7 @@
 
     <!-- Dependencies versions -->
     <instancio.version>5.5.1</instancio.version>
-    <org.mapstruct.version>1.6.3</org.mapstruct.version>
+    <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     <jspecify.version>1.0.0</jspecify.version>
     <apache-commons.version>4.5.0</apache-commons.version>
@@ -268,7 +268,6 @@
             <configuration>
               <sources>
                 <source>${project.build.directory}/generated-sources/annotations</source>
-                <source>${project.build.directory}/generated-sources/event</source>
               </sources>
             </configuration>
           </execution>

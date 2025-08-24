@@ -7,12 +7,10 @@ import io.github.flowrapp.infrastructure.jpa.businessbd.entity.BusinessUserEntit
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UsersRoleIdEntity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BusinessUserJpaRepository extends JpaRepository<BusinessUserEntity, UsersRoleIdEntity>,
-    QuerydslPredicateExecutor<BusinessUserEntity> {
+public interface BusinessUserJpaRepository extends JpaRepository<BusinessUserEntity, UsersRoleIdEntity> {
 
   List<BusinessUserEntity> findByUser_Id(Integer userId);
 
