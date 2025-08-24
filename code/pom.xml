@@ -48,6 +48,7 @@
     <openapiSwaggerJackson.version>0.2.7</openapiSwaggerJackson.version>
     <google-api-client.version>1.37.1</google-api-client.version>
     <github-api.version>1.318</github-api.version>
+    <openQueryDSL.version>7.0</openQueryDSL.version>
 
     <!-- Plugin versions -->
     <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
@@ -121,7 +122,12 @@
       <dependency>
         <groupId>io.github.openfeign.querydsl</groupId>
         <artifactId>querydsl-jpa</artifactId>
-        <version>7.0</version>
+        <version>${openQueryDSL.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.openfeign.querydsl</groupId>
+        <artifactId>querydsl-apt</artifactId>
+        <version>${openQueryDSL.version}</version>
       </dependency>
       <!-- Date and time utilities -->
       <dependency>
@@ -266,17 +272,6 @@
               <artifactId>lombok-mapstruct-binding</artifactId>
               <version>${lombok-mapstruct-binding.version}</version>
             </path>
-            <path>
-              <groupId>jakarta.persistence</groupId>
-              <artifactId>jakarta.persistence-api</artifactId>
-              <version>${jakarta-persistence.version}</version>
-            </path>
-            <dependency>
-              <groupId>io.github.openfeign.querydsl</groupId>
-              <artifactId>querydsl-apt</artifactId>
-              <version>7.0</version>
-              <classifier>jakarta</classifier>
-            </dependency>
           </annotationProcessorPaths>
         </configuration>
       </plugin>
