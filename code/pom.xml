@@ -224,6 +224,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven.compiler.plugin.version}</version>
         <configuration>
+          <useIncrementalCompilation>false</useIncrementalCompilation>
           <compilerArgs>
           <!-- This arg ensures that mapstruct generate a Spring -->
           <!-- Bean out of every mapper implementation -->
@@ -263,6 +264,7 @@
             </goals>
             <configuration>
               <sources>
+                <source>${project.build.directory}/generated-sources/openapi/src/main/java</source>
                 <source>${project.build.directory}/generated-sources/annotations</source>
               </sources>
             </configuration>
