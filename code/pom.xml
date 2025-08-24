@@ -156,31 +156,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-maven-plugin</artifactId>
-          <configuration>
-            <skip>false</skip>
-            <mainClass>io.github.flowrapp.Application</mainClass>
-            <excludes>
-              <exclude>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-              </exclude>
-              <exclude>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct</artifactId>
-              </exclude>
-            </excludes>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>repackage</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <configuration>
@@ -200,6 +175,7 @@
             </archive>
           </configuration>
         </plugin>
+
          <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
@@ -207,6 +183,7 @@
             <attach>false</attach>
           </configuration>
         </plugin>
+
         <plugin>
           <groupId>com.dkanejs.maven.plugins</groupId>
           <artifactId>docker-compose-maven-plugin</artifactId>
@@ -214,6 +191,7 @@
             <skip>true</skip>
           </configuration>
         </plugin>
+
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -230,6 +208,7 @@
             </configOptions>
           </configuration>
         </plugin>
+
         <plugin>
           <groupId>com.mysema.maven</groupId>
           <artifactId>apt-maven-plugin</artifactId>
@@ -271,12 +250,6 @@
               <artifactId>jakarta.persistence-api</artifactId>
               <version>${jakarta-persistence.version}</version>
             </path>
-            <dependency>
-              <groupId>io.github.openfeign.querydsl</groupId>
-              <artifactId>querydsl-apt</artifactId>
-              <version>7.0</version>
-              <classifier>jakarta</classifier>
-            </dependency>
           </annotationProcessorPaths>
         </configuration>
       </plugin>
@@ -371,37 +344,7 @@
         </plugins>
       </build>
     </profile>
-    <profile>
-      <id>coverage</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>${jacoco.plugin.version}</version>
-            <executions>
-              <execution>
-                <id>prepare-agent</id>
-                <goals>
-                  <goal>prepare-agent</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>report</id>
-                <goals>
-                  <goal>report</goal>
-                </goals>
-                <configuration>
-                  <formats>
-                    <format>XML</format>
-                  </formats>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
+
   </profiles>
 
 </project>

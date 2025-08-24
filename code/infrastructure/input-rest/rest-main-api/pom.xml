@@ -24,7 +24,7 @@
       <groupId>org.threeten</groupId>
       <artifactId>threeten-extra</artifactId>
     </dependency>
-    <!-- OAuth2 API Dependencies -->
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -41,7 +41,11 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
+        <artifactId>maven-jar-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.openapitools</groupId>
