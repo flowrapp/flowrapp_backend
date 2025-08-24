@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.5.4</version>
+    <version>3.5.5</version>
   </parent>
 
   <groupId>io.github.flowrapp</groupId>
@@ -55,7 +55,7 @@
     <maven.failsafe.plugin.version>3.5.3</maven.failsafe.plugin.version>
     <spotless.version>2.46.1</spotless.version>
     <jacoco.plugin.version>0.8.13</jacoco.plugin.version>
-    <openapiGenerator.version>7.14.0</openapiGenerator.version>
+    <openapiGenerator.version>7.15.0</openapiGenerator.version>
   </properties>
 
   <dependencyManagement>
