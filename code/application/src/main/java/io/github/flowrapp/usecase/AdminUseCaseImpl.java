@@ -5,14 +5,17 @@ import static io.github.flowrapp.config.Constants.ADMIN_USER_MAIL;
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.Business;
+import io.github.flowrapp.model.BusinessUser;
 import io.github.flowrapp.model.BusinessUserRole;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.input.AdminUseCase;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
+import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
+import io.github.flowrapp.service.MailService;
 import io.github.flowrapp.value.BusinessCreationRequest;
 import io.github.flowrapp.value.SensitiveInfo;
 import io.github.flowrapp.value.UserCreationRequest;
@@ -32,9 +35,13 @@ public class AdminUseCaseImpl implements AdminUseCase {
 
   private final BusinessRepositoryOutput businessRepositoryOutput;
 
+  private final BusinessUserRepositoryOutput businessUserRepositoryOutput;
+
   private final InvitationRepositoryOutput invitationRepositoryOutput;
 
   private final AuthCryptoPort authCryptoPort;
+
+  private final MailService mailService;
 
   @Transactional
   @Override
@@ -53,17 +60,21 @@ public class AdminUseCaseImpl implements AdminUseCase {
     val newBusiness = this.createNewBusiness(userCreationRequest.business(), newUser);
 
     val invitation = this.createInvitation(newUser, newBusiness, adminUser);
-    log.debug("Password for new user: {}", randomPassword);
-    // TODO: send email to user with activation link AND REMOVE THIS LOG
+    businessUserRepositoryOutput.save( // Create role OWNER for the user in the new business
+        BusinessUser.fromInvitation(invitation));
+
+    mailService.sendOwnerCreation(invitation, randomPassword);
 
     log.debug("User created successfully: {}", newUser);
   }
 
   private User createNewUser(UserCreationRequest userCreationRequest, String randomPassword) {
-    return userRepositoryOutput.save(
-        User.fromUserCreationRequest(userCreationRequest)
-            .withPasswordHash(SensitiveInfo.of(
-                authCryptoPort.hashPassword(randomPassword))));
+    val newUser = User.fromUserCreationRequest(userCreationRequest).toBuilder()
+        .enabled(true) // Users created manually by admin are enabled by default
+        .passwordHash(SensitiveInfo.of(authCryptoPort.hashPassword(randomPassword)))
+        .build();
+
+    return userRepositoryOutput.save(newUser); // Hash password
   }
 
   private Business createNewBusiness(BusinessCreationRequest businessCreationRequest, User user) {
@@ -77,7 +88,7 @@ public class AdminUseCaseImpl implements AdminUseCase {
     log.debug("Creating invitation for user {} to business {}", user.mail(), newBusiness.name());
 
     return invitationRepositoryOutput.save(
-        Invitation.create(user, newBusiness, adminUser, BusinessUserRole.OWNER));
+        Invitation.create(user, newBusiness, adminUser, BusinessUserRole.OWNER).accepted()); // Directly accept the invitation
   }
 
 }

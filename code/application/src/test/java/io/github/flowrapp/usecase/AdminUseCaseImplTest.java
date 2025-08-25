@@ -14,8 +14,10 @@ import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
+import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
+import io.github.flowrapp.service.MailService;
 import io.github.flowrapp.value.UserCreationRequest;
 
 import org.instancio.junit.InstancioExtension;
@@ -36,10 +38,16 @@ class AdminUseCaseImplTest {
   private BusinessRepositoryOutput businessRepositoryOutput;
 
   @Mock
+  private BusinessUserRepositoryOutput businessUserRepositoryOutput;
+
+  @Mock
   private InvitationRepositoryOutput invitationRepositoryOutput;
 
   @Mock
   private AuthCryptoPort authCryptoPort;
+
+  @Mock
+  private MailService mailService;
 
   @InjectMocks
   private AdminUseCaseImpl adminUseCase;

@@ -28,6 +28,7 @@ import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
+import io.github.flowrapp.service.MailService;
 import io.github.flowrapp.value.InvitationCreationRequest;
 import io.github.flowrapp.value.InvitationRegistrationRequest;
 
@@ -60,6 +61,9 @@ class InvitationsUseCaseImplTest {
 
   @Mock
   private AuthCryptoPort authCryptoPort;
+
+  @Mock
+  private MailService mailService;
 
   @InjectMocks
   private InvitationsUseCaseImpl invitationsUseCase;
@@ -221,6 +225,7 @@ class InvitationsUseCaseImplTest {
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(invitationRepositoryOutput.findByToken(token)).thenReturn(Optional.of(invitation));
     when(invitation.isInvited(currentUser)).thenReturn(true);
+    when(invitation.isPending()).thenReturn(true);
     when(invitation.hasExpired()).thenReturn(true);
 
     // WHEN / THEN
@@ -236,7 +241,6 @@ class InvitationsUseCaseImplTest {
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(invitationRepositoryOutput.findByToken(token)).thenReturn(Optional.of(invitation));
     when(invitation.isInvited(currentUser)).thenReturn(true);
-    when(invitation.hasExpired()).thenReturn(false);
     when(invitation.isPending()).thenReturn(false);
 
     // WHEN

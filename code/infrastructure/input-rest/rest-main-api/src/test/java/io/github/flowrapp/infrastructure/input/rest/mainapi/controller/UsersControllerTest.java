@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 import io.github.flowrapp.infrastructure.apirest.users.model.ChangePasswordRequestDTO;
 import io.github.flowrapp.port.input.UserRequestUseCase;
+
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
 import org.junit.jupiter.api.extension.ExtendWith;

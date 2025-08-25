@@ -36,7 +36,7 @@ app:
           google:
             client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
 
-# Mail Configuration
+  # Mail Configuration
 simplejavamail:
   smtp:
     host: smtp.gmail.com

@@ -2,10 +2,9 @@ package io.github.flowrapp.infrastructure.mail.config;
 
 import java.util.Collections;
 
-import org.simplejavamail.springsupport.SimpleJavaMailSpringSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -15,7 +14,6 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.StringTemplateResolver;
 
 @Configuration
-@Import(SimpleJavaMailSpringSupport.class) // Imports SimpleJavaMail beans
 public class ThymeleafMailConfig {
 
   public static final String EMAIL_TEMPLATE_ENCODING = "UTF-8";
@@ -28,6 +26,7 @@ public class ThymeleafMailConfig {
   }
 
   @Bean
+  @Primary
   public TemplateEngine emailTemplateEngine() {
     final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
     // Resolver for TEXT emails

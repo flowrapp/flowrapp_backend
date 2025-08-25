@@ -23,7 +23,7 @@ public record Invitation(
     InvitationStatus status) {
 
   public boolean hasExpired() {
-    return expiresAt != null && expiresAt.isBefore(Instant.now());
+    return expiresAt.isBefore(Instant.now());
   }
 
   public boolean isPending() {

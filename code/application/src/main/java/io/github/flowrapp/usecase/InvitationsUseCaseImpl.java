@@ -16,6 +16,7 @@ import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
+import io.github.flowrapp.service.MailService;
 import io.github.flowrapp.value.InvitationCreationRequest;
 import io.github.flowrapp.value.InvitationRegistrationRequest;
 import io.github.flowrapp.value.SensitiveInfo;
@@ -40,6 +41,8 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
   private final BusinessUserRepositoryOutput businessUserRepositoryOutput;
 
   private final UserSecurityContextHolderOutput userSecurityContextHolderOutput;
+
+  private final MailService mailService;
 
   private final AuthCryptoPort authCryptoPort;
 
@@ -75,7 +78,12 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
         Invitation.create(user, business, currentUser, request.role()));
 
     log.debug("Created invitation: {}", invitation);
-    // TODO: send email if !user.enabled. If not, send notification?? idk
+
+    if (!user.enabled()) {
+      mailService.sendInvitationToRegister(invitation); // Send mail te register. Will automatically add him to business
+    } else {
+      mailService.sendInvitationTo(invitation); // Send mail to join business. Needs to accept the invitation.
+    }
 
     return invitation;
   }
@@ -93,13 +101,13 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
       throw new FunctionalException(FunctionalError.INVITATION_NOT_FOR_CURRENT_USER);
     }
 
-    if (invitation.hasExpired()) {
-      throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
-    }
-
     if (!invitation.isPending()) {
       log.warn("Cannot accept invitation {}: not in pending status", token);
       return; // No need to throw an exception, make it idempotent
+    }
+
+    if (invitation.hasExpired()) {
+      throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
     }
 
     log.debug("Creating business user from invitation: {}", invitation);
@@ -122,12 +130,12 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
       throw new FunctionalException(FunctionalError.USER_ALREADY_ENABLED);
     }
 
-    if (invitation.hasExpired()) {
-      throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
-    }
-
     if (!invitation.isPending()) {
       throw new FunctionalException(FunctionalError.INVITATION_ALREADY_ACCEPTED);
+    }
+
+    if (invitation.hasExpired()) {
+      throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
     }
 
     val updatedUser = userRepositoryOutput.save(
