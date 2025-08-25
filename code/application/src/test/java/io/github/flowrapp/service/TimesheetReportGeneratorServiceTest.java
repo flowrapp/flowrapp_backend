@@ -30,6 +30,26 @@ class TimesheetReportGeneratorServiceTest {
   @InjectMocks
   private TimesheetReportGeneratorService timesheetReportGeneratorService;
 
+  /**
+   * Converts seconds (BigInteger) to hours (BigDecimal).
+   *
+   * @param seconds the seconds as BigInteger
+   * @return the equivalent hours as BigDecimal
+   */
+  private BigDecimal toHours(BigInteger seconds) {
+    return NumberUtils.secondsToHours().apply(seconds);
+  }
+
+  /**
+   * Converts hours (BigDecimal) to seconds (BigInteger).
+   *
+   * @param hours the hours as BigDecimal
+   * @return the equivalent seconds as BigInteger
+   */
+  private BigInteger toSeconds(BigDecimal hours) {
+    return hours.multiply(new BigDecimal("3600")).toBigInteger();
+  }
+
   @Nested
   @DisplayName("computeWeeklyHoursReport")
   class ComputeWeeklyHoursReportTests {
@@ -88,7 +108,7 @@ class TimesheetReportGeneratorServiceTest {
       assertThat(summary.user()).isEqualTo(user);
       assertThat(summary.start()).isEqualTo(from);
       assertThat(summary.end()).isEqualTo(to);
-      assertThat(summary.totalHours()).isEqualTo(NumberUtils.secondsToHours().apply(hours));
+      assertThat(summary.totalHours()).isEqualTo(toHours(hours));
       assertThat(summary.totalOvertimeHours()).isEqualTo(BigDecimal.ZERO);
       assertThat(summary.totalAbsenceHours()).isEqualTo(BigDecimal.ZERO);
       assertThat(summary.dailyHours()).isNotNull();
@@ -97,7 +117,7 @@ class TimesheetReportGeneratorServiceTest {
       var dailyHoursMap = summary.dailyHours().hours();
       assertThat(dailyHoursMap)
           .hasSize(7) // 7 days from 15th to 21st inclusive
-          .containsEntry(reportDay, NumberUtils.secondsToHours().apply(hours));
+          .containsEntry(reportDay, toHours(hours));
 
       // Other days should have zero seconds
       LocalDate current = from;
@@ -117,8 +137,8 @@ class TimesheetReportGeneratorServiceTest {
       LocalDate to = LocalDate.of(2024, 1, 21);
       LocalDate day1 = LocalDate.of(2024, 1, 16);
       LocalDate day2 = LocalDate.of(2024, 1, 17);
-      BigDecimal hours1 = new BigDecimal("8.0");
-      BigDecimal hours2 = new BigDecimal("6.5");
+      BigDecimal hours1 = new BigDecimal("8.00");
+      BigDecimal hours2 = new BigDecimal("6.50");
 
       User user = Instancio.of(User.class)
           .set(field(User::id), 1)
@@ -133,14 +153,14 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), day1)
-          .set(field(Report::seconds), hours1)
+          .set(field(Report::seconds), toSeconds(hours1))
           .create();
 
       Report report2 = Instancio.of(Report.class)
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), day2)
-          .set(field(Report::seconds), hours2)
+          .set(field(Report::seconds), toSeconds(hours2))
           .create();
 
       List<Report> reports = List.of(report1, report2);
@@ -168,8 +188,8 @@ class TimesheetReportGeneratorServiceTest {
       LocalDate from = LocalDate.of(2024, 1, 15);
       LocalDate to = LocalDate.of(2024, 1, 21);
       LocalDate reportDay = LocalDate.of(2024, 1, 16);
-      BigDecimal hours1 = new BigDecimal("8.0");
-      BigDecimal hours2 = new BigDecimal("7.5");
+      BigDecimal hours1 = new BigDecimal("8.00");
+      BigDecimal hours2 = new BigDecimal("7.50");
 
       User user1 = Instancio.of(User.class)
           .set(field(User::id), 1)
@@ -189,14 +209,14 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user1)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)
-          .set(field(Report::seconds), hours1)
+          .set(field(Report::seconds), toSeconds(hours1))
           .create();
 
       Report report2 = Instancio.of(Report.class)
           .set(field(Report::user), user2)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)
-          .set(field(Report::seconds), hours2)
+          .set(field(Report::seconds), toSeconds(hours2))
           .create();
 
       List<Report> reports = List.of(report1, report2);
@@ -232,8 +252,8 @@ class TimesheetReportGeneratorServiceTest {
       LocalDate from = LocalDate.of(2024, 1, 15);
       LocalDate to = LocalDate.of(2024, 1, 21);
       LocalDate reportDay = LocalDate.of(2024, 1, 16);
-      BigDecimal hours1 = new BigDecimal("4.0");
-      BigDecimal hours2 = new BigDecimal("3.5");
+      BigDecimal hours1 = new BigDecimal("4.00");
+      BigDecimal hours2 = new BigDecimal("3.50");
 
       User user = Instancio.of(User.class)
           .set(field(User::id), 1)
@@ -254,14 +274,14 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user)
           .set(field(Report::business), business1)
           .set(field(Report::day), reportDay)
-          .set(field(Report::seconds), hours1)
+          .set(field(Report::seconds), toSeconds(hours1))
           .create();
 
       Report report2 = Instancio.of(Report.class)
           .set(field(Report::user), user)
           .set(field(Report::business), business2)
           .set(field(Report::day), reportDay)
-          .set(field(Report::seconds), hours2)
+          .set(field(Report::seconds), toSeconds(hours2))
           .create();
 
       List<Report> reports = List.of(report1, report2);
@@ -288,7 +308,7 @@ class TimesheetReportGeneratorServiceTest {
       LocalDate from = LocalDate.of(2024, 1, 15);
       LocalDate to = LocalDate.of(2024, 1, 21);
       LocalDate reportDay = LocalDate.of(2024, 1, 16);
-      BigDecimal zeroHours = BigDecimal.ZERO;
+      BigDecimal zeroHours = new BigDecimal("0.00");
 
       User user = Instancio.of(User.class)
           .set(field(User::id), 1)
@@ -302,7 +322,7 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)
-          .set(field(Report::seconds), zeroHours)
+          .set(field(Report::seconds), toSeconds(zeroHours))
           .create();
 
       List<Report> reports = List.of(report);
@@ -314,9 +334,9 @@ class TimesheetReportGeneratorServiceTest {
       // Then
       assertThat(result).hasSize(1);
       UserTimeReportSummary summary = result.getFirst();
-      assertThat(summary.totalHours()).isEqualTo(BigDecimal.ZERO);
+      assertThat(summary.totalHours()).isEqualTo(zeroHours);
       assertThat(summary.dailyHours().hours())
-          .containsEntry(reportDay, BigDecimal.ZERO);
+          .containsEntry(reportDay, zeroHours);
     }
 
     @Test
@@ -385,7 +405,7 @@ class TimesheetReportGeneratorServiceTest {
               .set(field(Report::user), user)
               .set(field(Report::business), business)
               .set(field(Report::day), reportDay)
-              .set(field(Report::seconds), new BigDecimal("8.0"))
+              .set(field(Report::seconds), toSeconds(new BigDecimal("8.0")))
               .create())
           .toList();
 
