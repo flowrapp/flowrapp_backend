@@ -27,7 +27,7 @@ public class WorkLogListenerProcessor {
 
   @Async("virtualThreadsExecutor")
   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-  void listenToWorkLogEvents(CreateWorklogEvent event) {
+  public void listenToWorkLogEvents(CreateWorklogEvent event) {
     log.info("Received work log event: {}", event);
 
     val eventWorkLog = event.getWorklog();

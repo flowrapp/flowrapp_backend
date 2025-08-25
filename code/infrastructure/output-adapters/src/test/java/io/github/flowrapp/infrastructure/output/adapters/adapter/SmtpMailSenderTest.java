@@ -2,7 +2,6 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -36,8 +35,6 @@ class SmtpMailSenderTest {
   @InstancioSource(samples = 20)
   void send(Mail mail) {
     // GIVEN
-    when(mailer.sendMail(any(), eq(true)))
-        .thenReturn(CompletableFuture.completedFuture(null));
 
     // WHEN + THEN
     assertDoesNotThrow(() -> smtpMailSender.send(mail));
@@ -47,7 +44,7 @@ class SmtpMailSenderTest {
   @InstancioSource(samples = 20)
   void send_Async_Error(Mail mail) {
     // GIVEN
-    when(mailer.sendMail(any(), eq(true)))
+    when(mailer.sendMail(any()))
         .thenReturn(CompletableFuture.failedFuture(new RuntimeException("Simulated failure")));
 
     // WHEN + THEN

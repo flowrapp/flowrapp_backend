@@ -26,8 +26,10 @@ public class MailListenerProcessor {
 
   @Async("mailEventExecutor")
   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-  void listenToMailEvent(MailEvent event) {
-    log.debug("Processing mail event: {}", event);
+  public void listenToMailEvent(MailEvent event) {
+    log.debug("Processing mail event: type={}, template={}",
+        event.getClass().getSimpleName(), event.getTemplate());
+
     mailSenderPort.send(
         this.createMail(
             event.recipient(),
