@@ -29,9 +29,10 @@ import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
-import io.github.flowrapp.service.MailService;
 import io.github.flowrapp.value.InvitationCreationRequest;
 import io.github.flowrapp.value.InvitationRegistrationRequest;
+import io.github.flowrapp.value.MailEvent.InvitationToInviteMailEvent;
+import io.github.flowrapp.value.MailEvent.InvitationToRegisterMailEvent;
 
 import org.instancio.Instancio;
 import org.instancio.junit.InstancioExtension;
@@ -41,6 +42,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
 class InvitationsUseCaseImplTest {
@@ -64,7 +66,7 @@ class InvitationsUseCaseImplTest {
   private AuthCryptoPort authCryptoPort;
 
   @Mock
-  private MailService mailService;
+  private ApplicationEventPublisher applicationEventPublisher;
 
   @InjectMocks
   private InvitationsUseCaseImpl invitationsUseCase;
@@ -88,7 +90,7 @@ class InvitationsUseCaseImplTest {
 
     // THEN
     assertThat(result).isEqualTo(savedInvitation);
-    verify(mailService).sendInvitationTo(any());
+    verify(applicationEventPublisher).publishEvent(any(InvitationToInviteMailEvent.class));
   }
 
   @ParameterizedTest
@@ -111,7 +113,7 @@ class InvitationsUseCaseImplTest {
 
     // THEN
     assertThat(result).isEqualTo(savedInvitation);
-    verify(mailService).sendInvitationToRegister(any());
+    verify(applicationEventPublisher).publishEvent(any(InvitationToRegisterMailEvent.class));
   }
 
   @ParameterizedTest
@@ -124,7 +126,7 @@ class InvitationsUseCaseImplTest {
     // WHEN / THEN
     assertThatThrownBy(() -> invitationsUseCase.createInvitation(request))
         .isInstanceOf(FunctionalException.class);
-    verifyNoInteractions(mailService);
+    verifyNoInteractions(applicationEventPublisher);
   }
 
   @ParameterizedTest
@@ -139,7 +141,7 @@ class InvitationsUseCaseImplTest {
     // WHEN / THEN
     assertThatThrownBy(() -> invitationsUseCase.createInvitation(request))
         .isInstanceOf(FunctionalException.class);
-    verifyNoInteractions(mailService);
+    verifyNoInteractions(applicationEventPublisher);
   }
 
   @ParameterizedTest
@@ -156,7 +158,7 @@ class InvitationsUseCaseImplTest {
     // WHEN / THEN
     assertThatThrownBy(() -> invitationsUseCase.createInvitation(request))
         .isInstanceOf(FunctionalException.class);
-    verifyNoInteractions(mailService);
+    verifyNoInteractions(applicationEventPublisher);
   }
 
   @ParameterizedTest
@@ -174,7 +176,7 @@ class InvitationsUseCaseImplTest {
     // WHEN / THEN
     assertThatThrownBy(() -> invitationsUseCase.createInvitation(request))
         .isInstanceOf(FunctionalException.class);
-    verifyNoInteractions(mailService);
+    verifyNoInteractions(applicationEventPublisher);
   }
 
   @ParameterizedTest

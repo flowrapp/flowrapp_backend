@@ -7,8 +7,8 @@ import org.jspecify.annotations.NonNull;
 public interface MailSenderPort {
 
   /**
-   * Sends the given mail asynchronously. The method returns immediately, and the mail is sent in the background.
+   * Sends the given mail.
    */
-  void sendAsync(@NonNull Mail mail);
+  void send(@NonNull Mail mail);
 
 }

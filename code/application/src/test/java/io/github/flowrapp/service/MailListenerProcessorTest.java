@@ -12,6 +12,9 @@ import io.github.flowrapp.model.Mail;
 import io.github.flowrapp.model.MailTemplates;
 import io.github.flowrapp.port.output.MailSenderPort;
 import io.github.flowrapp.port.output.TemplateRenderPort;
+import io.github.flowrapp.value.MailEvent.InvitationToInviteMailEvent;
+import io.github.flowrapp.value.MailEvent.InvitationToRegisterMailEvent;
+import io.github.flowrapp.value.MailEvent.OwnerCreationMailEvent;
 
 import org.instancio.junit.InstancioExtension;
 import org.instancio.junit.InstancioSource;
@@ -23,7 +26,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
-class MailServiceTest {
+class MailListenerProcessorTest {
 
   @Mock
   private TemplateRenderPort templateRenderPort;
@@ -32,7 +35,7 @@ class MailServiceTest {
   private MailSenderPort mailSenderPort;
 
   @InjectMocks
-  private MailService mailService;
+  private MailListenerProcessor mailService;
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
@@ -41,14 +44,14 @@ class MailServiceTest {
     when(templateRenderPort.render(any(), anyMap())).thenReturn("rendered-body");
 
     // When
-    mailService.sendOwnerCreation(invitation, randomPassword);
+    mailService.listenToMailEvent(new OwnerCreationMailEvent(invitation, randomPassword));
 
     // Then
-    verify(mailSenderPort).sendAsync(any());
-    verify(mailSenderPort).sendAsync(any());
+    verify(mailSenderPort).send(any());
+    verify(mailSenderPort).send(any());
     verify(templateRenderPort).render(eq(MailTemplates.OWNER_CREATED.getTemplate()), anyMap());
     var captor = ArgumentCaptor.forClass(Mail.class);
-    verify(mailSenderPort).sendAsync(captor.capture());
+    verify(mailSenderPort).send(captor.capture());
     var sent = captor.getValue();
     assertEquals(MailTemplates.OWNER_CREATED.getSubject(), sent.subject());
     assertEquals("rendered-body", sent.body());
@@ -62,13 +65,13 @@ class MailServiceTest {
     when(templateRenderPort.render(any(), anyMap())).thenReturn("rendered-body");
 
     // When
-    mailService.sendInvitationToRegister(invitation);
+    mailService.listenToMailEvent(new InvitationToRegisterMailEvent(invitation));
 
     // Then
-    verify(mailSenderPort).sendAsync(any());
+    verify(mailSenderPort).send(any());
     verify(templateRenderPort).render(eq(MailTemplates.INVITATION_REGISTER.getTemplate()), anyMap());
     var captor = ArgumentCaptor.forClass(Mail.class);
-    verify(mailSenderPort).sendAsync(captor.capture());
+    verify(mailSenderPort).send(captor.capture());
     var sent = captor.getValue();
     assertEquals(io.github.flowrapp.model.MailTemplates.INVITATION_REGISTER.getSubject(), sent.subject());
     assertEquals("rendered-body", sent.body());
@@ -82,13 +85,13 @@ class MailServiceTest {
     when(templateRenderPort.render(any(), anyMap())).thenReturn("rendered-body");
 
     // When
-    mailService.sendInvitationTo(invitation);
+    mailService.listenToMailEvent(new InvitationToInviteMailEvent(invitation));
 
     // Then
-    verify(mailSenderPort).sendAsync(any());
+    verify(mailSenderPort).send(any());
     verify(templateRenderPort).render(eq(MailTemplates.INVITED_TO.getTemplate()), anyMap());
     var captor = ArgumentCaptor.forClass(Mail.class);
-    verify(mailSenderPort).sendAsync(captor.capture());
+    verify(mailSenderPort).send(captor.capture());
     var sent = captor.getValue();
     assertEquals(MailTemplates.INVITED_TO.getSubject(), sent.subject());
     assertEquals("rendered-body", sent.body());

@@ -15,14 +15,15 @@ import io.github.flowrapp.port.output.BusinessRepositoryOutput;
 import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
-import io.github.flowrapp.service.MailService;
 import io.github.flowrapp.value.BusinessCreationRequest;
+import io.github.flowrapp.value.MailEvent.OwnerCreationMailEvent;
 import io.github.flowrapp.value.SensitiveInfo;
 import io.github.flowrapp.value.UserCreationRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +42,7 @@ public class AdminUseCaseImpl implements AdminUseCase {
 
   private final AuthCryptoPort authCryptoPort;
 
-  private final MailService mailService;
+  private final ApplicationEventPublisher applicationEventPublisher;
 
   @Transactional
   @Override
@@ -63,7 +64,8 @@ public class AdminUseCaseImpl implements AdminUseCase {
     businessUserRepositoryOutput.save( // Create role OWNER for the user in the new business
         BusinessUser.fromInvitation(invitation));
 
-    mailService.sendOwnerCreation(invitation, randomPassword);
+    applicationEventPublisher.publishEvent(
+        new OwnerCreationMailEvent(invitation, randomPassword)); // Send mail to the new user with its credentials
 
     log.debug("User created successfully: {}", newUser);
   }

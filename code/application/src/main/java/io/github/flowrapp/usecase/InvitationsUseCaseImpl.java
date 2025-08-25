@@ -16,14 +16,16 @@ import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
-import io.github.flowrapp.service.MailService;
 import io.github.flowrapp.value.InvitationCreationRequest;
 import io.github.flowrapp.value.InvitationRegistrationRequest;
+import io.github.flowrapp.value.MailEvent.InvitationToInviteMailEvent;
+import io.github.flowrapp.value.MailEvent.InvitationToRegisterMailEvent;
 import io.github.flowrapp.value.SensitiveInfo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +44,7 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
 
   private final UserSecurityContextHolderOutput userSecurityContextHolderOutput;
 
-  private final MailService mailService;
+  private final ApplicationEventPublisher applicationEventPublisher;
 
   private final AuthCryptoPort authCryptoPort;
 
@@ -79,11 +81,8 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
 
     log.debug("Created invitation: {}", invitation);
 
-    if (!user.enabled()) {
-      mailService.sendInvitationToRegister(invitation); // Send mail te register. Will automatically add him to business
-    } else {
-      mailService.sendInvitationTo(invitation); // Send mail to join business. Needs to accept the invitation.
-    }
+    applicationEventPublisher.publishEvent(!user.enabled() ? // Send different mails depending on user status
+        new InvitationToRegisterMailEvent(invitation) : new InvitationToInviteMailEvent(invitation));
 
     return invitation;
   }

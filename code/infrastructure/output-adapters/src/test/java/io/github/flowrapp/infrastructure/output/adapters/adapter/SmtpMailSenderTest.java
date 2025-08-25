@@ -34,13 +34,13 @@ class SmtpMailSenderTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
-  void sendAsync(Mail mail) {
+  void send(Mail mail) {
     // GIVEN
     when(mailer.sendMail(any(), eq(true)))
         .thenReturn(CompletableFuture.completedFuture(null));
 
     // WHEN + THEN
-    assertDoesNotThrow(() -> smtpMailSender.sendAsync(mail));
+    assertDoesNotThrow(() -> smtpMailSender.send(mail));
   }
 
   @ParameterizedTest
@@ -51,7 +51,7 @@ class SmtpMailSenderTest {
         .thenReturn(CompletableFuture.failedFuture(new RuntimeException("Simulated failure")));
 
     // WHEN + THEN
-    assertDoesNotThrow(() -> smtpMailSender.sendAsync(mail));
+    assertDoesNotThrow(() -> smtpMailSender.send(mail));
   }
 
 }

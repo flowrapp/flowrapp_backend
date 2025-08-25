@@ -10,9 +10,10 @@ import io.github.flowrapp.value.CreateWorklogEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
  * Service that listens to work log events and processes them by updating or creating reports.
@@ -25,7 +26,7 @@ public class WorkLogListenerProcessor {
   private final ReportRepositoryOutput reportRepositoryOutput;
 
   @Async("virtualThreadsExecutor")
-  @EventListener
+  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
   void listenToWorkLogEvents(CreateWorklogEvent event) {
     log.info("Received work log event: {}", event);
 
