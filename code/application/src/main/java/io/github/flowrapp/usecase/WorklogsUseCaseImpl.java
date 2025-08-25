@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -54,6 +55,7 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
         Worklog.fromBusinessUser(businessUser, request.clockIn()));
   }
 
+  @Transactional
   @Override
   public Worklog clockOut(WorklogClockOutRequest request) {
     log.debug("Clocking out worklog: {}", request);
