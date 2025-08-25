@@ -18,6 +18,7 @@ import io.github.flowrapp.infrastructure.apirest.users.model.ClockInRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.ClockOutRequestDTO;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.ReportJpaRepository;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.WorklogJpaRepository;
+import io.github.flowrapp.port.output.MailSenderPort;
 
 import lombok.val;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Application.class)
 @ActiveProfiles("test")
@@ -48,6 +50,9 @@ class WorklogControllerIT {
 
   @Autowired
   private ReportJpaRepository reportJpaRepository;
+
+  @MockitoBean
+  private MailSenderPort mailSender; // mock mail sender to avoid sending real emails during tests
 
   @Test
   void testClockInAfterCurrentTimestamp_shouldSucceed() {

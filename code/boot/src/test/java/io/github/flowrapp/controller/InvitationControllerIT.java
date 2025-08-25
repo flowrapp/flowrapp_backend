@@ -31,6 +31,7 @@ import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.UserJpaRepository;
 import io.github.flowrapp.model.InvitationStatus;
+import io.github.flowrapp.port.output.MailSenderPort;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -64,6 +66,9 @@ class InvitationControllerIT {
 
   @Autowired
   private InvitationJpaRepository invitationJpaRepository;
+
+  @MockitoBean
+  private MailSenderPort mailSender; // mock mail sender to avoid sending real emails during tests
 
   @MockitoSpyBean
   private GlobalControllerAdvice globalControllerAdvice;

@@ -7,18 +7,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.simplejavamail.api.email.Email;
 import org.simplejavamail.api.mailer.Mailer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SmtpMailSender implements MailSenderPort {
 
   private final Mailer mailer;
 
   @Value("${simplejavamail.smtp.username}")
-  private String from;
+  private final String from;
 
   @Override
   public void send(Mail mail) {

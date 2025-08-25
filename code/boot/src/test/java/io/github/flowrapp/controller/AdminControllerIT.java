@@ -22,6 +22,7 @@ import io.github.flowrapp.infrastructure.jpa.businessbd.repository.BusinessJpaRe
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.BusinessUserJpaRepository;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.UserJpaRepository;
+import io.github.flowrapp.port.output.MailSenderPort;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Application.class)
 @ActiveProfiles("test")
@@ -51,6 +53,9 @@ class AdminControllerIT {
 
   @Autowired
   private InvitationJpaRepository invitationJpaRepository;
+
+  @MockitoBean
+  private MailSenderPort mailSenderPort; // mock mail sender to avoid sending real emails during tests
 
   @Test
   void shouldRegisterUserSuccessfully() {
@@ -109,7 +114,7 @@ class AdminControllerIT {
     List<InvitationEntity> invitations = invitationJpaRepository.findAll();
     assertThat(invitations).hasSize((int) initialInvitationCount + 1);
 
-    InvitationEntity createdInvitation = invitationJpaRepository.findAllByInvited_IdAndStatus(createdUser.getId(), "PENDING")
+    InvitationEntity createdInvitation = invitationJpaRepository.findAllByInvited_IdAndStatus(createdUser.getId(), "ACCEPTED")
         .stream()
         .findFirst()
         .orElse(null);
