@@ -1,10 +1,11 @@
 package io.github.flowrapp.model;
 
 import lombok.Builder;
+import org.jspecify.annotations.NonNull;
 
 @Builder(toBuilder = true)
 public record Mail(
-    String recipient,
-    String subject,
-    String body) {
+    @NonNull String recipient,
+    @NonNull String subject,
+    @NonNull String body) {
 }

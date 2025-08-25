@@ -5,6 +5,7 @@ import java.util.Map;
 import io.github.flowrapp.model.Invitation;
 import io.github.flowrapp.model.Mail;
 import io.github.flowrapp.model.MailTemplates;
+import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.output.MailSenderPort;
 import io.github.flowrapp.port.output.TemplateRenderPort;
 
@@ -23,34 +24,34 @@ public class MailService {
 
   public void sendOwnerCreation(Invitation invitation, String randomPassword) {
     Map<String, Object> vars = Map.of(
-        "username", invitation.invited().name(),
+        "username", this.safeNameOrMail(invitation.invited()),
         "password", randomPassword);
 
-    mailSenderPort.send(
+    mailSenderPort.sendAsync(
         this.createMail(invitation.invited().mail(), MailTemplates.OWNER_CREATED, vars));
   }
 
   public void sendInvitationToRegister(Invitation invitation) {
     Map<String, Object> vars = Map.of(
         "token", invitation.token().toString(),
-        "username", invitation.invited().name(),
+        "username", this.safeNameOrMail(invitation.invited()),
         "businessName", invitation.business().name(),
         "role", invitation.role().name(),
-        "invitedBy", invitation.invitedBy().name());
+        "invitedBy", this.safeNameOrMail(invitation.invitedBy()));
 
-    mailSenderPort.send(
+    mailSenderPort.sendAsync(
         this.createMail(invitation.invited().mail(), MailTemplates.INVITATION_REGISTER, vars));
   }
 
   public void sendInvitationTo(Invitation invitation) {
     Map<String, Object> vars = Map.of(
         "token", invitation.token().toString(),
-        "username", invitation.invited().name(),
+        "username", this.safeNameOrMail(invitation.invited()),
         "businessName", invitation.business().name(),
         "role", invitation.role().name(),
-        "invitedBy", invitation.invitedBy().name());
+        "invitedBy", this.safeNameOrMail(invitation.invitedBy()));
 
-    mailSenderPort.send(
+    mailSenderPort.sendAsync(
         this.createMail(invitation.invited().mail(), MailTemplates.INVITED_TO, vars));
   }
 
@@ -60,6 +61,15 @@ public class MailService {
         .recipient(recipient)
         .body(templateRenderPort.render(template.getTemplate(), vars))
         .build();
+  }
+
+  private String safeNameOrMail(User user) {
+    if (user == null) {
+      return "";
+    }
+
+    var name = user.name();
+    return (name != null && !name.isBlank()) ? name : user.mail();
   }
 
 }

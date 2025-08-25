@@ -10,6 +10,9 @@ spring:
     virtual:
       enabled: false # Enable for virtual threads
 
+  thymeleaf:
+    cache: false
+
   # Datasource Configuration
   jpa:
     hibernate:
@@ -39,10 +42,13 @@ app:
   # Mail Configuration
 simplejavamail:
   smtp:
-    host: smtp.gmail.com
-    port: 587
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
     username: ${GMAIL_USERNAME}
     password: ${GMAIL_PASSWORD}
+  defaults:
+    fromname: ${MAIL_FROM_NAME:Flowr}
+    fromaddress: ${MAIL_FROM_ADDRESS:no-reply@flowr.app}
   transportstrategy: SMTP_TLS
 
 # Swagger OpenAPI Configuration

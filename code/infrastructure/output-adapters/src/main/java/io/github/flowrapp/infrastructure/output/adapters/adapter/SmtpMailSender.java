@@ -5,6 +5,7 @@ import io.github.flowrapp.port.output.MailSenderPort;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.simplejavamail.api.email.Email;
 import org.simplejavamail.api.mailer.Mailer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,11 @@ public class SmtpMailSender implements MailSenderPort {
 
   private final Mailer mailer;
 
-  @Value("${simplejavamail.smtp.username}")
+  @Value("${app.mail.from:${simplejavamail.smtp.username}}")
   private final String from;
 
   @Override
-  public void send(Mail mail) {
+  public void sendAsync(@NonNull Mail mail) {
     log.debug("Sending html email to {}", mail.recipient());
 
     this.sendMailAsync(
@@ -38,9 +39,9 @@ public class SmtpMailSender implements MailSenderPort {
     mailer.sendMail(mail, true)
         .whenComplete((unused, throwable) -> {
           if (throwable != null) {
-            log.error("Failed to send email to {}: {}", mail.getToRecipients(), throwable.getMessage());
+            log.error("Failed to send email to {}: {}", mail.getToRecipients().size(), throwable.getMessage());
           } else {
-            log.info("Email sent successfully to {}", mail.getToRecipients());
+            log.info("Email sent successfully to {}", mail.getToRecipients().size());
           }
         });
   }

@@ -21,7 +21,7 @@
     <dependency>
       <groupId>org.simplejavamail</groupId>
       <artifactId>spring-module</artifactId>
-      <version>8.12.6</version>
+      <version>${simplejavamail.version}</version>
     </dependency>
     <dependency>
       <groupId>org.thymeleaf</groupId>

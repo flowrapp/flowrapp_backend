@@ -34,24 +34,24 @@ class SmtpMailSenderTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
-  void send(Mail mail) {
+  void sendAsync(Mail mail) {
     // GIVEN
     when(mailer.sendMail(any(), eq(true)))
         .thenReturn(CompletableFuture.completedFuture(null));
 
     // WHEN + THEN
-    assertDoesNotThrow(() -> smtpMailSender.send(mail));
+    assertDoesNotThrow(() -> smtpMailSender.sendAsync(mail));
   }
 
   @ParameterizedTest
   @InstancioSource(samples = 20)
-  void send_Error(Mail mail) {
+  void send_Async_Error(Mail mail) {
     // GIVEN
     when(mailer.sendMail(any(), eq(true)))
         .thenReturn(CompletableFuture.failedFuture(new RuntimeException("Simulated failure")));
 
     // WHEN + THEN
-    assertDoesNotThrow(() -> smtpMailSender.send(mail));
+    assertDoesNotThrow(() -> smtpMailSender.sendAsync(mail));
   }
 
 }

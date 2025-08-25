@@ -131,7 +131,8 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
     }
 
     if (!invitation.isPending()) {
-      throw new FunctionalException(FunctionalError.INVITATION_ALREADY_ACCEPTED);
+      log.warn("Cannot accept invitation {}: not in pending status", invitationRegistration.token());
+      return; // No need to throw an exception, make it idempotent
     }
 
     if (invitation.hasExpired()) {

@@ -9,6 +9,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -72,6 +73,7 @@ class InvitationsUseCaseImplTest {
   @InstancioSource(samples = 20)
   void createInvitation_success(InvitationCreationRequest request, User currentUser, User invitedUser, Invitation savedInvitation) {
     // GIVEN
+    invitedUser = invitedUser.withEnabled(true);
     Business business = mock(Business.class);
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(request.businessId())).thenReturn(Optional.of(business));
@@ -86,6 +88,7 @@ class InvitationsUseCaseImplTest {
 
     // THEN
     assertThat(result).isEqualTo(savedInvitation);
+    verify(mailService).sendInvitationTo(any());
   }
 
   @ParameterizedTest
@@ -93,6 +96,7 @@ class InvitationsUseCaseImplTest {
   void createInvitation_createsNewUser(InvitationCreationRequest request, User currentUser, User newUser, Invitation savedInvitation) {
     // GIVEN
     Business business = mock(Business.class);
+    newUser = newUser.withEnabled(false);
     when(userSecurityContextHolderOutput.getCurrentUser()).thenReturn(currentUser);
     when(businessRepositoryOutput.findById(request.businessId())).thenReturn(Optional.of(business));
     when(business.isOwner(currentUser)).thenReturn(true);
@@ -107,6 +111,7 @@ class InvitationsUseCaseImplTest {
 
     // THEN
     assertThat(result).isEqualTo(savedInvitation);
+    verify(mailService).sendInvitationToRegister(any());
   }
 
   @ParameterizedTest
@@ -119,6 +124,7 @@ class InvitationsUseCaseImplTest {
     // WHEN / THEN
     assertThatThrownBy(() -> invitationsUseCase.createInvitation(request))
         .isInstanceOf(FunctionalException.class);
+    verifyNoInteractions(mailService);
   }
 
   @ParameterizedTest
@@ -133,6 +139,7 @@ class InvitationsUseCaseImplTest {
     // WHEN / THEN
     assertThatThrownBy(() -> invitationsUseCase.createInvitation(request))
         .isInstanceOf(FunctionalException.class);
+    verifyNoInteractions(mailService);
   }
 
   @ParameterizedTest
@@ -149,6 +156,7 @@ class InvitationsUseCaseImplTest {
     // WHEN / THEN
     assertThatThrownBy(() -> invitationsUseCase.createInvitation(request))
         .isInstanceOf(FunctionalException.class);
+    verifyNoInteractions(mailService);
   }
 
   @ParameterizedTest
@@ -166,6 +174,7 @@ class InvitationsUseCaseImplTest {
     // WHEN / THEN
     assertThatThrownBy(() -> invitationsUseCase.createInvitation(request))
         .isInstanceOf(FunctionalException.class);
+    verifyNoInteractions(mailService);
   }
 
   @ParameterizedTest

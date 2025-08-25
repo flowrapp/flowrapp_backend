@@ -2,6 +2,7 @@ package io.github.flowrapp.infrastructure.mail.config;
 
 import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -18,10 +19,14 @@ public class ThymeleafMailConfig {
 
   public static final String EMAIL_TEMPLATE_ENCODING = "UTF-8";
 
+  @Value("${spring.thymeleaf.cache:true}")
+  private boolean cacheable;
+
   @Bean
   public ResourceBundleMessageSource emailMessageSource() {
     final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
     messageSource.setBasename("mail/MailMessages");
+    messageSource.setDefaultEncoding(EMAIL_TEMPLATE_ENCODING);
     return messageSource;
   }
 
@@ -48,7 +53,7 @@ public class ThymeleafMailConfig {
     templateResolver.setSuffix(".txt");
     templateResolver.setTemplateMode(TemplateMode.TEXT);
     templateResolver.setCharacterEncoding(EMAIL_TEMPLATE_ENCODING);
-    templateResolver.setCacheable(false);
+    templateResolver.setCacheable(cacheable);
     return templateResolver;
   }
 
@@ -60,7 +65,7 @@ public class ThymeleafMailConfig {
     templateResolver.setSuffix(".html");
     templateResolver.setTemplateMode(TemplateMode.HTML);
     templateResolver.setCharacterEncoding(EMAIL_TEMPLATE_ENCODING);
-    templateResolver.setCacheable(false);
+    templateResolver.setCacheable(cacheable);
     return templateResolver;
   }
 
@@ -68,7 +73,7 @@ public class ThymeleafMailConfig {
     final StringTemplateResolver templateResolver = new StringTemplateResolver();
     templateResolver.setOrder(3);
     // No resolvable pattern, will simply process as a String template everything not previously matched
-    templateResolver.setTemplateMode("HTML5");
+    templateResolver.setTemplateMode(TemplateMode.HTML);
     templateResolver.setCacheable(false);
     return templateResolver;
   }

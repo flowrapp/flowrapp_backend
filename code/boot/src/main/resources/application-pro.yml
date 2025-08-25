@@ -9,6 +9,9 @@ spring:
       username: ${NEON_AZURE_USERNAME}
       password: ${NEON_AZURE_PASSWORD}
 
+  thymeleaf:
+    cache: true # Enable template caching in production
+
 
 app:
   security:
