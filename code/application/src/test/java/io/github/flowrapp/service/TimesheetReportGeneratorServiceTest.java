@@ -11,6 +11,7 @@ import java.util.List;
 import io.github.flowrapp.model.Business;
 import io.github.flowrapp.model.Report;
 import io.github.flowrapp.model.User;
+import io.github.flowrapp.utils.NumberUtils;
 import io.github.flowrapp.value.UserTimeReportSummary;
 
 import org.instancio.Instancio;
@@ -87,7 +88,7 @@ class TimesheetReportGeneratorServiceTest {
       assertThat(summary.user()).isEqualTo(user);
       assertThat(summary.start()).isEqualTo(from);
       assertThat(summary.end()).isEqualTo(to);
-      assertThat(summary.totalHours()).isEqualTo(hours);
+      assertThat(summary.totalHours()).isEqualTo(NumberUtils.secondsToHours().apply(hours));
       assertThat(summary.totalOvertimeHours()).isEqualTo(BigDecimal.ZERO);
       assertThat(summary.totalAbsenceHours()).isEqualTo(BigDecimal.ZERO);
       assertThat(summary.dailyHours()).isNotNull();
@@ -96,7 +97,7 @@ class TimesheetReportGeneratorServiceTest {
       var dailyHoursMap = summary.dailyHours().hours();
       assertThat(dailyHoursMap)
           .hasSize(7) // 7 days from 15th to 21st inclusive
-          .containsEntry(reportDay, hours);
+          .containsEntry(reportDay, NumberUtils.secondsToHours().apply(hours));
 
       // Other days should have zero seconds
       LocalDate current = from;

@@ -2,8 +2,9 @@ package io.github.flowrapp.model;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.time.LocalDate;
+
+import io.github.flowrapp.utils.NumberUtils;
 
 import lombok.Builder;
 import lombok.With;
@@ -39,7 +40,7 @@ public record Report(
   }
 
   public BigDecimal hours() {
-    return new BigDecimal(seconds).divide(BigDecimal.valueOf(3600), 2, RoundingMode.DOWN);
+    return NumberUtils.secondsToHours().apply(seconds);
   }
 
 }

@@ -20,7 +20,6 @@ import io.github.flowrapp.infrastructure.jpa.businessbd.repository.ReportJpaRepo
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.WorklogJpaRepository;
 import io.github.flowrapp.port.output.MailSenderPort;
 
-import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,10 +57,10 @@ class WorklogControllerIT {
   void testClockInAfterCurrentTimestamp_shouldSucceed() {
     // Clock-in doesn't validate timestamp - it accepts future timestamps
     // The validation happens during clock-out
-    val clockInRequest = new ClockInRequestDTO()
+    var clockInRequest = new ClockInRequestDTO()
         .clockIn(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).plusHours(1));
 
-    val response = testRestTemplate.exchange(
+    var response = testRestTemplate.exchange(
         post("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/clock-in")
             .header(AUTHORIZATION, basicAuth(ADMIN_EMAIL, ADMIN_PASSWORD))
             .contentType(MediaType.APPLICATION_JSON)
@@ -80,10 +79,10 @@ class WorklogControllerIT {
   @Test
   void testClockOutAfterCurrentTimestamp_shouldReturn400() {
     // Step 1: Clock-in with past timestamp
-    val clockInRequest = new ClockInRequestDTO()
+    var clockInRequest = new ClockInRequestDTO()
         .clockIn(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusHours(2));
 
-    val clockInResponse = testRestTemplate.exchange(
+    var clockInResponse = testRestTemplate.exchange(
         post("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/clock-in")
             .header(AUTHORIZATION, basicAuth(ADMIN_EMAIL, ADMIN_PASSWORD))
             .contentType(MediaType.APPLICATION_JSON)
@@ -91,13 +90,13 @@ class WorklogControllerIT {
         ClockIn200ResponseDTO.class);
 
     assertThat(clockInResponse.getStatusCode()).isEqualTo(OK);
-    val worklogId = clockInResponse.getBody().getId();
+    var worklogId = clockInResponse.getBody().getId();
 
     // Step 2: Clock-out with future timestamp (should fail)
-    val clockOutRequest = new ClockOutRequestDTO()
+    var clockOutRequest = new ClockOutRequestDTO()
         .clockOut(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).plusHours(1));
 
-    val clockOutResponse = testRestTemplate.exchange(
+    var clockOutResponse = testRestTemplate.exchange(
         put("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/" + worklogId + "/clock-out")
             .header(AUTHORIZATION, basicAuth(ADMIN_EMAIL, ADMIN_PASSWORD))
             .contentType(MediaType.APPLICATION_JSON)
@@ -110,10 +109,10 @@ class WorklogControllerIT {
   @Test
   void testClockOutWithDurationMoreThanOneDay_shouldReturn400() {
     // Step 1: Clock-in 25 seconds ago
-    val clockInRequest = new ClockInRequestDTO()
+    var clockInRequest = new ClockInRequestDTO()
         .clockIn(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusHours(25));
 
-    val clockInResponse = testRestTemplate.exchange(
+    var clockInResponse = testRestTemplate.exchange(
         post("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/clock-in")
             .header(AUTHORIZATION, basicAuth(ADMIN_EMAIL, ADMIN_PASSWORD))
             .contentType(MediaType.APPLICATION_JSON)
@@ -121,14 +120,14 @@ class WorklogControllerIT {
         ClockIn200ResponseDTO.class);
 
     assertThat(clockInResponse.getStatusCode()).isEqualTo(OK);
-    val worklogId = clockInResponse.getBody().getId();
+    var worklogId = clockInResponse.getBody().getId();
 
     // Step 2: Clock-out now (duration > 1 day, should fail)
-    val clockOutRequest = new ClockOutRequestDTO()
+    var clockOutRequest = new ClockOutRequestDTO()
         .clockOut(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusMinutes(1)); // Just before current time to ensure it's valid
                                                                                    // timestamp
 
-    val clockOutResponse = testRestTemplate.exchange(
+    var clockOutResponse = testRestTemplate.exchange(
         put("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/" + worklogId + "/clock-out")
             .header(AUTHORIZATION, basicAuth(ADMIN_EMAIL, ADMIN_PASSWORD))
             .contentType(MediaType.APPLICATION_JSON)
@@ -141,11 +140,11 @@ class WorklogControllerIT {
   @Test
   void testSuccessfulClockInAndClockOut_shouldCreateReportRecord() throws InterruptedException {
     // Step 1: Clock-in with past timestamp
-    val clockInTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusHours(8);
-    val clockInRequest = new ClockInRequestDTO()
+    var clockInTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusHours(8);
+    var clockInRequest = new ClockInRequestDTO()
         .clockIn(clockInTime);
 
-    val clockInResponse = testRestTemplate.exchange(
+    var clockInResponse = testRestTemplate.exchange(
         post("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/clock-in")
             .header(AUTHORIZATION, basicAuth(ADMIN_EMAIL, ADMIN_PASSWORD))
             .contentType(MediaType.APPLICATION_JSON)
@@ -153,14 +152,14 @@ class WorklogControllerIT {
         ClockIn200ResponseDTO.class);
 
     assertThat(clockInResponse.getStatusCode()).isEqualTo(OK);
-    val worklogId = clockInResponse.getBody().getId();
+    var worklogId = clockInResponse.getBody().getId();
 
     // Step 2: Clock-out with valid timestamp
-    val clockOutTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusMinutes(1);
-    val clockOutRequest = new ClockOutRequestDTO()
+    var clockOutTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusMinutes(1);
+    var clockOutRequest = new ClockOutRequestDTO()
         .clockOut(clockOutTime);
 
-    val clockOutResponse = testRestTemplate.exchange(
+    var clockOutResponse = testRestTemplate.exchange(
         put("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/" + worklogId + "/clock-out")
             .header(AUTHORIZATION, basicAuth(ADMIN_EMAIL, ADMIN_PASSWORD))
             .contentType(MediaType.APPLICATION_JSON)
@@ -170,18 +169,18 @@ class WorklogControllerIT {
     assertThat(clockOutResponse.getStatusCode()).isEqualTo(OK);
 
     // Verify worklog is closed
-    val worklog = worklogJpaRepository.findById(worklogId.intValue());
+    var worklog = worklogJpaRepository.findById(worklogId.intValue());
     assertThat(worklog).isPresent();
     assertThat(worklog.get().getClockOut()).isNotNull();
 
     // Verify report record exists for that day
     // Note: Using user ID 1 (admin) and business ID 1 as per test data
-    val clockDay = clockInTime.toLocalDate();
+    var clockDay = clockInTime.toLocalDate();
     Thread.sleep(1000); // Wait for report generation
 
     // Check if any report exists for this user, business, and day
-    val allReports = reportJpaRepository.findAll();
-    val dayReport = allReports.stream()
+    var allReports = reportJpaRepository.findAll();
+    var dayReport = allReports.stream()
         .filter(r -> r.getUser().getId().equals(1))
         .filter(r -> r.getBusiness().getId().equals(1))
         .filter(r -> r.getId().getClockDay().equals(clockDay))
@@ -193,17 +192,17 @@ class WorklogControllerIT {
   @Test
   void testCrossDayWorklog_shouldCreateTwoWorklogsAndTwoReports() throws InterruptedException {
     // Step 1: Clock-in late at night (yesterday 23:30)
-    val clockInTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid"))
+    var clockInTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid"))
         .minusDays(1)
         .withHour(23)
         .withMinute(30)
         .withSecond(0)
         .withNano(0);
 
-    val clockInRequest = new ClockInRequestDTO()
+    var clockInRequest = new ClockInRequestDTO()
         .clockIn(clockInTime);
 
-    val clockInResponse = testRestTemplate.exchange(
+    var clockInResponse = testRestTemplate.exchange(
         post("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/clock-in")
             .header(AUTHORIZATION, basicAuth(ADMIN_EMAIL, ADMIN_PASSWORD))
             .contentType(MediaType.APPLICATION_JSON)
@@ -211,19 +210,19 @@ class WorklogControllerIT {
         ClockIn200ResponseDTO.class);
 
     assertThat(clockInResponse.getStatusCode()).isEqualTo(OK);
-    val originalWorklogId = clockInResponse.getBody().getId();
+    var originalWorklogId = clockInResponse.getBody().getId();
 
     // Step 2: Clock-out early morning (today 07:30)
-    val clockOutTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid"))
+    var clockOutTime = OffsetDateTime.now(ZoneId.of("Europe/Madrid"))
         .withHour(7)
         .withMinute(30)
         .withSecond(0)
         .withNano(0);
 
-    val clockOutRequest = new ClockOutRequestDTO()
+    var clockOutRequest = new ClockOutRequestDTO()
         .clockOut(clockOutTime);
 
-    val clockOutResponse = testRestTemplate.exchange(
+    var clockOutResponse = testRestTemplate.exchange(
         put("/api/v1/businesses/" + BUSINESS_ID + "/worklogs/" + originalWorklogId + "/clock-out")
             .header(AUTHORIZATION, basicAuth(ADMIN_EMAIL, ADMIN_PASSWORD))
             .contentType(MediaType.APPLICATION_JSON)
@@ -233,8 +232,8 @@ class WorklogControllerIT {
     assertThat(clockOutResponse.getStatusCode()).isEqualTo(OK);
 
     // Verify two worklogs were created (original gets split by day)
-    val allWorklogs = worklogJpaRepository.findAll();
-    val crossDayWorklogs = allWorklogs.stream()
+    var allWorklogs = worklogJpaRepository.findAll();
+    var crossDayWorklogs = allWorklogs.stream()
         .filter(w -> w.getUser().getId().equals(1) && w.getBusiness().getId().equals(1))
         .filter(w -> w.getClockIn().toLocalDate().equals(clockInTime.toLocalDate())
             ||
@@ -245,15 +244,15 @@ class WorklogControllerIT {
 
     // Verify two report records were created (one for each day)
     Thread.sleep(1000); // Wait for reports to be generated
-    val allReports = reportJpaRepository.findAll();
+    var allReports = reportJpaRepository.findAll();
 
-    val yesterdayReport = allReports.stream()
+    var yesterdayReport = allReports.stream()
         .filter(r -> r.getUser().getId().equals(1))
         .filter(r -> r.getBusiness().getId().equals(1))
         .filter(r -> r.getId().getClockDay().equals(clockInTime.toLocalDate()))
         .findFirst();
 
-    val todayReport = allReports.stream()
+    var todayReport = allReports.stream()
         .filter(r -> r.getUser().getId().equals(1))
         .filter(r -> r.getBusiness().getId().equals(1))
         .filter(r -> r.getId().getClockDay().equals(clockOutTime.toLocalDate()))

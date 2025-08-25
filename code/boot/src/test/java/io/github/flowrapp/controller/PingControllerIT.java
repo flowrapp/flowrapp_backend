@@ -7,7 +7,6 @@ import io.github.flowrapp.Application;
 import io.github.flowrapp.infrastructure.apirest.users.model.Ping200ResponseDTO;
 import io.github.flowrapp.port.output.MailSenderPort;
 
-import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +33,7 @@ class PingControllerIT {
     // GIVEN
 
     // WHEN
-    val response = testRestTemplate.exchange(get("/api/v1/ping")
+    var response = testRestTemplate.exchange(get("/api/v1/ping")
         .accept(MediaType.APPLICATION_JSON)
         .build(), Ping200ResponseDTO.class);
 
