@@ -49,7 +49,7 @@ class WorkLogListenerProcessorTest {
         .isNotNull()
         .returns(event.getWorklog().user().id(), report -> report.user().id())
         .returns(event.getWorklog().business().id(), report -> report.business().id())
-        .returns(event.getWorklog().getHours(), Report::hours)
+        .returns(event.getWorklog().getSeconds(), Report::seconds)
         .returns(event.getWorklog().getDay(), Report::day)));
   }
 
@@ -70,7 +70,7 @@ class WorkLogListenerProcessorTest {
         .isNotNull()
         .returns(alreadyExists.user().id(), report -> report.user().id())
         .returns(alreadyExists.business().id(), report -> report.business().id())
-        .returns(alreadyExists.hours().add(event.getWorklog().getHours()), Report::hours)
+        .returns(alreadyExists.seconds().add(event.getWorklog().getSeconds()), Report::seconds)
         .returns(alreadyExists.day(), Report::day)));
   }
 
@@ -93,7 +93,7 @@ class WorkLogListenerProcessorTest {
         .isNotNull()
         .returns(alreadyExists.user().id(), report -> report.user().id())
         .returns(alreadyExists.business().id(), report -> report.business().id())
-        .returns(alreadyExists.hours().subtract(previous.getHours()).add(worklog.getHours()), Report::hours)
+        .returns(alreadyExists.seconds().subtract(previous.getSeconds()).add(worklog.getSeconds()), Report::seconds)
         .returns(alreadyExists.day(), Report::day)));
   }
 
@@ -134,7 +134,7 @@ class WorkLogListenerProcessorTest {
         .isNotNull()
         .returns(alreadyExists.user().id(), report -> report.user().id())
         .returns(alreadyExists.business().id(), report -> report.business().id())
-        .returns(alreadyExists.hours().subtract(worklog.getHours()), Report::hours)
+        .returns(alreadyExists.seconds().subtract(worklog.getSeconds()), Report::seconds)
         .returns(alreadyExists.day(), Report::day)));
   }
 

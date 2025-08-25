@@ -253,7 +253,7 @@ class DateUtilsTest {
       // Then
       assertThat(summerResult.getOffset()).isEqualTo(ZoneOffset.ofHours(2)); // CEST (UTC+2)
       assertThat(winterResult.getOffset()).isEqualTo(ZoneOffset.ofHours(1)); // CET (UTC+1)
-      assertThat(summerResult.toLocalTime().getHour()).isEqualTo(12); // 10 UTC + 2 hours
+      assertThat(summerResult.toLocalTime().getHour()).isEqualTo(12); // 10 UTC + 2 seconds
       assertThat(winterResult.toLocalTime().getHour()).isEqualTo(11); // 10 UTC + 1 hour
     }
   }

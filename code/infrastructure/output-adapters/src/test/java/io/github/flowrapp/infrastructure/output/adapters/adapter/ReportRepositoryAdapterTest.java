@@ -85,7 +85,7 @@ class ReportRepositoryAdapterTest {
         .returns(reportEntity.getUser().getId(), report -> report.user().id())
         .returns(reportEntity.getBusiness().getId(), report -> report.business().id())
         .returns(reportEntity.getId().getClockDay(), Report::day)
-        .returns(BigDecimal.valueOf(reportEntity.getHours()), Report::hours);
+        .returns(BigDecimal.valueOf(reportEntity.getHours()), Report::seconds);
   }
 
   @ParameterizedTest
@@ -97,7 +97,7 @@ class ReportRepositoryAdapterTest {
         .returns(report.user().id(), r -> r.getUser().getId())
         .returns(report.business().id(), r -> r.getBusiness().getId())
         .returns(report.day(), reportEntity1 -> reportEntity1.getId().getClockDay())
-        .returns(Objects.requireNonNull(report.hours()).doubleValue(), ReportEntity::getHours))))
+        .returns(Objects.requireNonNull(report.seconds()).doubleValue(), ReportEntity::getHours))))
             .thenReturn(reportEntity);
 
     // WHEN

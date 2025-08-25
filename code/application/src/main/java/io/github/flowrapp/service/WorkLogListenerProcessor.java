@@ -47,7 +47,7 @@ public class WorkLogListenerProcessor {
     log.info("Processing creation of worklog: {}", eventWorkLog);
 
     val newWorklog = findReportByDay(eventWorkLog)
-        .map(report -> report.sum(eventWorkLog.getHours())) // If exists, sum the hours
+        .map(report -> report.sum(eventWorkLog.getSeconds())) // If exists, sum the seconds
         .orElseGet(() -> Report.fromWorklog(eventWorkLog)); // If not exists, create a new report from the worklog
 
     reportRepositoryOutput.save(newWorklog);
@@ -65,8 +65,8 @@ public class WorkLogListenerProcessor {
 
     val savedReport = reportRepositoryOutput.save(
         reportOpt.get()
-            .minus(previous.getHours()) // Subtract previous hours
-            .sum(eventWorkLog.getHours())); // Add new hours
+            .minus(previous.getSeconds()) // Subtract previous seconds
+            .sum(eventWorkLog.getSeconds())); // Add new seconds
 
     log.debug("Saved report for update worklog: {}", savedReport);
   }
@@ -82,7 +82,7 @@ public class WorkLogListenerProcessor {
 
     val savedReport = reportRepositoryOutput.save(
         reportOpt.get()
-            .minus(eventWorkLog.getHours())); // Subtract hours from the report
+            .minus(eventWorkLog.getSeconds())); // Subtract seconds from the report
 
     log.debug("Saved report for deletion worklog: {}", savedReport);
   }

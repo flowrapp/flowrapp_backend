@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -55,7 +56,7 @@ class TimesheetReportGeneratorServiceTest {
       LocalDate from = LocalDate.of(2024, 1, 15);
       LocalDate to = LocalDate.of(2024, 1, 21);
       LocalDate reportDay = LocalDate.of(2024, 1, 16);
-      BigDecimal hours = new BigDecimal("8.0");
+      var hours = BigInteger.valueOf(300L);
 
       User user = Instancio.of(User.class)
           .set(field(User::id), 1)
@@ -71,7 +72,7 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)
-          .set(field(Report::hours), hours)
+          .set(field(Report::seconds), hours)
           .create();
 
       List<Report> reports = List.of(report);
@@ -91,13 +92,13 @@ class TimesheetReportGeneratorServiceTest {
       assertThat(summary.totalAbsenceHours()).isEqualTo(BigDecimal.ZERO);
       assertThat(summary.dailyHours()).isNotNull();
 
-      // Verify daily hours are filled for the entire range
+      // Verify daily seconds are filled for the entire range
       var dailyHoursMap = summary.dailyHours().hours();
       assertThat(dailyHoursMap)
           .hasSize(7) // 7 days from 15th to 21st inclusive
           .containsEntry(reportDay, hours);
 
-      // Other days should have zero hours
+      // Other days should have zero seconds
       LocalDate current = from;
       while (!current.isAfter(to)) {
         if (!current.equals(reportDay)) {
@@ -131,14 +132,14 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), day1)
-          .set(field(Report::hours), hours1)
+          .set(field(Report::seconds), hours1)
           .create();
 
       Report report2 = Instancio.of(Report.class)
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), day2)
-          .set(field(Report::hours), hours2)
+          .set(field(Report::seconds), hours2)
           .create();
 
       List<Report> reports = List.of(report1, report2);
@@ -187,14 +188,14 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user1)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)
-          .set(field(Report::hours), hours1)
+          .set(field(Report::seconds), hours1)
           .create();
 
       Report report2 = Instancio.of(Report.class)
           .set(field(Report::user), user2)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)
-          .set(field(Report::hours), hours2)
+          .set(field(Report::seconds), hours2)
           .create();
 
       List<Report> reports = List.of(report1, report2);
@@ -252,14 +253,14 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user)
           .set(field(Report::business), business1)
           .set(field(Report::day), reportDay)
-          .set(field(Report::hours), hours1)
+          .set(field(Report::seconds), hours1)
           .create();
 
       Report report2 = Instancio.of(Report.class)
           .set(field(Report::user), user)
           .set(field(Report::business), business2)
           .set(field(Report::day), reportDay)
-          .set(field(Report::hours), hours2)
+          .set(field(Report::seconds), hours2)
           .create();
 
       List<Report> reports = List.of(report1, report2);
@@ -280,7 +281,7 @@ class TimesheetReportGeneratorServiceTest {
     }
 
     @Test
-    @DisplayName("Should handle edge case with zero hours")
+    @DisplayName("Should handle edge case with zero seconds")
     void shouldHandleEdgeCaseWithZeroHours() {
       // Given
       LocalDate from = LocalDate.of(2024, 1, 15);
@@ -300,7 +301,7 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)
-          .set(field(Report::hours), zeroHours)
+          .set(field(Report::seconds), zeroHours)
           .create();
 
       List<Report> reports = List.of(report);
@@ -335,8 +336,8 @@ class TimesheetReportGeneratorServiceTest {
           .size(3100)
           .generate(field(Report::user), gen -> gen.oneOf(users))
           .generate(field(Report::day), gen -> gen.temporal().localDate().range(from, to))
-          .generate(field(Report::hours), gen -> gen.math().bigDecimal().range(
-              new BigDecimal("0.5"), new BigDecimal("12.0")).scale(1))
+          .generate(field(Report::seconds), gen -> gen.math().bigInteger().range(
+              BigInteger.valueOf(1200L), BigInteger.valueOf(3600L)))
           .create();
 
       // When
@@ -383,7 +384,7 @@ class TimesheetReportGeneratorServiceTest {
               .set(field(Report::user), user)
               .set(field(Report::business), business)
               .set(field(Report::day), reportDay)
-              .set(field(Report::hours), new BigDecimal("8.0"))
+              .set(field(Report::seconds), new BigDecimal("8.0"))
               .create())
           .toList();
 

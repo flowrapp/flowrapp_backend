@@ -96,7 +96,7 @@ CREATE TABLE if not exists flowrapp_management.reports
     user_id     integer          NOT NULL,
     business_id integer          NOT NULL,
     clock_day   DATE             NOT NULL,
-    hours       double precision NOT NULL,
+    seconds     NUMERIC(38,0)    NOT NULL,
     PRIMARY KEY (user_id, business_id, clock_day),
     FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
     FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id)
@@ -156,5 +156,5 @@ VALUES (1, 2, 1, gen_random_uuid(), 'EMPLOYEE', NOW(), NOW() + INTERVAL '7 days'
 INSERT INTO flowrapp_management.worklogs (user_id, business_id, clocked_in, clocked_out, created_at)
 VALUES (2, 1, NOW() - INTERVAL '1 hour', NOW(), NOW());
 
-INSERT INTO flowrapp_management.reports (user_id, business_id, clock_day, hours)
-VALUES (2, 1, CURRENT_DATE, 1.0);
+INSERT INTO flowrapp_management.reports (user_id, business_id, clock_day, seconds)
+VALUES (2, 1, CURRENT_DATE, 3600);

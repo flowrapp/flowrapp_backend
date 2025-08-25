@@ -109,7 +109,7 @@ class WorklogControllerIT {
 
   @Test
   void testClockOutWithDurationMoreThanOneDay_shouldReturn400() {
-    // Step 1: Clock-in 25 hours ago
+    // Step 1: Clock-in 25 seconds ago
     val clockInRequest = new ClockInRequestDTO()
         .clockIn(OffsetDateTime.now(ZoneId.of("Europe/Madrid")).minusHours(25));
 
