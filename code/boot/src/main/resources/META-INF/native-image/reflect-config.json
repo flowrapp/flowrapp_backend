@@ -1,0 +1,325 @@
+[
+  {
+    "name": "io.github.flowrapp.Application",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.postgresql.Driver",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.config.JwtTokenSettings",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.model.User",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.model.Business",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.model.BusinessUser",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.model.Invitation",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.model.Worklog",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.zaxxer.hikari.HikariConfig",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.zaxxer.hikari.HikariDataSource",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.zaxxer.hikari.pool.HikariPool",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.zaxxer.hikari.util.DriverDataSource",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.infrastructure.jpa.businessbd.entity.BusinessEntity",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.infrastructure.jpa.businessbd.entity.BusinessUserEntity",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.infrastructure.jpa.businessbd.entity.InvitationEntity",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.infrastructure.jpa.businessbd.entity.MockUserEntity",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.infrastructure.jpa.businessbd.entity.PushTokenEntity",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.infrastructure.jpa.businessbd.entity.ReportEntity",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.infrastructure.jpa.businessbd.entity.ReportIdEntity",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.infrastructure.jpa.businessbd.entity.UsersRoleIdEntity",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.github.flowrapp.infrastructure.jpa.businessbd.entity.WorklogEntity",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.core.types.EntityPathBase",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.core.types.PathMetadata",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.core.types.dsl.EntityPathBase",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.core.types.dsl.BeanPath",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.core.types.dsl.NumberPath",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.core.types.dsl.StringPath",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.core.types.dsl.DateTimePath",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.core.types.dsl.BooleanPath",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.core.types.dsl.SetPath",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.core.types.dsl.ListPath",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.jpa.impl.JPAQueryFactory",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.querydsl.jpa.impl.JPAQuery",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.proxy.HibernateProxy",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.proxy.LazyInitializer",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.collection.spi.PersistentCollection",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.collection.spi.PersistentSet",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.collection.spi.PersistentList",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.collection.spi.PersistentBag",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.type.descriptor.java.ZoneIdJavaType",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.type.descriptor.java.InstantJavaType",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.validator.internal.engine.resolver.JPATraversableResolver",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.jpa.repository.support.SimpleJpaRepository",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.jpa.repository.support.QuerydslJpaPredicateExecutor",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.querydsl.QuerydslPredicateExecutor",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "java.time.ZoneId",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "java.time.Instant",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "java.time.LocalDate",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.hibernate.type.descriptor.java.LocalDateJavaType",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.repository.core.support.DefaultRepositoryMetadata",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.jpa.repository.support.JpaRepositoryFactory",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "jakarta.persistence.Embeddable",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "jakarta.persistence.EmbeddedId",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "jakarta.persistence.MapsId",
+    "allPublicMethods": true,
+    "allDeclaredConstructors": true
+  }
+]

@@ -8,10 +8,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.blackbird.BlackbirdModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration(proxyBeanMethods = false)
 @EnableAsync
+@ImportRuntimeHints(ReportEntityRuntimeHints.ReportEntityRuntimeHintsRegistrar.class)
 public class MainConfig {
 
   @Bean
