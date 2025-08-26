@@ -42,7 +42,7 @@ class InvitationToInviteMailVariableEnricherTest {
 
     assertThat(result)
         .isNotNull()
-        .containsEntry("invitationUrl", expectedUrl);
+        .containsEntry("invitationLink", expectedUrl);
   }
 
   @Test

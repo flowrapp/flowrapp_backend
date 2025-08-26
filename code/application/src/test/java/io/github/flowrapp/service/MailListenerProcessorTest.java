@@ -34,6 +34,9 @@ class MailListenerProcessorTest {
   @Mock
   private MailSenderPort mailSenderPort;
 
+  @Mock
+  private MailVariableEnrichmentService enrichmentService;
+
   @InjectMocks
   private MailListenerProcessor mailService;
 
@@ -42,9 +45,12 @@ class MailListenerProcessorTest {
   void sendOwnerCreation(Invitation invitation, String randomPassword) {
     // Given
     when(templateRenderPort.render(any(), anyMap())).thenReturn("rendered-body");
+    var event = new OwnerCreationMailEvent(invitation, randomPassword);
+    when(enrichmentService.enrichVariables(event))
+        .then(invocation -> event.getVariables());
 
     // When
-    mailService.listenToMailEvent(new OwnerCreationMailEvent(invitation, randomPassword));
+    mailService.listenToMailEvent(event);
 
     // Then
     verify(mailSenderPort).send(any());
@@ -63,9 +69,12 @@ class MailListenerProcessorTest {
   void sendInvitationToRegister(Invitation invitation) {
     // Given
     when(templateRenderPort.render(any(), anyMap())).thenReturn("rendered-body");
+    var event = new InvitationToRegisterMailEvent(invitation);
+    when(enrichmentService.enrichVariables(event))
+        .thenReturn(event.getVariables());
 
     // When
-    mailService.listenToMailEvent(new InvitationToRegisterMailEvent(invitation));
+    mailService.listenToMailEvent(event);
 
     // Then
     verify(mailSenderPort).send(any());
