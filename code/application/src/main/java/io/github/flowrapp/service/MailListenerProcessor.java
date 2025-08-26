@@ -24,17 +24,22 @@ public class MailListenerProcessor {
 
   private final MailSenderPort mailSenderPort;
 
+  private final MailVariableEnrichmentService enrichmentService;
+
   @Async("mailEventExecutor")
   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
   public void listenToMailEvent(MailEvent event) {
     log.debug("Processing mail event: type={}, template={}",
         event.getClass().getSimpleName(), event.getTemplate());
 
+    // Enrich variables with dynamic content
+    var enrichedVariables = enrichmentService.enrichVariables(event);
+
     mailSenderPort.send(
         this.createMail(
             event.recipient(),
             event.getTemplate(),
-            event.getVariables()));
+            enrichedVariables));
   }
 
   private Mail createMail(String recipient, MailTemplates template, Map<String, Object> vars) {

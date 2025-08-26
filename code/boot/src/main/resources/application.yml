@@ -39,6 +39,12 @@ app:
           google:
             client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
 
+  frontend:
+    url: ${FRONTEND_URL:http://localhost:3000}
+    paths:
+      invitation: ${FRONTEND_INVITATION_PATH:/invitation}
+      invitation-register: ${FRONTEND_INVITATION_REGISTER_PATH:/invitation-register}
+
   # Mail Configuration
 simplejavamail:
   smtp:

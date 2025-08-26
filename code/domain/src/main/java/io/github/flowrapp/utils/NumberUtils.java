@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Objects;
-import java.util.function.Function;
 
 import lombok.experimental.UtilityClass;
 
@@ -16,7 +15,7 @@ public class NumberUtils {
   public static BigDecimal secondsToHours(BigInteger seconds) {
     Objects.requireNonNull(seconds, "seconds");
     return new BigDecimal(seconds)
-            .divide(SECONDS_IN_HOUR, 2, RoundingMode.FLOOR);
+        .divide(SECONDS_IN_HOUR, 2, RoundingMode.FLOOR);
   }
 
 }
