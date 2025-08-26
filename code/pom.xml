@@ -86,32 +86,22 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.github.flowrapp</groupId>
-        <artifactId>input-rest</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.github.flowrapp</groupId>
-        <artifactId>rest-config</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.github.flowrapp</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>rest-main-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.github.flowrapp</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>output-adapters</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.github.flowrapp</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>jpa-business-bbdd</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.github.flowrapp</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>thymeleaf-mail</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -198,6 +188,7 @@
               <!-- This arg ensures that mapstruct generate a Spring -->
               <!-- Bean out of every mapper implementation -->
               <compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
+              <compilerArg>-Amapstruct.verbose=true</compilerArg>
             </compilerArgs>
             <annotationProcessorPaths>
               <path>
@@ -241,6 +232,9 @@
             <generatorName>spring</generatorName>
             <modelNameSuffix>DTO</modelNameSuffix>
             <configOptions>
+              <annotationLibrary>none</annotationLibrary>
+              <documentationProvider>none</documentationProvider>
+              <openApiNullable>false</openApiNullable>
               <interfaceOnly>true</interfaceOnly>
               <library>spring-boot</library>
               <useTags>true</useTags>
@@ -287,7 +281,7 @@
                 <source>${project.build.directory}/generated-sources/annotations</source>
                 <source>${project.build.directory}/generated-sources/event</source>
                 <source>${project.build.directory}/generated-sources/asyncapi/src/main/java</source>
-                <source>${project.build.directory}/generated-sources/openapi/src/gen/java/main</source>
+                <source>${project.build.directory}/generated-sources/openapi/src/main/java</source>
                 <source>${project.build.directory}/generated-sources/protobuf/java</source>
                 <source>${project.build.directory}/generated-sources/protobuf/grpc-java</source>
                 <source>${project.build.directory}/generated-sources/graphql</source>

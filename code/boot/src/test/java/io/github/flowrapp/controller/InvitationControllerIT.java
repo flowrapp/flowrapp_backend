@@ -25,7 +25,7 @@ import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.infrastructure.apirest.users.model.CreateBusinessInvitationRequestDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetBusinessInvitations200ResponseInnerDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterUserFromInvitationRequestDTO;
-import io.github.flowrapp.infrastructure.input.rest.config.GlobalControllerAdvice;
+import io.github.flowrapp.infrastructure.input.rest.mainapi.config.GlobalControllerAdvice;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.InvitationEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.UserEntity;
 import io.github.flowrapp.infrastructure.jpa.businessbd.repository.InvitationJpaRepository;

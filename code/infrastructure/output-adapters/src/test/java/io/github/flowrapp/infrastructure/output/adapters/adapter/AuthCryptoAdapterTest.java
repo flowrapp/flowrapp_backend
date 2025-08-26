@@ -6,8 +6,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import io.github.flowrapp.infrastructure.input.rest.config.security.service.JwtTokenService;
-import io.github.flowrapp.infrastructure.input.rest.config.security.value.ClaimConstants;
+import io.github.flowrapp.infrastructure.input.rest.mainapi.security.service.JwtTokenService;
+import io.github.flowrapp.infrastructure.input.rest.mainapi.security.value.ClaimConstants;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.value.TokensResponse;
 

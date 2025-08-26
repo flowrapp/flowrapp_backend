@@ -15,7 +15,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>domain</artifactId>
     </dependency>
     <!-- Let's be flexible with spring boot dependencies on application for practical reasons (use @Transactional) -->

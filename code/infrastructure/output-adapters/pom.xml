@@ -16,26 +16,26 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>domain</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>jpa-business-bbdd</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>rest-main-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
-      <artifactId>rest-config</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>thymeleaf-mail</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>

@@ -15,7 +15,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>domain</artifactId>
     </dependency>
     <dependency>
