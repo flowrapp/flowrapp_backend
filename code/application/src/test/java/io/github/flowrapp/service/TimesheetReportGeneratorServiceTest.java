@@ -37,7 +37,7 @@ class TimesheetReportGeneratorServiceTest {
    * @return the equivalent hours as BigDecimal
    */
   private BigDecimal toHours(BigInteger seconds) {
-    return NumberUtils.secondsToHours().apply(seconds);
+    return NumberUtils.secondsToHours(seconds);
   }
 
   /**

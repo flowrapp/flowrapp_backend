@@ -40,7 +40,7 @@ public record Report(
   }
 
   public BigDecimal hours() {
-    return NumberUtils.secondsToHours().apply(seconds);
+    return NumberUtils.secondsToHours(this.seconds);
   }
 
 }
