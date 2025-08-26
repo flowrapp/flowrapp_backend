@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.5.5</version>
+    <version>3.5.4</version>
   </parent>
 
   <groupId>io.github.flowrapp</groupId>
@@ -41,7 +41,7 @@
 
     <!-- Dependencies versions -->
     <instancio.version>5.5.1</instancio.version>
-    <org.mapstruct.version>1.6.3</org.mapstruct.version>
+    <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     <jspecify.version>1.0.0</jspecify.version>
     <apache-commons.version>4.5.0</apache-commons.version>
@@ -59,7 +59,7 @@
     <maven.failsafe.plugin.version>3.5.3</maven.failsafe.plugin.version>
     <spotless.version>2.46.1</spotless.version>
     <jacoco.plugin.version>0.8.13</jacoco.plugin.version>
-    <openapiGenerator.version>7.15.0</openapiGenerator.version>
+    <openapiGenerator.version>7.12.0</openapiGenerator.version>
   </properties>
 
   <dependencyManagement>
@@ -170,31 +170,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-maven-plugin</artifactId>
-          <configuration>
-            <skip>false</skip>
-            <mainClass>io.github.flowrapp.Application</mainClass>
-            <excludes>
-              <exclude>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-              </exclude>
-              <exclude>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct</artifactId>
-              </exclude>
-            </excludes>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>repackage</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <configuration>
@@ -216,6 +191,36 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+          <configuration>
+            <compilerArgs>
+              <!-- This arg ensures that mapstruct generate a Spring -->
+              <!-- Bean out of every mapper implementation -->
+              <compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
+            </compilerArgs>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${org.mapstruct.version}</version>
+              </path>
+              <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+              </path>
+              <!-- This is needed when using Lombok 1.8.16 and above -->
+              <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-mapstruct-binding</artifactId>
+                <version>${lombok-mapstruct-binding.version}</version>
+              </path>
+            </annotationProcessorPaths>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
           <configuration>
             <attach>false</attach>
@@ -232,9 +237,6 @@
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
           <version>${openapiGenerator.version}</version>
-          <goals>
-            <goal>generate</goal>
-          </goals>
           <configuration>
             <generatorName>spring</generatorName>
             <modelNameSuffix>DTO</modelNameSuffix>
@@ -257,38 +259,16 @@
 
     <plugins>
       <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven.compiler.plugin.version}</version>
-        <configuration>
-          <compilerArgs>
-            <!-- This arg ensures that mapstruct generate a Spring -->
-            <!-- Bean out of every mapper implementation -->
-            <compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
-          </compilerArgs>
-          <annotationProcessors>
-            <annotationProcessor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor</annotationProcessor>
-            <annotationProcessor>org.mapstruct.ap.MappingProcessor</annotationProcessor>
-          </annotationProcessors>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.mapstruct</groupId>
-              <artifactId>mapstruct-processor</artifactId>
-              <version>${org.mapstruct.version}</version>
-            </path>
-            <path>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-              <version>${lombok.version}</version>
-            </path>
-            <!-- This is needed when using Lombok 1.8.16 and above -->
-            <path>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok-mapstruct-binding</artifactId>
-              <version>${lombok-mapstruct-binding.version}</version>
-            </path>
-          </annotationProcessorPaths>
-        </configuration>
       </plugin>
 
       <!-- Add generate sources to show in the IDE -->
@@ -306,6 +286,12 @@
               <sources>
                 <source>${project.build.directory}/generated-sources/annotations</source>
                 <source>${project.build.directory}/generated-sources/event</source>
+                <source>${project.build.directory}/generated-sources/asyncapi/src/main/java</source>
+                <source>${project.build.directory}/generated-sources/openapi/src/gen/java/main</source>
+                <source>${project.build.directory}/generated-sources/protobuf/java</source>
+                <source>${project.build.directory}/generated-sources/protobuf/grpc-java</source>
+                <source>${project.build.directory}/generated-sources/graphql</source>
+                <source>${project.build.directory}/generated-sources/cxf</source>
               </sources>
             </configuration>
           </execution>
@@ -362,7 +348,7 @@
 
   <profiles>
     <profile>
-      <id>local</id>
+      <id>IT</id>
       <build>
         <plugins>
           <plugin>
