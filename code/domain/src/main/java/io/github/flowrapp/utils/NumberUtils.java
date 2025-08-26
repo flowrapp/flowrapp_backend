@@ -5,6 +5,9 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.function.Function;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class NumberUtils {
 
   public static final int SECONDS_IN_HOUR = 3600;
