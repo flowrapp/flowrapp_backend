@@ -35,7 +35,7 @@ public class MailVariableEnrichmentService {
     var enrichedVariables = new HashMap<>(event.getVariables());
 
     // Apply enrichment from all supporting enrichers
-    for (MailVariableEnricher enricher : enrichers) {
+    for (var enricher : enrichers) {
       if (enricher.supports(event)) {
         log.debug("Applying enricher: {} for event: {}",
             enricher.getClass().getSimpleName(), event.getClass().getSimpleName());

@@ -36,8 +36,7 @@ public class InvitationToInviteMailVariableEnricher implements MailVariableEnric
       return Map.of();
     }
 
-    log.debug("Enriching variables for InvitationToInviteMailEvent with token: {}",
-        invitation.token());
+    log.debug("Enriching InvitationToInviteMailEvent");
 
     val invitationUrl = new URIBuilder(frontBaseUrl)
         .setPath(invitationPath)
@@ -49,7 +48,7 @@ public class InvitationToInviteMailVariableEnricher implements MailVariableEnric
         .build().toString();
 
     return Map.of(
-        "invitationLink", invitationUrl);
+        MailVariableKeys.INVITATION_URL, invitationUrl);
   }
 
   @Override
