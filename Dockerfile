@@ -8,9 +8,7 @@ COPY code/boot/pom.xml ./boot/
 COPY code/domain/pom.xml ./domain/
 COPY code/application/pom.xml ./application/
 COPY code/infrastructure/pom.xml ./infrastructure/
-COPY code/infrastructure/input-rest/pom.xml ./infrastructure/input-rest/
-COPY code/infrastructure/input-rest/rest-config/pom.xml ./infrastructure/input-rest/rest-config/
-COPY code/infrastructure/input-rest/rest-main-api/pom.xml ./infrastructure/input-rest/rest-main-api/
+COPY code/infrastructure/rest-main-api/pom.xml ./infrastructure/rest-main-api/
 COPY code/infrastructure/output-adapters/pom.xml ./infrastructure/output-adapters/
 COPY code/infrastructure/jpa-business-bbdd/pom.xml ./infrastructure/jpa-business-bbdd/
 COPY code/infrastructure/thymeleaf-mail/pom.xml ./infrastructure/thymeleaf-mail/
@@ -22,7 +20,7 @@ RUN mvn dependency:go-offline -B
 COPY code .
 RUN mvn clean package -DskipTests -B
 
-# Runtime stage  
+# Runtime stage
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
