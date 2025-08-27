@@ -10,6 +10,9 @@ spring:
     virtual:
       enabled: false # Enable for virtual threads
 
+  thymeleaf:
+    cache: false
+
   # Datasource Configuration
   jpa:
     hibernate:
@@ -35,6 +38,24 @@ app:
             client-id: ${OAUTH2_GITHUB_CLIENT_ID}
           google:
             client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
+
+  frontend:
+    url: ${FRONTEND_URL:http://localhost:3000}
+    paths:
+      invitation: ${FRONTEND_INVITATION_PATH:/invitation}
+      invitation-register: ${FRONTEND_INVITATION_REGISTER_PATH:/invitation-register}
+
+  # Mail Configuration
+simplejavamail:
+  smtp:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_PASSWORD}
+  defaults:
+    fromname: ${MAIL_FROM_NAME:Flowr}
+    fromaddress: ${MAIL_FROM_ADDRESS:no-reply@flowr.app}
+  transportstrategy: SMTP_TLS
 
 # Swagger OpenAPI Configuration
 springdoc:

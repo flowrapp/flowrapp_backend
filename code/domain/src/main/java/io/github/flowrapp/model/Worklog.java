@@ -1,7 +1,6 @@
 package io.github.flowrapp.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.math.BigInteger;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -46,13 +45,12 @@ public record Worklog(
     return clockIn != null ? clockIn.atZoneSameInstant(business.zone()).toLocalDate() : null;
   }
 
-  public BigDecimal getHours() {
+  public BigInteger getSeconds() {
     if (clockIn == null || clockOut == null) {
-      return BigDecimal.ZERO;
+      return BigInteger.ZERO;
     }
 
-    return BigDecimal.valueOf(Duration.between(clockIn, clockOut).toSeconds())
-        .divide(BigDecimal.valueOf(3600), 2, RoundingMode.HALF_UP);
+    return BigInteger.valueOf(Duration.between(clockIn, clockOut).toSeconds());
   }
 
   public Worklog toBusinessZone() {

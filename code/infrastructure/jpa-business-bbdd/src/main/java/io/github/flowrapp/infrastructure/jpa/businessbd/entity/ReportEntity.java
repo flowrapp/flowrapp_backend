@@ -1,5 +1,7 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
+import java.math.BigInteger;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -32,7 +34,7 @@ public class ReportEntity {
   private BusinessEntity business;
 
   @NotNull
-  @Column(name = "hours", nullable = false)
-  private Double hours;
+  @Column(name = "seconds", nullable = false)
+  private BigInteger seconds;
 
 }

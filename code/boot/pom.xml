@@ -16,28 +16,28 @@
   <dependencies>
     <!-- Internal dependencies -->
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>domain</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>application</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
-      <artifactId>rest-config</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>rest-main-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>output-adapters</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>jpa-business-bbdd</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>thymeleaf-mail</artifactId>
     </dependency>
 
     <!-- External dependencies -->

@@ -23,6 +23,10 @@ public record User(
     boolean enabled,
     Instant createdAt) {
 
+  public String getUserOrMail() {
+    return this.name != null && !this.name.isBlank() ? this.name : this.mail;
+  }
+
   /** Creates a new user from a user creation request. */
   public static User fromUserCreationRequest(UserCreationRequest userCreationRequest) {
     return of(userCreationRequest.username(), userCreationRequest.mail());

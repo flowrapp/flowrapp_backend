@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import io.github.flowrapp.exception.FunctionalError;
 import io.github.flowrapp.exception.FunctionalException;
-import io.github.flowrapp.infrastructure.input.rest.config.security.value.ClaimConstants;
+import io.github.flowrapp.infrastructure.input.rest.mainapi.security.value.ClaimConstants;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
 

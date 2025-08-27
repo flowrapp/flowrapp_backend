@@ -6,8 +6,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import io.github.flowrapp.infrastructure.input.rest.config.security.service.GitHubOAuthService;
-import io.github.flowrapp.infrastructure.input.rest.config.security.service.GoogleOAuthService;
+import io.github.flowrapp.infrastructure.input.rest.mainapi.security.service.GitHubOAuthService;
+import io.github.flowrapp.infrastructure.input.rest.mainapi.security.service.GoogleOAuthService;
 import io.github.flowrapp.value.OAuth2UserInfo;
 import io.github.flowrapp.value.OAuth2UserInfo.Provider;
 

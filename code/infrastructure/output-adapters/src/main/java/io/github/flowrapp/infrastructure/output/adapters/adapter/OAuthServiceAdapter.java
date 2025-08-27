@@ -2,8 +2,8 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import java.util.Optional;
 
-import io.github.flowrapp.infrastructure.input.rest.config.security.service.GitHubOAuthService;
-import io.github.flowrapp.infrastructure.input.rest.config.security.service.GoogleOAuthService;
+import io.github.flowrapp.infrastructure.input.rest.mainapi.security.service.GitHubOAuthService;
+import io.github.flowrapp.infrastructure.input.rest.mainapi.security.service.GoogleOAuthService;
 import io.github.flowrapp.port.output.OAuthServiceOutput;
 import io.github.flowrapp.value.OAuth2UserInfo;
 import io.github.flowrapp.value.OAuth2UserInfo.Provider;

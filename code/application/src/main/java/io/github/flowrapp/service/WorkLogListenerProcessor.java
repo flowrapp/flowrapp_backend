@@ -10,9 +10,10 @@ import io.github.flowrapp.value.CreateWorklogEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
  * Service that listens to work log events and processes them by updating or creating reports.
@@ -25,8 +26,8 @@ public class WorkLogListenerProcessor {
   private final ReportRepositoryOutput reportRepositoryOutput;
 
   @Async("virtualThreadsExecutor")
-  @EventListener
-  void listenToWorkLogEvents(CreateWorklogEvent event) {
+  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+  public void listenToWorkLogEvents(CreateWorklogEvent event) {
     log.info("Received work log event: {}", event);
 
     val eventWorkLog = event.getWorklog();
@@ -46,7 +47,7 @@ public class WorkLogListenerProcessor {
     log.info("Processing creation of worklog: {}", eventWorkLog);
 
     val newWorklog = findReportByDay(eventWorkLog)
-        .map(report -> report.sum(eventWorkLog.getHours())) // If exists, sum the hours
+        .map(report -> report.sum(eventWorkLog.getSeconds())) // If exists, sum the seconds
         .orElseGet(() -> Report.fromWorklog(eventWorkLog)); // If not exists, create a new report from the worklog
 
     reportRepositoryOutput.save(newWorklog);
@@ -64,8 +65,8 @@ public class WorkLogListenerProcessor {
 
     val savedReport = reportRepositoryOutput.save(
         reportOpt.get()
-            .minus(previous.getHours()) // Subtract previous hours
-            .sum(eventWorkLog.getHours())); // Add new hours
+            .minus(previous.getSeconds()) // Subtract previous seconds
+            .sum(eventWorkLog.getSeconds())); // Add new seconds
 
     log.debug("Saved report for update worklog: {}", savedReport);
   }
@@ -81,7 +82,7 @@ public class WorkLogListenerProcessor {
 
     val savedReport = reportRepositoryOutput.save(
         reportOpt.get()
-            .minus(eventWorkLog.getHours())); // Subtract hours from the report
+            .minus(eventWorkLog.getSeconds())); // Subtract seconds from the report
 
     log.debug("Saved report for deletion worklog: {}", savedReport);
   }

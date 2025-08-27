@@ -4,7 +4,9 @@ import static io.github.flowrapp.config.Constants.ADMIN_USER_MAIL;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -14,8 +16,10 @@ import io.github.flowrapp.exception.FunctionalException;
 import io.github.flowrapp.model.User;
 import io.github.flowrapp.port.output.AuthCryptoPort;
 import io.github.flowrapp.port.output.BusinessRepositoryOutput;
+import io.github.flowrapp.port.output.BusinessUserRepositoryOutput;
 import io.github.flowrapp.port.output.InvitationRepositoryOutput;
 import io.github.flowrapp.port.output.UserRepositoryOutput;
+import io.github.flowrapp.value.MailEvent.OwnerCreationMailEvent;
 import io.github.flowrapp.value.UserCreationRequest;
 
 import org.instancio.junit.InstancioExtension;
@@ -25,6 +29,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
 class AdminUseCaseImplTest {
@@ -36,10 +41,16 @@ class AdminUseCaseImplTest {
   private BusinessRepositoryOutput businessRepositoryOutput;
 
   @Mock
+  private BusinessUserRepositoryOutput businessUserRepositoryOutput;
+
+  @Mock
   private InvitationRepositoryOutput invitationRepositoryOutput;
 
   @Mock
   private AuthCryptoPort authCryptoPort;
+
+  @Mock
+  private ApplicationEventPublisher applicationEventPublisher;
 
   @InjectMocks
   private AdminUseCaseImpl adminUseCase;
@@ -65,6 +76,7 @@ class AdminUseCaseImplTest {
 
     // WHEN && THEN
     assertDoesNotThrow(() -> adminUseCase.createUser(userCreationRequest));
+    verify(applicationEventPublisher).publishEvent(any(OwnerCreationMailEvent.class));
   }
 
   @ParameterizedTest

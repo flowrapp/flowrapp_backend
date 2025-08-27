@@ -16,29 +16,39 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>domain</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>jpa-business-bbdd</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>rest-main-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.github.flowrapp</groupId>
-      <artifactId>rest-config</artifactId>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>thymeleaf-mail</artifactId>
     </dependency>
 
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct-processor</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -52,14 +62,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>

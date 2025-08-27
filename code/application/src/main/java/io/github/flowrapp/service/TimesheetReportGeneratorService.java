@@ -21,10 +21,10 @@ import org.springframework.stereotype.Service;
 public class TimesheetReportGeneratorService {
 
   /**
-   * Computes a weekly hours report from a list of reports.
+   * Computes a weekly seconds report from a list of reports.
    */
   public List<UserTimeReportSummary> computeWeeklyHoursReport(LocalDate from, LocalDate to, List<Report> reports) {
-    log.debug("Computing weekly hours report for {} reports", reports.size());
+    log.debug("Computing weekly seconds report for {} reports", reports.size());
 
     // Aggregate reports by user in a single pass without intermediate Optionals
     return reports.stream()
@@ -36,7 +36,7 @@ public class TimesheetReportGeneratorService {
             .start(from) // Update start/end to match the requested range
             .end(to)
             .build()
-            .fillDailyHours()) // Fill daily hours for each summary
+            .fillDailyHours()) // Fill daily seconds for each summary
         .toList();
   }
 

@@ -18,7 +18,7 @@ app:
     jwt:
       access-token:
         secret-key: ${ACCES_TOKEN_SECRET_KEY:JQuYOcxbwbIBkH0gpLw5uRtv4uTBNdO86zfFr+L+2D0=}  # Secret key for JWT (only for testing)
-        expiration-time: 10800  # 3 hours
+        expiration-time: 10800  # 3 seconds
       refresh-token:
         secret-key: ${REFRESH_TOKEN_SECRET_KEY:yLpm36E92Jfi3/KmhUSROELmVXAhIcjGYdbC/AG4qJM=}  # Secret key for JWT (only for testing)
         expiration-time: 259200  # 3 days

@@ -18,11 +18,14 @@ import io.github.flowrapp.port.output.UserRepositoryOutput;
 import io.github.flowrapp.port.output.UserSecurityContextHolderOutput;
 import io.github.flowrapp.value.InvitationCreationRequest;
 import io.github.flowrapp.value.InvitationRegistrationRequest;
+import io.github.flowrapp.value.MailEvent.InvitationToInviteMailEvent;
+import io.github.flowrapp.value.MailEvent.InvitationToRegisterMailEvent;
 import io.github.flowrapp.value.SensitiveInfo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +43,8 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
   private final BusinessUserRepositoryOutput businessUserRepositoryOutput;
 
   private final UserSecurityContextHolderOutput userSecurityContextHolderOutput;
+
+  private final ApplicationEventPublisher applicationEventPublisher;
 
   private final AuthCryptoPort authCryptoPort;
 
@@ -75,7 +80,9 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
         Invitation.create(user, business, currentUser, request.role()));
 
     log.debug("Created invitation: {}", invitation);
-    // TODO: send email if !user.enabled. If not, send notification?? idk
+
+    applicationEventPublisher.publishEvent(!user.enabled() ? // Send different mails depending on user status
+        new InvitationToRegisterMailEvent(invitation) : new InvitationToInviteMailEvent(invitation));
 
     return invitation;
   }
@@ -93,13 +100,13 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
       throw new FunctionalException(FunctionalError.INVITATION_NOT_FOR_CURRENT_USER);
     }
 
-    if (invitation.hasExpired()) {
-      throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
-    }
-
     if (!invitation.isPending()) {
       log.warn("Cannot accept invitation {}: not in pending status", token);
       return; // No need to throw an exception, make it idempotent
+    }
+
+    if (invitation.hasExpired()) {
+      throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
     }
 
     log.debug("Creating business user from invitation: {}", invitation);
@@ -122,12 +129,13 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
       throw new FunctionalException(FunctionalError.USER_ALREADY_ENABLED);
     }
 
-    if (invitation.hasExpired()) {
-      throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
+    if (!invitation.isPending()) {
+      log.warn("Cannot accept invitation {}: not in pending status", invitationRegistration.token());
+      return; // No need to throw an exception, make it idempotent
     }
 
-    if (!invitation.isPending()) {
-      throw new FunctionalException(FunctionalError.INVITATION_ALREADY_ACCEPTED);
+    if (invitation.hasExpired()) {
+      throw new FunctionalException(FunctionalError.INVITATION_EXPIRED);
     }
 
     val updatedUser = userRepositoryOutput.save(

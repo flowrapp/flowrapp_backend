@@ -13,6 +13,7 @@ COPY code/infrastructure/input-rest/rest-config/pom.xml ./infrastructure/input-r
 COPY code/infrastructure/input-rest/rest-main-api/pom.xml ./infrastructure/input-rest/rest-main-api/
 COPY code/infrastructure/output-adapters/pom.xml ./infrastructure/output-adapters/
 COPY code/infrastructure/jpa-business-bbdd/pom.xml ./infrastructure/jpa-business-bbdd/
+COPY code/infrastructure/thymeleaf-mail/pom.xml ./infrastructure/thymeleaf-mail/
 
 # Download dependencies only (this layer can be cached)
 RUN mvn dependency:go-offline -B

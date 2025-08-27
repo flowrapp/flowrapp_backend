@@ -2,9 +2,6 @@ package io.github.flowrapp;
 
 import java.util.Base64;
 
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
 public class TestUtils {
 
   public static String basicAuth(String name, String password) {

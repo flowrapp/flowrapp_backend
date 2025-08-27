@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -85,7 +84,7 @@ class ReportRepositoryAdapterTest {
         .returns(reportEntity.getUser().getId(), report -> report.user().id())
         .returns(reportEntity.getBusiness().getId(), report -> report.business().id())
         .returns(reportEntity.getId().getClockDay(), Report::day)
-        .returns(BigDecimal.valueOf(reportEntity.getHours()), Report::hours);
+        .returns(reportEntity.getSeconds(), Report::seconds);
   }
 
   @ParameterizedTest
@@ -97,7 +96,7 @@ class ReportRepositoryAdapterTest {
         .returns(report.user().id(), r -> r.getUser().getId())
         .returns(report.business().id(), r -> r.getBusiness().getId())
         .returns(report.day(), reportEntity1 -> reportEntity1.getId().getClockDay())
-        .returns(Objects.requireNonNull(report.hours()).doubleValue(), ReportEntity::getHours))))
+        .returns(Objects.requireNonNull(report.seconds()), ReportEntity::getSeconds))))
             .thenReturn(reportEntity);
 
     // WHEN

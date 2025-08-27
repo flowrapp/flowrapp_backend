@@ -31,8 +31,8 @@ public interface WorklogEntityMapper {
   WorklogEntity domain2Infra(WorklogFilteredRequest worklogFilteredRequest);
 
   @AfterMapping
-  default Worklog finaMapping(Object anySource, @MappingTarget Worklog target) {
-    return target.toBusinessZone();
+  default Worklog finaMapping(Object anySource, @MappingTarget Worklog.WorklogBuilder target) {
+    return target.build().toBusinessZone();
   }
 
 }
