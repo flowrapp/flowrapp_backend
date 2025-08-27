@@ -38,7 +38,7 @@ import org.springframework.test.context.jdbc.Sql;
 @ActiveProfiles("test")
 @Sql(scripts = "/scripts/populate_push_tokens.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @InitDatabase
-public class PushTokenControllerIT {
+class PushTokenControllerIT {
 
   private static final String API_BASE_URL = "/api/v1/push-tokens";
 
