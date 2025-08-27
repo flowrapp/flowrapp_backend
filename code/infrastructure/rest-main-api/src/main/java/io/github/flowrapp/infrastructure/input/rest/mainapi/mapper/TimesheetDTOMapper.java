@@ -10,6 +10,7 @@ import java.util.Map;
 
 import io.github.flowrapp.infrastructure.apirest.users.model.GetWeeklyHoursReport200ResponseDTO;
 import io.github.flowrapp.infrastructure.apirest.users.model.GetWeeklyHoursReport200ResponseUsersInnerDTO;
+import io.github.flowrapp.model.Seconds;
 import io.github.flowrapp.value.DayHoursPairList;
 import io.github.flowrapp.value.TimesheetFilterRequest;
 import io.github.flowrapp.value.UserTimeReportSummary;
@@ -34,14 +35,20 @@ public interface TimesheetDTOMapper {
 
   @Mapping(target = "userId", source = "user.id")
   @Mapping(target = "username", source = "user.name")
+  @Mapping(target = "totalHours", source = "totalSeconds")
+  @Mapping(target = "dailyHours", source = "dailySeconds")
   GetWeeklyHoursReport200ResponseUsersInnerDTO map(UserTimeReportSummary summary);
 
   default Map<String, Double> map(DayHoursPairList dayHoursPairs) {
     return dayHoursPairs.getlist().stream()
         .collect(toMap(dp -> dp.day().toString(),
-            dp -> dp.hours().doubleValue(),
+            dp -> dp.seconds().asHours().doubleValue(),
             Double::sum, // In case of duplicate days, sum the times
             LinkedHashMap::new)); // Maintain insertion order
+  }
+
+  default Double map(Seconds seconds) {
+    return seconds.asHours().doubleValue();
   }
 
   default LocalDate mapWeek2from(String week) {

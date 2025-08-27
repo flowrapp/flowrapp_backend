@@ -1,10 +1,7 @@
 package io.github.flowrapp.model;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
-
-import io.github.flowrapp.utils.NumberUtils;
 
 import lombok.Builder;
 import lombok.With;
@@ -16,7 +13,7 @@ public record Report(
     User user,
     Business business,
     LocalDate day,
-    BigInteger seconds) {
+    Seconds seconds) {
 
   public static Report fromWorklog(Worklog worklog) {
     Assert.isTrue(worklog.isValid(), "Invalid worklog");
@@ -25,7 +22,8 @@ public record Report(
         .user(worklog.user())
         .business(worklog.business())
         .day(worklog.getDay())
-        .seconds(worklog.getSeconds())
+        .seconds(
+            Seconds.of(worklog.getSeconds()))
         .build();
   }
 
@@ -36,11 +34,7 @@ public record Report(
 
   public Report minus(BigInteger seconds) {
     return this.withSeconds(
-        this.seconds.subtract(seconds));
-  }
-
-  public BigDecimal hours() {
-    return NumberUtils.secondsToHours(this.seconds);
+        this.seconds.minus(seconds));
   }
 
 }
