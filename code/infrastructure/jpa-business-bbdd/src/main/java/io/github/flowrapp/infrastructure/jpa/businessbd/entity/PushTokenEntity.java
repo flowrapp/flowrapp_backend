@@ -1,6 +1,6 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -34,7 +34,6 @@ public class PushTokenEntity {
   @JoinColumn(name = "user_id", nullable = false)
   private UserEntity user;
 
-  @Size(max = 255)
   @NotNull
   @Column(name = "token", nullable = false)
   private UUID token;
@@ -52,6 +51,6 @@ public class PushTokenEntity {
   @NotNull
   @ColumnDefault("now()")
   @Column(name = "created_at", nullable = false)
-  private Instant createdAt;
+  private OffsetDateTime createdAt;
 
 }
