@@ -93,10 +93,10 @@ CREATE TABLE if not exists flowrapp_management.worklogs
 
 CREATE TABLE if not exists flowrapp_management.reports
 (
-    user_id     integer          NOT NULL,
-    business_id integer          NOT NULL,
-    clock_day   DATE             NOT NULL,
-    seconds     NUMERIC(38,0)    NOT NULL,
+    user_id     integer        NOT NULL,
+    business_id integer        NOT NULL,
+    clock_day   DATE           NOT NULL,
+    seconds     NUMERIC(38, 0) NOT NULL,
     PRIMARY KEY (user_id, business_id, clock_day),
     FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id),
     FOREIGN KEY (business_id) REFERENCES flowrapp_management.business (id)
@@ -106,10 +106,10 @@ CREATE TABLE if not exists flowrapp_management.push_tokens
 (
     id         integer GENERATED ALWAYS AS IDENTITY,
     user_id    integer      NOT NULL,
-    token      uuid         NOT NULL,
+    token      varchar(255) NOT NULL,
     device_id  varchar(255) NOT NULL,
     platform   varchar(50)  NOT NULL,
-    created_at timestamp    NOT NULL DEFAULT NOW(),
+    created_at timestamptz  NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES flowrapp_management.users (id)
 );
