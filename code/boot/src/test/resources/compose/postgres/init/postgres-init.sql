@@ -106,7 +106,7 @@ CREATE TABLE if not exists flowrapp_management.push_tokens
 (
     id         integer GENERATED ALWAYS AS IDENTITY,
     user_id    integer      NOT NULL,
-    token      uuid         NOT NULL,
+    token      varchar(255) NOT NULL,
     device_id  varchar(255) NOT NULL,
     platform   varchar(50)  NOT NULL,
     created_at timestamptz  NOT NULL DEFAULT NOW(),

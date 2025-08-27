@@ -50,7 +50,7 @@ class PushTokenUseCaseImplTest {
         .isNotNull()
         .matches(token -> token.id() == null)
         .matches(token -> token.user().equals(user))
-        .matches(token -> token.token().toString().equals(request.token()))
+        .matches(token -> token.token().equals(request.token()))
         .matches(token -> token.deviceId().equals(request.deviceId()))
         .matches(token -> token.platform().equals(request.platform()))
         .matches(token -> token.createdAt() != null))))

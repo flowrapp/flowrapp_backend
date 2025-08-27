@@ -1,7 +1,6 @@
 package io.github.flowrapp.model;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 import io.github.flowrapp.value.PushTokenRequest;
 
@@ -11,7 +10,7 @@ import lombok.Builder;
 public record PushToken(
     Integer id,
     User user,
-    UUID token,
+    String token,
     String deviceId,
     Platform platform,
     OffsetDateTime createdAt) {
@@ -19,8 +18,7 @@ public record PushToken(
   public static PushToken fromRequest(PushTokenRequest request, User user) {
     return PushToken.builder()
         .user(user)
-        .token(
-            UUID.fromString(request.token()))
+        .token(request.token())
         .deviceId(request.deviceId())
         .platform(request.platform())
         .createdAt(OffsetDateTime.now())

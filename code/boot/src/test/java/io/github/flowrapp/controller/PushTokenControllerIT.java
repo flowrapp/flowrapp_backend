@@ -2,8 +2,8 @@ package io.github.flowrapp.controller;
 
 import static io.github.flowrapp.DatabaseData.ADMIN_ID;
 import static io.github.flowrapp.DatabaseData.ADMIN_MAIL;
-import static io.github.flowrapp.TestUtils.basicAuth;
 import static io.github.flowrapp.DatabaseData.ADMIN_PASSWORD;
+import static io.github.flowrapp.TestUtils.basicAuth;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

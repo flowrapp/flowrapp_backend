@@ -1,7 +1,6 @@
 package io.github.flowrapp.infrastructure.jpa.businessbd.entity;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +15,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
@@ -36,8 +34,9 @@ public class PushTokenEntity {
   private UserEntity user;
 
   @NotNull
+  @Size(max = 255)
   @Column(name = "token", nullable = false)
-  private UUID token;
+  private String token;
 
   @Size(max = 255)
   @NotNull
