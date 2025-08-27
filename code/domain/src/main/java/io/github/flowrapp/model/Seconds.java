@@ -23,23 +23,23 @@ public record Seconds(
     return of(BigInteger.valueOf(seconds));
   }
 
-  public static Seconds of(BigInteger seconds) {
+  public static Seconds of(@NonNull BigInteger seconds) {
     return new Seconds(seconds);
   }
 
-  public Seconds add(Seconds other) {
+  public Seconds add(@NonNull Seconds other) {
     return new Seconds(this.seconds.add(other.seconds));
   }
 
-  public Seconds add(BigInteger seconds) {
+  public Seconds add(@NonNull BigInteger seconds) {
     return new Seconds(this.seconds.add(seconds));
   }
 
-  public Seconds minus(Seconds other) {
+  public Seconds minus(@NonNull Seconds other) {
     return new Seconds(this.seconds.subtract(other.seconds));
   }
 
-  public Seconds minus(BigInteger seconds) {
+  public Seconds minus(@NonNull BigInteger seconds) {
     return new Seconds(this.seconds.subtract(seconds));
   }
 

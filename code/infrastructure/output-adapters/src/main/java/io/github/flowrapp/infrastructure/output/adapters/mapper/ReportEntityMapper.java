@@ -26,11 +26,11 @@ public interface ReportEntityMapper {
   List<Report> infra2domain(Iterable<ReportEntity> reportEntities);
 
   default BigInteger map(Seconds seconds) {
-    return seconds.seconds();
+    return seconds != null ? seconds.seconds() : null;
   }
 
   default Seconds map(BigInteger seconds) {
-    return Seconds.of(seconds);
+    return seconds != null ? Seconds.of(seconds) : null;
   }
 
 }

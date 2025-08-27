@@ -48,7 +48,7 @@ public interface TimesheetDTOMapper {
   }
 
   default Double map(Seconds seconds) {
-    return seconds.asHours().doubleValue();
+    return seconds != null ? seconds.asHours().doubleValue() : null;
   }
 
   default LocalDate mapWeek2from(String week) {
