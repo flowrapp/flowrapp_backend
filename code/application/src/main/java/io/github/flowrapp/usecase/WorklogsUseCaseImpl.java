@@ -42,6 +42,7 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
 
   private final ApplicationEventPublisher applicationEventPublisher;
 
+  @Transactional
   @Override
   public Worklog clockIn(WorklogClockInRequest request) {
     log.debug("Clocking in worklog: {}", request);
@@ -114,6 +115,7 @@ public class WorklogsUseCaseImpl implements WorklogUseCase {
     return worklog;
   }
 
+  @Transactional
   @Override
   public Worklog updateWorklog(WorklogUpdateRequest request) {
     log.debug("Updating worklog: {}", request);

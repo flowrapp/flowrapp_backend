@@ -50,7 +50,8 @@ public record Worklog(
       return BigInteger.ZERO;
     }
 
-    return BigInteger.valueOf(Duration.between(clockIn, clockOut).toSeconds());
+    return BigInteger.valueOf(
+        Duration.between(clockIn, clockOut).toSeconds());
   }
 
   public Worklog toBusinessZone() {

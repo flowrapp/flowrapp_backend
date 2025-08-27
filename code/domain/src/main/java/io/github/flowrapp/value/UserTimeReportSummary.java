@@ -1,10 +1,10 @@
 package io.github.flowrapp.value;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
 import io.github.flowrapp.model.Report;
+import io.github.flowrapp.model.Seconds;
 import io.github.flowrapp.model.User;
 
 import lombok.Builder;
@@ -16,14 +16,14 @@ public record UserTimeReportSummary(
     User user,
     LocalDate start,
     LocalDate end,
-    BigDecimal totalHours,
-    BigDecimal totalOvertimeHours,
-    BigDecimal totalAbsenceHours,
-    DayHoursPairList dailyHours) {
+    Seconds totalSeconds,
+    Seconds totalOvertimeSeconds,
+    Seconds totalAbsenceSeconds,
+    DayHoursPairList dailySeconds) {
 
   public UserTimeReportSummary fillDailyHours() {
-    return this.withDailyHours(
-        dailyHours.fill(start, end));
+    return this.withDailySeconds(
+        dailySeconds.fill(start, end));
   }
 
   public UserTimeReportSummary merge(UserTimeReportSummary other) {
@@ -34,11 +34,11 @@ public record UserTimeReportSummary(
     return this.toBuilder()
         .start(this.start.isBefore(other.start) ? this.start : other.start)
         .end(this.end.isAfter(other.end) ? this.end : other.end)
-        .totalHours(this.totalHours.add(other.totalHours))
-        .totalOvertimeHours(this.totalOvertimeHours.add(other.totalOvertimeHours))
-        .totalAbsenceHours(this.totalAbsenceHours.add(other.totalAbsenceHours))
-        .dailyHours(
-            this.dailyHours.merge(other.dailyHours))
+        .totalSeconds(this.totalSeconds.add(other.totalSeconds))
+        .totalOvertimeSeconds(this.totalOvertimeSeconds.add(other.totalOvertimeSeconds))
+        .totalAbsenceSeconds(this.totalAbsenceSeconds.add(other.totalAbsenceSeconds))
+        .dailySeconds(
+            this.dailySeconds.merge(other.dailySeconds))
         .build();
   }
 
@@ -47,11 +47,11 @@ public record UserTimeReportSummary(
         .user(report.user())
         .start(report.day())
         .end(report.day())
-        .totalHours(report.hours())
-        .totalOvertimeHours(BigDecimal.ZERO)
-        .totalAbsenceHours(BigDecimal.ZERO)
-        .dailyHours(DayHoursPairList.of(
-            report.day(), report.hours()))
+        .totalSeconds(report.seconds())
+        .totalOvertimeSeconds(Seconds.ZERO)
+        .totalAbsenceSeconds(Seconds.ZERO)
+        .dailySeconds(DayHoursPairList.of(
+            report.day(), report.seconds()))
         .build();
   }
 

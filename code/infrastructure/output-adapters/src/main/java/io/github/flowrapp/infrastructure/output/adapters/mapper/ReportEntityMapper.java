@@ -1,9 +1,11 @@
 package io.github.flowrapp.infrastructure.output.adapters.mapper;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import io.github.flowrapp.infrastructure.jpa.businessbd.entity.ReportEntity;
 import io.github.flowrapp.model.Report;
+import io.github.flowrapp.model.Seconds;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,5 +24,13 @@ public interface ReportEntityMapper {
   Report infra2domain(ReportEntity reportEntity);
 
   List<Report> infra2domain(Iterable<ReportEntity> reportEntities);
+
+  default BigInteger map(Seconds seconds) {
+    return seconds != null ? seconds.seconds() : null;
+  }
+
+  default Seconds map(BigInteger seconds) {
+    return seconds != null ? Seconds.of(seconds) : null;
+  }
 
 }

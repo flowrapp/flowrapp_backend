@@ -1,25 +1,26 @@
 package io.github.flowrapp.value;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public record DayHoursPairList(
-    LinkedHashMap<LocalDate, BigDecimal> hours) {
+import io.github.flowrapp.model.Seconds;
 
-  public static DayHoursPairList of(LocalDate date, BigDecimal hours) {
+public record DayHoursPairList(
+    LinkedHashMap<LocalDate, Seconds> hours) {
+
+  public static DayHoursPairList of(LocalDate date, Seconds hours) {
     return new DayHoursPairList(
         new LinkedHashMap<>(Map.of(date, hours)));
   }
 
   public DayHoursPairList fill(LocalDate from, LocalDate to) {
-    LinkedHashMap<LocalDate, BigDecimal> filledHours = new LinkedHashMap<>();
+    LinkedHashMap<LocalDate, Seconds> filledHours = new LinkedHashMap<>();
     LocalDate current = from;
 
     while (!current.isAfter(to)) {
-      filledHours.put(current, hours.getOrDefault(current, BigDecimal.ZERO));
+      filledHours.put(current, hours.getOrDefault(current, Seconds.ZERO));
       current = current.plusDays(1);
     }
 
@@ -27,9 +28,9 @@ public record DayHoursPairList(
   }
 
   public DayHoursPairList merge(DayHoursPairList other) {
-    LinkedHashMap<LocalDate, BigDecimal> mergedHours = new LinkedHashMap<>(this.hours);
+    LinkedHashMap<LocalDate, Seconds> mergedHours = new LinkedHashMap<>(this.hours);
 
-    other.hours.forEach((day, hours) -> mergedHours.merge(day, hours, BigDecimal::add));
+    other.hours.forEach((day, hours) -> mergedHours.merge(day, hours, Seconds::add));
 
     return new DayHoursPairList(mergedHours);
   }

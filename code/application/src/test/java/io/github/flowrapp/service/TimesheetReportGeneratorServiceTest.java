@@ -3,15 +3,14 @@ package io.github.flowrapp.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
 import io.github.flowrapp.model.Business;
 import io.github.flowrapp.model.Report;
+import io.github.flowrapp.model.Seconds;
 import io.github.flowrapp.model.User;
-import io.github.flowrapp.utils.NumberUtils;
 import io.github.flowrapp.value.UserTimeReportSummary;
 
 import org.instancio.Instancio;
@@ -29,26 +28,6 @@ class TimesheetReportGeneratorServiceTest {
 
   @InjectMocks
   private TimesheetReportGeneratorService timesheetReportGeneratorService;
-
-  /**
-   * Converts seconds (BigInteger) to hours (BigDecimal).
-   *
-   * @param seconds the seconds as BigInteger
-   * @return the equivalent hours as BigDecimal
-   */
-  private BigDecimal toHours(BigInteger seconds) {
-    return NumberUtils.secondsToHours(seconds);
-  }
-
-  /**
-   * Converts hours (BigDecimal) to seconds (BigInteger).
-   *
-   * @param hours the hours as BigDecimal
-   * @return the equivalent seconds as BigInteger
-   */
-  private BigInteger toSeconds(BigDecimal hours) {
-    return hours.multiply(new BigDecimal("3600")).toBigInteger();
-  }
 
   @Nested
   @DisplayName("computeWeeklyHoursReport")
@@ -74,10 +53,10 @@ class TimesheetReportGeneratorServiceTest {
     @DisplayName("Should compute report for single user with single report")
     void shouldComputeReportForSingleUserWithSingleReport() {
       // Given
-      LocalDate from = LocalDate.of(2024, 1, 15);
-      LocalDate to = LocalDate.of(2024, 1, 21);
-      LocalDate reportDay = LocalDate.of(2024, 1, 16);
-      var hours = BigInteger.valueOf(300L);
+      var from = LocalDate.of(2024, 1, 15);
+      var to = LocalDate.of(2024, 1, 21);
+      var reportDay = LocalDate.of(2024, 1, 16);
+      var seconds = Seconds.of(Seconds.SECONDS_IN_HOUR * 3);
 
       User user = Instancio.of(User.class)
           .set(field(User::id), 1)
@@ -93,7 +72,7 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)
-          .set(field(Report::seconds), hours)
+          .set(field(Report::seconds), seconds)
           .create();
 
       List<Report> reports = List.of(report);
@@ -108,22 +87,22 @@ class TimesheetReportGeneratorServiceTest {
       assertThat(summary.user()).isEqualTo(user);
       assertThat(summary.start()).isEqualTo(from);
       assertThat(summary.end()).isEqualTo(to);
-      assertThat(summary.totalHours()).isEqualTo(toHours(hours));
-      assertThat(summary.totalOvertimeHours()).isEqualTo(BigDecimal.ZERO);
-      assertThat(summary.totalAbsenceHours()).isEqualTo(BigDecimal.ZERO);
-      assertThat(summary.dailyHours()).isNotNull();
+      assertThat(summary.totalSeconds()).isEqualTo(seconds);
+      assertThat(summary.totalOvertimeSeconds()).isEqualTo(Seconds.ZERO);
+      assertThat(summary.totalAbsenceSeconds()).isEqualTo(Seconds.ZERO);
+      assertThat(summary.dailySeconds()).isNotNull();
 
       // Verify daily seconds are filled for the entire range
-      var dailyHoursMap = summary.dailyHours().hours();
+      var dailyHoursMap = summary.dailySeconds().hours();
       assertThat(dailyHoursMap)
           .hasSize(7) // 7 days from 15th to 21st inclusive
-          .containsEntry(reportDay, toHours(hours));
+          .containsEntry(reportDay, seconds);
 
       // Other days should have zero seconds
       LocalDate current = from;
       while (!current.isAfter(to)) {
         if (!current.equals(reportDay)) {
-          assertThat(dailyHoursMap).containsEntry(current, BigDecimal.ZERO);
+          assertThat(dailyHoursMap).containsEntry(current, Seconds.ZERO);
         }
         current = current.plusDays(1);
       }
@@ -133,12 +112,12 @@ class TimesheetReportGeneratorServiceTest {
     @DisplayName("Should merge multiple reports for same user")
     void shouldMergeMultipleReportsForSameUser() {
       // Given
-      LocalDate from = LocalDate.of(2024, 1, 15);
-      LocalDate to = LocalDate.of(2024, 1, 21);
-      LocalDate day1 = LocalDate.of(2024, 1, 16);
-      LocalDate day2 = LocalDate.of(2024, 1, 17);
-      BigDecimal hours1 = new BigDecimal("8.00");
-      BigDecimal hours2 = new BigDecimal("6.50");
+      var from = LocalDate.of(2024, 1, 15);
+      var to = LocalDate.of(2024, 1, 21);
+      var day1 = LocalDate.of(2024, 1, 16);
+      var day2 = LocalDate.of(2024, 1, 17);
+      var seconds1 = Seconds.of(8 * Seconds.SECONDS_IN_HOUR);
+      var seconds2 = Seconds.of(6 * Seconds.SECONDS_IN_HOUR + Seconds.SECONDS_IN_HOUR / 2);
 
       User user = Instancio.of(User.class)
           .set(field(User::id), 1)
@@ -153,14 +132,14 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), day1)
-          .set(field(Report::seconds), toSeconds(hours1))
+          .set(field(Report::seconds), seconds1)
           .create();
 
       Report report2 = Instancio.of(Report.class)
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), day2)
-          .set(field(Report::seconds), toSeconds(hours2))
+          .set(field(Report::seconds), seconds2)
           .create();
 
       List<Report> reports = List.of(report1, report2);
@@ -173,23 +152,23 @@ class TimesheetReportGeneratorServiceTest {
       assertThat(result).hasSize(1);
       UserTimeReportSummary summary = result.getFirst();
       assertThat(summary.user()).isEqualTo(user);
-      assertThat(summary.totalHours()).isEqualTo(hours1.add(hours2));
+      assertThat(summary.totalSeconds()).isEqualTo(seconds1.add(seconds2));
 
-      var dailyHoursMap = summary.dailyHours().hours();
+      var dailyHoursMap = summary.dailySeconds().hours();
       assertThat(dailyHoursMap)
-          .containsEntry(day1, hours1)
-          .containsEntry(day2, hours2);
+          .containsEntry(day1, seconds1)
+          .containsEntry(day2, seconds2);
     }
 
     @Test
     @DisplayName("Should handle multiple users with separate summaries")
     void shouldHandleMultipleUsersWithSeparateSummaries() {
       // Given
-      LocalDate from = LocalDate.of(2024, 1, 15);
-      LocalDate to = LocalDate.of(2024, 1, 21);
-      LocalDate reportDay = LocalDate.of(2024, 1, 16);
-      BigDecimal hours1 = new BigDecimal("8.00");
-      BigDecimal hours2 = new BigDecimal("7.50");
+      var from = LocalDate.of(2024, 1, 15);
+      var to = LocalDate.of(2024, 1, 21);
+      var reportDay = LocalDate.of(2024, 1, 16);
+      var seconds1 = Seconds.of(8 * Seconds.SECONDS_IN_HOUR);
+      var seconds2 = Seconds.of(7 * Seconds.SECONDS_IN_HOUR + Seconds.SECONDS_IN_HOUR / 2);
 
       User user1 = Instancio.of(User.class)
           .set(field(User::id), 1)
@@ -209,14 +188,14 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user1)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)
-          .set(field(Report::seconds), toSeconds(hours1))
+          .set(field(Report::seconds), seconds1)
           .create();
 
       Report report2 = Instancio.of(Report.class)
           .set(field(Report::user), user2)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)
-          .set(field(Report::seconds), toSeconds(hours2))
+          .set(field(Report::seconds), seconds2)
           .create();
 
       List<Report> reports = List.of(report1, report2);
@@ -240,20 +219,20 @@ class TimesheetReportGeneratorServiceTest {
           .orElseThrow();
 
       assertThat(summary1.user()).isEqualTo(user1);
-      assertThat(summary1.totalHours()).isEqualTo(hours1);
+      assertThat(summary1.totalSeconds()).isEqualTo(seconds1);
       assertThat(summary2.user()).isEqualTo(user2);
-      assertThat(summary2.totalHours()).isEqualTo(hours2);
+      assertThat(summary2.totalSeconds()).isEqualTo(seconds2);
     }
 
     @Test
     @DisplayName("Should handle same user with multiple reports on same day")
     void shouldHandleSameUserWithMultipleReportsOnSameDay() {
       // Given
-      LocalDate from = LocalDate.of(2024, 1, 15);
-      LocalDate to = LocalDate.of(2024, 1, 21);
-      LocalDate reportDay = LocalDate.of(2024, 1, 16);
-      BigDecimal hours1 = new BigDecimal("4.00");
-      BigDecimal hours2 = new BigDecimal("3.50");
+      var from = LocalDate.of(2024, 1, 15);
+      var to = LocalDate.of(2024, 1, 21);
+      var reportDay = LocalDate.of(2024, 1, 16);
+      var seconds1 = Seconds.of(4 * Seconds.SECONDS_IN_HOUR);
+      var seconds2 = Seconds.of(3 * Seconds.SECONDS_IN_HOUR + Seconds.SECONDS_IN_HOUR / 2);
 
       User user = Instancio.of(User.class)
           .set(field(User::id), 1)
@@ -274,14 +253,14 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user)
           .set(field(Report::business), business1)
           .set(field(Report::day), reportDay)
-          .set(field(Report::seconds), toSeconds(hours1))
+          .set(field(Report::seconds), seconds1)
           .create();
 
       Report report2 = Instancio.of(Report.class)
           .set(field(Report::user), user)
           .set(field(Report::business), business2)
           .set(field(Report::day), reportDay)
-          .set(field(Report::seconds), toSeconds(hours2))
+          .set(field(Report::seconds), seconds2)
           .create();
 
       List<Report> reports = List.of(report1, report2);
@@ -294,21 +273,21 @@ class TimesheetReportGeneratorServiceTest {
       assertThat(result).hasSize(1);
       UserTimeReportSummary summary = result.getFirst();
       assertThat(summary.user()).isEqualTo(user);
-      assertThat(summary.totalHours()).isEqualTo(hours1.add(hours2));
+      assertThat(summary.totalSeconds()).isEqualTo(seconds1.add(seconds2));
 
-      var dailyHoursMap = summary.dailyHours().hours();
+      var dailyHoursMap = summary.dailySeconds().hours();
       assertThat(dailyHoursMap)
-          .containsEntry(reportDay, hours1.add(hours2));
+          .containsEntry(reportDay, seconds1.add(seconds2));
     }
 
     @Test
     @DisplayName("Should handle edge case with zero seconds")
     void shouldHandleEdgeCaseWithZeroHours() {
       // Given
-      LocalDate from = LocalDate.of(2024, 1, 15);
-      LocalDate to = LocalDate.of(2024, 1, 21);
-      LocalDate reportDay = LocalDate.of(2024, 1, 16);
-      BigDecimal zeroHours = new BigDecimal("0.00");
+      var from = LocalDate.of(2024, 1, 15);
+      var to = LocalDate.of(2024, 1, 21);
+      var reportDay = LocalDate.of(2024, 1, 16);
+      var zeroSeconds = Seconds.ZERO;
 
       User user = Instancio.of(User.class)
           .set(field(User::id), 1)
@@ -322,7 +301,7 @@ class TimesheetReportGeneratorServiceTest {
           .set(field(Report::user), user)
           .set(field(Report::business), business)
           .set(field(Report::day), reportDay)
-          .set(field(Report::seconds), toSeconds(zeroHours))
+          .set(field(Report::seconds), zeroSeconds)
           .create();
 
       List<Report> reports = List.of(report);
@@ -334,17 +313,17 @@ class TimesheetReportGeneratorServiceTest {
       // Then
       assertThat(result).hasSize(1);
       UserTimeReportSummary summary = result.getFirst();
-      assertThat(summary.totalHours()).isEqualTo(zeroHours);
-      assertThat(summary.dailyHours().hours())
-          .containsEntry(reportDay, zeroHours);
+      assertThat(summary.totalSeconds()).isEqualTo(zeroSeconds);
+      assertThat(summary.dailySeconds().hours())
+          .containsEntry(reportDay, zeroSeconds);
     }
 
     @Test
     @DisplayName("Should handle large dataset efficiently")
     void shouldHandleLargeDatasetEfficiently() {
       // Given
-      LocalDate from = LocalDate.of(2024, 1, 1);
-      LocalDate to = LocalDate.of(2024, 1, 31);
+      var from = LocalDate.of(2024, 1, 1);
+      var to = LocalDate.of(2024, 1, 31);
 
       // Create users first
       List<User> users = Instancio.ofList(User.class)
@@ -358,7 +337,7 @@ class TimesheetReportGeneratorServiceTest {
           .generate(field(Report::user), gen -> gen.oneOf(users))
           .generate(field(Report::day), gen -> gen.temporal().localDate().range(from, to))
           .generate(field(Report::seconds), gen -> gen.math().bigInteger().range(
-              BigInteger.valueOf(1200L), BigInteger.valueOf(3600L)))
+              BigInteger.valueOf(1200L), BigInteger.valueOf(3600L)).as(Seconds::of))
           .create();
 
       // When
@@ -375,8 +354,8 @@ class TimesheetReportGeneratorServiceTest {
       result.forEach(summary -> {
         assertThat(summary.start()).isEqualTo(from);
         assertThat(summary.end()).isEqualTo(to);
-        assertThat(summary.totalHours()).isGreaterThanOrEqualTo(BigDecimal.ZERO);
-        assertThat(summary.dailyHours().hours()).hasSize(31); // January has 31 days
+        assertThat(summary.totalSeconds().seconds()).isGreaterThanOrEqualTo(BigInteger.ZERO);
+        assertThat(summary.dailySeconds().hours()).hasSize(31); // January has 31 days
       });
     }
 
@@ -405,7 +384,7 @@ class TimesheetReportGeneratorServiceTest {
               .set(field(Report::user), user)
               .set(field(Report::business), business)
               .set(field(Report::day), reportDay)
-              .set(field(Report::seconds), toSeconds(new BigDecimal("8.0")))
+              .set(field(Report::seconds), Seconds.of(8 * Seconds.SECONDS_IN_HOUR))
               .create())
           .toList();
 
