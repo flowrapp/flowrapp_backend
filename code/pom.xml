@@ -189,6 +189,8 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven.compiler.plugin.version}</version>
           <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
             <compilerArgs>
               <!-- This arg ensures that mapstruct generate a Spring -->
               <!-- Bean out of every mapper implementation -->
