@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class InvitationToRegisterMailVariableEnricher implements MailVariableEnricher {
 
-  @Value("${app.base-url}")
+  @Value("${app.frontend.url}")
   private final String frontBaseUrl;
 
   @Value("${app.frontend.paths.invitation-register:/invitationsRegister}")
