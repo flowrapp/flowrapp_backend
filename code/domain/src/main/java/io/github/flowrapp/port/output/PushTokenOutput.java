@@ -12,5 +12,5 @@ public interface PushTokenOutput {
 
   void deleteById(Integer id);
 
-  void deleteByDeviceId(String deviceId);
+  void deleteByUserAndDeviceId(Integer userId, String deviceId);
 }

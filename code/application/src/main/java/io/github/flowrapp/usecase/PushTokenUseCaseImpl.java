@@ -37,10 +37,13 @@ public class PushTokenUseCaseImpl implements PushTokenUseCase {
         PushToken.fromRequest(request, currentUser));
   }
 
+  @Transactional
   @Override
   public void delete(String deviceId) {
-    log.debug("Deleting push token for user: {}", deviceId);
-    pushTokenOutput.deleteByDeviceId(deviceId);
+    val currentUser = userSecurityContextHolderOutput.getCurrentUser();
+    log.debug("Deleting push token for user: {}", currentUser.id());
+
+    pushTokenOutput.deleteByUserAndDeviceId(currentUser.id(), deviceId);
   }
 
 }

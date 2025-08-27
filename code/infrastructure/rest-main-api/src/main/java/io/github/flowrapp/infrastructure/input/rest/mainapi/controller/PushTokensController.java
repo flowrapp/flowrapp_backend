@@ -1,5 +1,7 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.controller;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 import io.github.flowrapp.infrastructure.apirest.users.api.PushTokensApi;
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterPushTokenRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.PushTokenDTOMapper;
@@ -24,7 +26,7 @@ public class PushTokensController implements PushTokensApi {
     pushTokenUseCase.create(
         pushTokenDTOMapper.rest2domain(registerPushTokenRequestDTO));
 
-    return ResponseEntity.ok().build();
+    return ResponseEntity.status(CREATED).build();
   }
 
   @Override

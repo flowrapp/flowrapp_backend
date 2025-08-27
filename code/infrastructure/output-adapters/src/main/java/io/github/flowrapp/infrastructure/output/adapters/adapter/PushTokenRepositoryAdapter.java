@@ -39,7 +39,7 @@ public class PushTokenRepositoryAdapter implements PushTokenOutput {
   }
 
   @Override
-  public void deleteByDeviceId(String deviceId) {
-    pushTokenJpaRepository.deleteByDeviceId(deviceId);
+  public void deleteByUserAndDeviceId(Integer userId, String deviceId) {
+    pushTokenJpaRepository.deleteByUserIdAndDeviceId(userId, deviceId);
   }
 }

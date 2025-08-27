@@ -70,7 +70,7 @@ public class PushTokenControllerIT {
         .body(request), Void.class);
 
     // Then
-    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(HttpStatus.CREATED, response.getStatusCode());
     assertTrue(pushTokenJpaRepository.findByUserIdAndDeviceId(ADMIN_ID, "device789").isPresent());
   }
 
@@ -90,7 +90,7 @@ public class PushTokenControllerIT {
         .body(request), Void.class);
 
     // Then
-    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(HttpStatus.CREATED, response.getStatusCode());
     verify(pushTokenOutput).deleteById(anyInt()); // verify that the old token was deleted
     assertTrue(pushTokenJpaRepository.findByUserIdAndDeviceId(ADMIN_ID, "device123").isPresent());
   }

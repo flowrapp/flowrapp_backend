@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.verify;
+import static org.springframework.http.HttpStatus.CREATED;
 
 import io.github.flowrapp.infrastructure.apirest.users.model.RegisterPushTokenRequestDTO;
 import io.github.flowrapp.infrastructure.input.rest.mainapi.mapper.PushTokenDTOMapper;
@@ -48,7 +49,7 @@ class PushTokensControllerTest {
         .returns(requestDTO.getDeviceId(), PushTokenRequest::deviceId)
         .returns(requestDTO.getPlatform().toString(), request1 -> request1.platform().toString())
         .returns(requestDTO.getToken(), PushTokenRequest::token)));
-    assertEquals(ResponseEntity.ok().build(), response);
+    assertEquals(CREATED, response.getStatusCode());
   }
 
   @ParameterizedTest

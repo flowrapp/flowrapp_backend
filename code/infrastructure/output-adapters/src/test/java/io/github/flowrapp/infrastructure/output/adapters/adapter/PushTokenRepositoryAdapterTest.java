@@ -2,7 +2,6 @@ package io.github.flowrapp.infrastructure.output.adapters.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.spy;
@@ -120,15 +119,15 @@ class PushTokenRepositoryAdapterTest {
     verify(pushTokenJpaRepository).deleteById(id);
   }
 
-  @Test
-  void deleteByDeviceId() {
+  @ParameterizedTest
+  @InstancioSource(samples = 20)
+  void deleteByDeviceId(Integer userId, String deviceId) {
     // Given
-    String deviceId = "testDeviceId";
 
     // When
-    pushTokenRepositoryAdapter.deleteByDeviceId(deviceId);
+    pushTokenRepositoryAdapter.deleteByUserAndDeviceId(userId, deviceId);
 
     // Then
-    verify(pushTokenJpaRepository).deleteByDeviceId(deviceId);
+    verify(pushTokenJpaRepository).deleteByUserIdAndDeviceId(userId, deviceId);
   }
 }

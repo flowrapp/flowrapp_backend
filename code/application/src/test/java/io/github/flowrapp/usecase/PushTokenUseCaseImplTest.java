@@ -2,7 +2,6 @@ package io.github.flowrapp.usecase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -100,12 +99,16 @@ class PushTokenUseCaseImplTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 1)
-  void delete(String deviceId) {
+  void delete(User user, String deviceId) {
+    // GIVEN
+    when(userSecurityContextHolderOutput.getCurrentUser())
+        .thenReturn(user);
+
     // WHEN
     pushTokenUseCaseImpl.delete(deviceId);
 
     // THEN
-    verify(pushTokenOutput).deleteByDeviceId(deviceId);
+    verify(pushTokenOutput).deleteByUserAndDeviceId(user.id(), deviceId);
   }
 
 }
