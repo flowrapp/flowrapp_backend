@@ -117,6 +117,7 @@ public class InvitationsUseCaseImpl implements InvitationsUseCase {
         invitation.accepted()); // Mark invitation as accepted
   }
 
+  @Transactional
   @Override
   public void registerInvitation(InvitationRegistrationRequest invitationRegistration) {
     log.debug("Registering invitation: {}", invitationRegistration);
