@@ -18,7 +18,7 @@ RUN mvn dependency:go-offline -B
 
 # Copy source files and build
 COPY code .
-RUN mvn clean package -DskipTests -B
+RUN mvn clean compile spring-boot:process-aot package
 
 # Runtime stage
 FROM eclipse-temurin:21-jre-jammy
@@ -36,7 +36,7 @@ USER spring-user
 
 # Set environment variables
 ENV SPRING_PROFILES_ACTIVE=pro
-ENV JAVA_OPTS="-Xmx512m -Xms256m -XX:+UseG1GC -XX:+UseContainerSupport"
+ENV JAVA_OPTS="-Dspring.aot.enabled=true -Xmx512m -Xms256m -XX:+UseG1GC"
 
 # Expose the port
 EXPOSE 8080
