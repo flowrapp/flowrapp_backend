@@ -36,7 +36,7 @@ USER spring-user
 
 # Set environment variables
 ENV SPRING_PROFILES_ACTIVE=pro
-ENV JAVA_OPTS="-Dspring.aot.enabled=true-Xmx512m -Xms256m -XX:+UseG1GC -XX:+UseContainerSupport"
+ENV JAVA_OPTS="-Dspring.aot.enabled=true -Xmx512m -Xms256m -XX:+UseG1GC"
 
 # Expose the port
 EXPOSE 8080
