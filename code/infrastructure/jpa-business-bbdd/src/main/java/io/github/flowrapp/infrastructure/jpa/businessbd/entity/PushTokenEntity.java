@@ -17,6 +17,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
 @Setter
@@ -49,7 +50,7 @@ public class PushTokenEntity {
   private String platform;
 
   @NotNull
-  @ColumnDefault("now()")
+  @CreationTimestamp
   @Column(name = "created_at", nullable = false)
   private OffsetDateTime createdAt;
 

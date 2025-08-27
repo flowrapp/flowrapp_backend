@@ -29,7 +29,7 @@ public class PushTokenUseCaseImpl implements PushTokenUseCase {
 
     pushTokenOutput.findByUserAndDeviceId(currentUser.id(), request.deviceId())
         .ifPresent(pushToken -> {
-          log.info("Device ID {} already exists, deleting old token: {}", request.deviceId(), pushToken);
+          log.info("Device ID {} already exists, deleting old token with id={}", request.deviceId(), pushToken.id());
           pushTokenOutput.deleteById(pushToken.id());
         });
 

@@ -3,7 +3,7 @@ package io.github.flowrapp.controller;
 import static io.github.flowrapp.DatabaseData.ADMIN_ID;
 import static io.github.flowrapp.DatabaseData.ADMIN_MAIL;
 import static io.github.flowrapp.TestUtils.basicAuth;
-import static io.github.flowrapp.controller.InvitationControllerIT.ADMIN_PASSWORD;
+import static io.github.flowrapp.DatabaseData.ADMIN_PASSWORD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -55,7 +55,6 @@ class PushTokenControllerIT {
   private MailSenderPort mailSender; // mock mail sender to avoid sending real emails during tests
 
   @Test
-  @Sql("classpath:scripts/populate_push_tokens.sql")
   void testRegisterPushToken() {
     // Given
     var request = new RegisterPushTokenRequestDTO()
