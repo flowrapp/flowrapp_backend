@@ -55,7 +55,7 @@ public record User(
         .name(oAuth2UserInfo.getName())
         .mail(oAuth2UserInfo.getEmail())
         .phone("")
-        .passwordHash(SensitiveInfo.empty()) // No password for OAuth users
+        .passwordHash(SensitiveInfo.of("")) // No password for OAuth users
         .enabled(true) // OAuth users are enabled by default
         .role(UserRole.USER)
         .createdAt(Instant.now())

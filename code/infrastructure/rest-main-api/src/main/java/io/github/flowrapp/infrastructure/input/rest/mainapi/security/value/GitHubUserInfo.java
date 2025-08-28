@@ -4,9 +4,12 @@ import java.util.Map;
 
 import io.github.flowrapp.value.OAuth2UserInfo;
 
+import lombok.Builder;
+
 /**
  * Implementation of OAuth2UserInfo for GitHub
  */
+@Builder(toBuilder = true)
 public record GitHubUserInfo(
     String id,
     String email,

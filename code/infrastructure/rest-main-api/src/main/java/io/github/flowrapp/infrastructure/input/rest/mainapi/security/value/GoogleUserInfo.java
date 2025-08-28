@@ -1,12 +1,13 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.security.value;
 
-import java.util.Map;
-
 import io.github.flowrapp.value.OAuth2UserInfo;
+
+import lombok.Builder;
 
 /**
  * Record implementation for Google OAuth2 user information. Maps Google OAuth2 user attributes to the common OAuth2UserInfo interface.
  */
+@Builder(toBuilder = true)
 public record GoogleUserInfo(
     String id,
     String email,
@@ -39,36 +40,4 @@ public record GoogleUserInfo(
     return Provider.GOOGLE;
   }
 
-  /**
-   * Creates a GoogleUserInfo instance from Google OAuth2 attributes.
-   *
-   * @param attributes the OAuth2 attributes from Google
-   * @return GoogleUserInfo instance
-   */
-  public static GoogleUserInfo fromAttributes(Map<String, Object> attributes) {
-    String id = (String) attributes.get("sub");
-    String email = (String) attributes.get("email");
-    String name = (String) attributes.get("name");
-    String picture = (String) attributes.get("picture");
-
-    // Fallback to given_name + family_name if name is not available
-    if (name == null || name.trim().isEmpty()) {
-      String givenName = (String) attributes.get("given_name");
-      String familyName = (String) attributes.get("family_name");
-      if (givenName != null && familyName != null) {
-        name = givenName + " " + familyName;
-      } else if (givenName != null) {
-        name = givenName;
-      } else {
-        name = "Google User";
-      }
-    }
-
-    return new GoogleUserInfo(
-        id,
-        email,
-        name,
-        picture,
-        "google");
-  }
 }
