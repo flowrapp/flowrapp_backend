@@ -17,12 +17,15 @@ import org.springframework.web.client.RestTemplate;
 @Configuration(proxyBeanMethods = false)
 public class OauthConfig {
 
-  /** Bean for verifying Google ID tokens using Google's public keys. */
+  /**
+   * Bean for verifying Google ID tokens using Google's public keys.
+   */
   @Bean
   GoogleIdTokenVerifier googleApi(@Value("${app.security.oauth2.client.registration.google.client-id}") String clientId) {
     return new GoogleIdTokenVerifier.Builder(
         new NetHttpTransport(), GsonFactory.getDefaultInstance())
             .setAudience(List.of(clientId))
+            .setIssuers(List.of("https://accounts.google.com", "accounts.google.com"))
             .build();
   }
 
@@ -33,10 +36,11 @@ public class OauthConfig {
   }
 
   @Bean(name = "githubOAuthRestTemplate")
-  RestTemplate restTemplate() {
-    return new RestTemplateBuilder()
+  RestTemplate restTemplate(RestTemplateBuilder builder) {
+    return builder
         .connectTimeout(Duration.ofSeconds(10))
         .readTimeout(Duration.ofSeconds(10))
+        .defaultHeader("User-Agent", "flowrapp-backend")
         .build();
   }
 

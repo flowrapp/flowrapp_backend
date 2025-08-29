@@ -1,9 +1,8 @@
 package io.github.flowrapp.infrastructure.input.rest.mainapi.security.service;
 
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.RequestEntity.get;
+import static java.util.function.Predicate.not;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.Optional;
 
 import io.github.flowrapp.infrastructure.input.rest.mainapi.security.value.GitHubUserInfo;
@@ -13,15 +12,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.kohsuke.github.GHEmail;
+import org.kohsuke.github.GHMyself;
 import org.kohsuke.github.GitHubBuilder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -33,11 +30,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GitHubOAuthService {
 
-  private static final String GITHUB_EMAILS_URL = "https://api.github.com/user/emails";
-
   private static final String GITHUB_NO_REPLY_EMAIL_DOMAIN = "users.noreply.github.com";
-
-  private static final String GITHUB_MAIL_ACCEPT_HEADER = "application/vnd.github+json";
 
   @Qualifier("githubOAuthRestTemplate")
   private final RestTemplate restTemplate;
@@ -61,52 +54,40 @@ public class GitHubOAuthService {
       return Optional.empty();
     }
 
-    val username = Optional.ofNullable(githubUser.getName())
-        .filter(String::isBlank)
-        .orElseGet(githubUser::getLogin);
+    val login = githubUser.getLogin();
+    val displayName = Optional.ofNullable(githubUser.getName())
+        .filter(not(String::isBlank))
+        .orElse(login);
 
     val mail = Optional.ofNullable(githubUser.getEmail())
-        .or(() -> this.getPrimaryEmail(accessToken))
-        .orElseGet(() -> username + GITHUB_NO_REPLY_EMAIL_DOMAIN); // Fallback to GitHub's no-reply email if no email is available
+        .or(() -> this.getPrimaryEmail(githubUser))
+        .orElseGet(() -> login + "@" + GITHUB_NO_REPLY_EMAIL_DOMAIN); // Fallback to GitHub's no-reply email if no email is available
 
     return Optional.of(
         GitHubUserInfo.builder()
             .id(String.valueOf(githubUser.getId()))
             .email(mail)
-            .name(username)
+            .name(displayName)
             .avatarUrl(githubUser.getAvatarUrl())
             .build());
   }
 
-  private Optional<String> getPrimaryEmail(String accessToken) {
+  /**
+   * For some reason githubUser.getEmail() often returns null, it has to be public and usually isn't. This method fetches the list of emails
+   * via the GitHub API and returns the primary email if available.
+   */
+  private Optional<String> getPrimaryEmail(GHMyself myself) {
     try {
-      ResponseEntity<List<GithubEmailBody>> response = restTemplate.exchange(get(GITHUB_EMAILS_URL)
-          .accept(MediaType.parseMediaType(GITHUB_MAIL_ACCEPT_HEADER))
-          .header(AUTHORIZATION, "Bearer " + accessToken)
-          .build(), new ParameterizedTypeReference<>() {});
+      log.debug("Fetching user emails from GitHub API.");
+      return myself.listEmails().toList().stream()
+          .filter(GHEmail::isPrimary)
+          .map(GHEmail::getEmail)
+          .findFirst();
 
-      if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
-        log.warn("Failed to retrieve primary email from GitHub API.");
-        return Optional.empty();
-      }
-
-      return response.getBody().stream()
-          .filter(GithubEmailBody::primary)
-          .findFirst()
-          .map(GithubEmailBody::email);
-
-    } catch (RestClientException e) {
+    } catch (IOException e) {
       log.error("Error while fetching primary email from GitHub API: {}", e.getMessage());
       return Optional.empty();
     }
-  }
-
-  record GithubEmailBody(
-      String email,
-      boolean primary,
-      boolean verified,
-      String visibility) {
-
   }
 
 }
