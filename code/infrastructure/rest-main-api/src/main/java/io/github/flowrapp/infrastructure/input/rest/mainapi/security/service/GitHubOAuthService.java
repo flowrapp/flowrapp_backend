@@ -17,9 +17,7 @@ import org.kohsuke.github.GHMyself;
 import org.kohsuke.github.GitHubBuilder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Service for validating GitHub OAuth2 access tokens and retrieving user information. Uses GitHub REST API to validate tokens and fetch
@@ -31,9 +29,6 @@ import org.springframework.web.client.RestTemplate;
 public class GitHubOAuthService {
 
   private static final String GITHUB_NO_REPLY_EMAIL_DOMAIN = "users.noreply.github.com";
-
-  @Qualifier("githubOAuthRestTemplate")
-  private final RestTemplate restTemplate;
 
   private final ObjectProvider<GitHubBuilder> gitHubBuilderProvider;
 

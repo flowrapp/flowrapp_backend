@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <profiles version="18">
-  <!-- Inditex FORMATTER_VERSION: 24 -->
-  <profile kind="CodeFormatterProfile" name="Inditex" version="18">
+  <!-- flowrapp FORMATTER_VERSION: 24 -->
+  <profile kind="CodeFormatterProfile" name="flowrapp" version="18">
     <setting id="org.eclipse.jdt.core.formatter.align_selector_in_method_invocation_on_expression_first_line" value="false" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_ellipsis" value="insert" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_comma_in_enum_declarations" value="insert" />
