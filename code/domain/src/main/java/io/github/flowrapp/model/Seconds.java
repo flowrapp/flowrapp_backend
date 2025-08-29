@@ -1,23 +1,22 @@
 package io.github.flowrapp.model;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 
 import lombok.NonNull;
+import lombok.val;
 
 public record Seconds(
     @NonNull BigInteger seconds) {
 
-  public static final Seconds ZERO = zero();
+  public static final Seconds ZERO = of(BigInteger.ZERO);
 
   public static final int SECONDS_IN_HOUR = 3600;
 
-  public static final BigDecimal SECONDS_IN_HOUR_BG = BigDecimal.valueOf(SECONDS_IN_HOUR);
+  public static final int SECONDS_IN_MINUTE = 60;
 
-  public static Seconds zero() {
-    return of(BigInteger.ZERO);
-  }
+  public static final BigInteger SECONDS_IN_HOUR_BI = BigInteger.valueOf(SECONDS_IN_HOUR);
+
+  public static final BigInteger SECONDS_IN_MINUTE_BI = BigInteger.valueOf(SECONDS_IN_MINUTE);
 
   public static Seconds of(int seconds) {
     return of(BigInteger.valueOf(seconds));
@@ -43,9 +42,14 @@ public record Seconds(
     return new Seconds(this.seconds.subtract(seconds));
   }
 
-  public BigDecimal asHours() {
-    return new BigDecimal(seconds)
-        .divide(SECONDS_IN_HOUR_BG, 2, RoundingMode.FLOOR);
+  /**
+   * Formats the duration in "Xh Ym" format, where X is hours and Y is minutes.
+   */
+  public String formatted() {
+    val hours = seconds.divide(SECONDS_IN_HOUR_BI);
+    val minutes = seconds.remainder(SECONDS_IN_HOUR_BI).divide(SECONDS_IN_MINUTE_BI);
+
+    return hours + "h " + minutes + "m";
   }
 
 }

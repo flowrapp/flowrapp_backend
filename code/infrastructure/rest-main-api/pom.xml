@@ -15,7 +15,7 @@
   <description>Main Api Module.</description>
 
   <properties>
-    <openapi-spec.url>https://raw.githubusercontent.com/flowrapp/openapi-specs/refs/tags/v0.0.9/api/main-api/rest/open-api-rest.yml
+    <openapi-spec.url>https://raw.githubusercontent.com/flowrapp/openapi-specs/refs/tags/v0.0.10/api/main-api/rest/open-api-rest.yml
     </openapi-spec.url>
   </properties>
 
@@ -54,6 +54,14 @@
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct-processor</artifactId>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.kohsuke</groupId>
+      <artifactId>github-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.api-client</groupId>
+      <artifactId>google-api-client</artifactId>
     </dependency>
 
     <dependency>
