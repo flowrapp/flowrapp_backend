@@ -22,7 +22,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.web.client.RestTemplate;
 
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
 class GitHubOAuthServiceTest {
