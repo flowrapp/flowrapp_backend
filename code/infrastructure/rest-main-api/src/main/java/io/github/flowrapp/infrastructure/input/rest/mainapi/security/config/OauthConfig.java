@@ -7,6 +7,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import org.kohsuke.github.GitHubBuilder;
+import org.kohsuke.github.GitHubRateLimitHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -32,16 +33,8 @@ public class OauthConfig {
   @Bean
   @Scope("prototype")
   GitHubBuilder gitHubBuilder() {
-    return new GitHubBuilder();
-  }
-
-  @Bean(name = "githubOAuthRestTemplate")
-  RestTemplate restTemplate(RestTemplateBuilder builder) {
-    return builder
-        .connectTimeout(Duration.ofSeconds(10))
-        .readTimeout(Duration.ofSeconds(10))
-        .defaultHeader("User-Agent", "flowrapp-backend")
-        .build();
+    return new GitHubBuilder()
+        .withRateLimitHandler(GitHubRateLimitHandler.WAIT);
   }
 
 }

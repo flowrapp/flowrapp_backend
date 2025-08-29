@@ -66,7 +66,7 @@ class GoogleOAuthServiceTest {
 
   @ParameterizedTest
   @InstancioSource(samples = 5)
-  void validateTokenAndGetUser_isEmpty(String idToken) throws Exception {
+  void validateTokenAndGetUser_isEmpty(String idToken) {
     // GIVEN
 
     // WHEN

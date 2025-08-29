@@ -27,9 +27,6 @@ import org.springframework.web.client.RestTemplate;
 @ExtendWith({MockitoExtension.class, InstancioExtension.class})
 class GitHubOAuthServiceTest {
 
-  @Mock
-  private RestTemplate restTemplate;
-
   @Mock(answer = Answers.RETURNS_DEEP_STUBS)
   private ObjectProvider<GitHubBuilder> gitHubBuilderProvider;
 
