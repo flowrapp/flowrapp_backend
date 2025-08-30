@@ -35,6 +35,10 @@ public record Business(
   public static Business fromBusinessCreationRequest(BusinessCreationRequest businessCreationRequest, User owner) {
     return Business.builder()
         .name(businessCreationRequest.name())
+        .address(businessCreationRequest.address())
+        .town(businessCreationRequest.town())
+        .city(businessCreationRequest.city())
+        .country(businessCreationRequest.country())
         .location(businessCreationRequest.location())
         .owner(owner)
         .zone(businessCreationRequest.zone())
