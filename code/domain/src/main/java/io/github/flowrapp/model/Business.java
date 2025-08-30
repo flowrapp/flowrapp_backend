@@ -12,6 +12,10 @@ import lombok.Builder;
 public record Business(
     Integer id,
     String name,
+    String address,
+    String town,
+    String city,
+    String country,
     User owner,
     Location location,
     ZoneId zone,
