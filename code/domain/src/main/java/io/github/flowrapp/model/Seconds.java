@@ -1,10 +1,9 @@
 package io.github.flowrapp.model;
 
-import static java.text.MessageFormat.format;
-
 import java.math.BigInteger;
 
 import lombok.NonNull;
+import lombok.val;
 
 public record Seconds(
     @NonNull BigInteger seconds) {
@@ -12,6 +11,12 @@ public record Seconds(
   public static final Seconds ZERO = of(BigInteger.ZERO);
 
   public static final int SECONDS_IN_HOUR = 3600;
+
+  public static final int SECONDS_IN_MINUTE = 60;
+
+  public static final BigInteger SECONDS_IN_HOUR_BI = BigInteger.valueOf(SECONDS_IN_HOUR);
+
+  public static final BigInteger SECONDS_IN_MINUTE_BI = BigInteger.valueOf(SECONDS_IN_MINUTE);
 
   public static Seconds of(int seconds) {
     return of(BigInteger.valueOf(seconds));
@@ -37,12 +42,14 @@ public record Seconds(
     return new Seconds(this.seconds.subtract(seconds));
   }
 
-  // Should format in the format: HH MM
+  /**
+   * Formats the duration in "Xh Ym" format, where X is hours and Y is minutes.
+   */
   public String formatted() {
-    long totalSeconds = seconds.longValue();
-    long hours = totalSeconds / SECONDS_IN_HOUR;
-    long minutes = (totalSeconds % SECONDS_IN_HOUR) / 60;
-    return format("{0}h {1}m", hours, minutes);
+    val hours = seconds.divide(SECONDS_IN_HOUR_BI);
+    val minutes = seconds.remainder(SECONDS_IN_HOUR_BI).divide(SECONDS_IN_MINUTE_BI);
+
+    return hours + "h " + minutes + "m";
   }
 
 }

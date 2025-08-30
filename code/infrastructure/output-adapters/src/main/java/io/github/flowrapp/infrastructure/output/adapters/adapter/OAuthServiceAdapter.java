@@ -25,10 +25,15 @@ public class OAuthServiceAdapter implements OAuthServiceOutput {
   public Optional<OAuth2UserInfo> getUserFromToken(String credentials, Provider provider) {
     log.debug("Getting user from provider: {}", provider);
 
-    return switch (provider) {
-      case GITHUB -> gitHubOAuthService.validateTokenAndGetUser(credentials);
-      case GOOGLE -> googleOAuthService.validateTokenAndGetUser(credentials);
-    };
+    try {
+      return switch (provider) {
+        case GITHUB -> gitHubOAuthService.validateTokenAndGetUser(credentials);
+        case GOOGLE -> googleOAuthService.validateTokenAndGetUser(credentials);
+      };
+    } catch (Exception e) {
+      log.error("Error while getting user from provider: {}", provider, e);
+      return Optional.empty();
+    }
   }
 
 }

@@ -1,4 +1,4 @@
-<code_scheme name="Inditex" version="188">
+<code_scheme name="flowrapp" version="188">
   <option name="OTHER_INDENT_OPTIONS">
     <value>
       <option name="INDENT_SIZE" value="2" />
@@ -31,13 +31,13 @@
       <value>
         <package name="java" withSubpackages="true" static="true" />
         <emptyLine />
-        <package name="com.inditex" withSubpackages="true" static="true" />
+        <package name="com.flowrapp" withSubpackages="true" static="true" />
         <emptyLine />
         <package name="" withSubpackages="true" static="true" />
         <emptyLine />
         <package name="java" withSubpackages="true" static="false" />
         <emptyLine />
-        <package name="com.inditex" withSubpackages="true" static="false" />
+        <package name="com.flowrapp" withSubpackages="true" static="false" />
         <emptyLine />
         <package name="" withSubpackages="true" static="false" />
       </value>

@@ -40,10 +40,15 @@ public interface TimesheetDTOMapper {
   GetWeeklyHoursReport200ResponseUsersInnerDTO map(UserTimeReportSummary summary);
 
   default Map<String, String> map(DayHoursPairList dayHoursPairs) {
+    if (dayHoursPairs == null) {
+      return Map.of();
+    }
+
     return dayHoursPairs.getlist().stream()
-        .collect(toMap(dp -> dp.day().toString(),
-            o -> o.seconds().formatted(),
-            (o, o2) -> o, // Duplicate keys should not happen
+        .collect(toMap(
+            p -> p.day().toString(),
+            p -> p.seconds().formatted(),
+            (first, ignored) -> first, // Duplicate keys should not happen
             LinkedHashMap::new)); // Maintain insertion order
   }
 
