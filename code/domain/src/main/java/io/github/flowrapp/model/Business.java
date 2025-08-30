@@ -12,6 +12,10 @@ import lombok.Builder;
 public record Business(
     Integer id,
     String name,
+    String address,
+    String town,
+    String city,
+    String country,
     User owner,
     Location location,
     ZoneId zone,
@@ -31,6 +35,10 @@ public record Business(
   public static Business fromBusinessCreationRequest(BusinessCreationRequest businessCreationRequest, User owner) {
     return Business.builder()
         .name(businessCreationRequest.name())
+        .address(businessCreationRequest.address())
+        .town(businessCreationRequest.town())
+        .city(businessCreationRequest.city())
+        .country(businessCreationRequest.country())
         .location(businessCreationRequest.location())
         .owner(owner)
         .zone(businessCreationRequest.zone())

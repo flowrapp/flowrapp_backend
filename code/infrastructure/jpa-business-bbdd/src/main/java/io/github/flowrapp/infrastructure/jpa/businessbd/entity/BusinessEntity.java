@@ -38,6 +38,26 @@ public class BusinessEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
+  @Size(max = 255)
+  @NotNull
+  @Column(name = "address", nullable = false)
+  private String address;
+
+  @Size(max = 255)
+  @NotNull
+  @Column(name = "town", nullable = false)
+  private String town;
+
+  @Size(max = 255)
+  @NotNull
+  @Column(name = "city", nullable = false)
+  private String city;
+
+  @Size(max = 255)
+  @NotNull
+  @Column(name = "country", nullable = false)
+  private String country;
+
   @NotNull
   @Column(name = "longitude", nullable = false)
   private Double longitude;

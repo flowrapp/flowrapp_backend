@@ -71,6 +71,10 @@ class AdminControllerIT {
 
     RegisterUserRequestBusinessInnerDTO businessDTO = new RegisterUserRequestBusinessInnerDTO()
         .name("Test Company")
+        .address("carril 2")
+        .town("El palmar")
+        .city("Vejer de la fra")
+        .country("España")
         .zone("Europe/Madrid")
         .location(locationDTO);
 

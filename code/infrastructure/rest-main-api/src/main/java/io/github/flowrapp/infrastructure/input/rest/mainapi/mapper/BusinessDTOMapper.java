@@ -20,6 +20,10 @@ public interface BusinessDTOMapper {
 
   @Mapping(target = "id", source = "business.id")
   @Mapping(target = "name", source = "business.name")
+  @Mapping(target = "address", source = "business.address")
+  @Mapping(target = "town", source = "business.town")
+  @Mapping(target = "city", source = "business.city")
+  @Mapping(target = "country", source = "business.country")
   @Mapping(target = "zone", source = "business.zone")
   @Mapping(target = "userRole", source = "role")
   @Mapping(target = "location.latitude", source = "business.location.latitude")

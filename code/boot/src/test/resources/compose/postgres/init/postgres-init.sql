@@ -38,6 +38,10 @@ CREATE TABLE if not exists flowrapp_management.business
 (
     id              integer GENERATED ALWAYS AS IDENTITY,
     name            varchar(255)     NOT NULL,
+    address         varchar(255)     NOT NULL,
+    town            varchar(255)     NOT NULL,
+    city            varchar(255)     NOT NULL,
+    country         varchar(255)     NOT NULL,
     owner_id        integer          NOT NULL,
     longitude       double precision NOT NULL,
     latitude        double precision NOT NULL,
@@ -138,8 +142,8 @@ INSERT INTO flowrapp_management.users (name, mail, phone, password_hash)
 VALUES ('test', 'test@test.com', '123456789',
         '$2a$10$8w.xERKkZZhKuCMU6K/0x.OmaEYBVqPBfGRHKHfyIEXK4P8kU43fq'); -- Password: 1234
 
-INSERT INTO flowrapp_management.business (name, owner_id, longitude, latitude, area, timezone_offset, created_at)
-VALUES ('Test Business', 1, 0.0, 0.0, 100.0, 'Europe/Madrid', NOW());
+INSERT INTO flowrapp_management.business (name, address, town, city, country, owner_id, longitude, latitude, area, timezone_offset, created_at)
+VALUES ('Test Business', 'carretera 1', 'Zahora', 'Cádiz', 'España', 1, 0.0, 0.0, 100.0, 'Europe/Madrid', NOW());
 
 INSERT INTO flowrapp_management.users_roles (user_id, business_id, role, invited_by, joined_at)
 VALUES (1, 1, 'OWNER', 1, NOW());
