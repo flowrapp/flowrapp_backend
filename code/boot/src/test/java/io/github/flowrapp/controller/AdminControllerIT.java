@@ -74,7 +74,7 @@ class AdminControllerIT {
         .address("carril 2")
         .town("El palmar")
         .city("Vejer de la fra")
-        .country("España") 
+        .country("España")
         .zone("Europe/Madrid")
         .location(locationDTO);
 
